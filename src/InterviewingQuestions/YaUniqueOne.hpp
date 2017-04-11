@@ -29,7 +29,11 @@ Type getValue(const std::vector<Type> & vars)
 int main()
 {
     AVAR(getValue({ 2, 3, 4, 5, 6, 3, 4, 5, 2 }));
-    AVAR(getValue({ 6, 7 }));
+    AVAR(getValue({ 6, 2, 2, 7 }));
+    AVAR(getValue({ 6, 2, 2, 7, 1 }));
+    AVAR(getValue({ 6, 2, 2, 1 }));
+
+
 
     APAUSE;
 }
