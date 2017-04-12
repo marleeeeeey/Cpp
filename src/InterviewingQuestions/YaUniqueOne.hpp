@@ -20,7 +20,8 @@ Type getValue(const std::vector<Type> & vars)
             << std::setw(4) << res
             ;
 
-        //AMSG(os.str());
+        AMSG(os.str());
+
     }
 
     return res;
@@ -29,9 +30,9 @@ Type getValue(const std::vector<Type> & vars)
 int main()
 {
     AVAR(getValue({ 2, 3, 4, 5, 6, 3, 4, 5, 2 }));
-    AVAR(getValue({ 6, 2, 2, 7 }));
-    AVAR(getValue({ 6, 2, 2, 7, 1 }));
-    AVAR(getValue({ 6, 2, 2, 1 }));
+    AVAR(getValue({ 6, 2, 2, 3, 3, 5, 7, 5 }));    // 1
+    AVAR(getValue({ 1, 6, 2, 2, 3, 3, 5, 7, 5 })); // 1
+
 
 
 
