@@ -8,4 +8,5 @@
 //#include "SiteHackerrank/VariableSizedArrays.hpp"       //MARLEEEEEEY TODO
 //#include "InterviewingQuestions/YaUniqueOne.hpp"        //MARLEEEEEEY TODO
 //#include "InterviewingQuestions/WaterInPuddels.hpp"
-#include "YandexAlgorithm/YandexAlgo2017.hpp"
+//#include "YandexAlgorithm/YandexAlgo2017.hpp"
+#include "SiteCodility/CodilityTests.hpp"

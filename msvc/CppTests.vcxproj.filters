@@ -23,5 +23,8 @@
     <ClInclude Include="..\src\AllInclude.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SiteCodility\CodilityTests.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
