@@ -10,11 +10,8 @@ int solution(vector<int>& A, int X) {
     }
     int l = 0;
     int r = N - 1;
-    while (l < r) {
+    while (r - l > 1) {
         int m = (l + r) / 2;
-        if (A[m] == X){
-            return m;
-        }
         if (A[m] > X) {
             r = m - 1;
         }
@@ -38,8 +35,11 @@ int main()
 //     std::vector<int> vars = { 1, 2, 5, 9, 9 };
 //     AVAR(solution(vars, 5));
 
-    std::vector<int> vars = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    AVAR(solution(vars, 2));
+//     std::vector<int> vars = { 1, 2, 3, 4, 5, 6, 7, 8 };
+//     AVAR(solution(vars, 2));
+
+    std::vector<int> vars = { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9 };
+    AVAR(solution(vars, 9));
 
     APAUSE;
 }
