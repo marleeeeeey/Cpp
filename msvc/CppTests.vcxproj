@@ -147,9 +147,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\SockLib\SockLib.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\AllInclude.h" />
+    <ClInclude Include="..\src\SockLib\SockLib.h" />
+    <ClInclude Include="..\src\SockLib\TestSockLib.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

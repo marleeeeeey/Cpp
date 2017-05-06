@@ -18,9 +18,15 @@
     <ClCompile Include="..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SockLib\SockLib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\AllInclude.h">
+    <ClInclude Include="..\src\SockLib\TestSockLib.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SockLib\SockLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
