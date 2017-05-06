@@ -8,7 +8,10 @@ int main()
     try
     {
         SocketFactory sf;
-        sf.startListenPort(10);    	
+        sf.startListenPort(10);
+        AMSG("press any key for stop listen port");
+        APAUSE;
+        sf.stopListen();
         APAUSE;
     }
     catch (std::logic_error & e)

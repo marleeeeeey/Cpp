@@ -91,21 +91,25 @@ class SocketFactory
 public:
     SocketFactory()
     {
-        if (m_refCounter == 0)
+        int & counter = instanseCounter();
+
+        if (counter == 0)
             stdplus::sl_init();
 
-        m_refCounter++;
+        counter++;
     }
 
     ~SocketFactory()
     {
         stopListen();
 
-        if (m_refCounter > 0)
-        {
-            m_refCounter--;
+        int & counter = instanseCounter();
 
-            if (m_refCounter == 0)
+        if (counter > 0)
+        {
+            counter--;
+
+            if (counter == 0)
                 stdplus::sl_term();
         }
     }
@@ -140,6 +144,7 @@ public:
 
         stopListen();
         m_isListening = true;
+        AVAR(m_isListening);
 
         m_listenThread = std::thread(
             &SocketFactory::listenCycle, this, rawServerSocket, port);
@@ -147,10 +152,15 @@ public:
 
     void stopListen()
     {
+        if (!m_isListening)
+            return;
+
         m_isListening = false;
 
         if (m_listenThread.joinable())
             m_listenThread.join();
+
+        AVAR(m_isListening);
     }
 
     std::vector<Socket> getClients() 
@@ -173,15 +183,11 @@ private:
         {
             int result = 0;
             unsigned rawIpAdress;
-            AMSG("accept " + to_string(rawServerSocket) + "/" + to_string(port));
+
             result = sl_select(rawServerSocket, m_timeout_ms);
 
-            AMSG("after select result = " + to_string(result));
-
             result = sl_accept(rawServerSocket, &rawIpAdress);
-
-            AMSG("after accept");
-
+            
             if (result < 0)
             {
                 if (m_isNonBlockMode)
@@ -207,16 +213,21 @@ private:
 
     }
 
+    int & instanseCounter() 
+    {
+        static int counter = 0;
+        return counter;
+    }
+
+    int                 m_timeout_ms      = 1000;
+    bool                m_isNonBlockMode  = true;
+
     bool                m_isListening     = false;
+    bool                m_isClientsUpdate = false;
     std::mutex          m_mutexClients;
     std::vector<Socket> m_clients;
-    bool                m_isClientsUpdate = false;
     std::thread         m_listenThread;
-    static int          m_refCounter;
-    int                 m_timeout_ms      = 5000;
-    bool                m_isNonBlockMode  = true;
 };
 
-int SocketFactory::m_refCounter = 0;
 
 #endif // SockLib_h__
