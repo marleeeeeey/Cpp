@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\secondMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\SockLib\TestClient.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C7C15D47-2000-47F5-86E2-7FA2DC3E80F9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

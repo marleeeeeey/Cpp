@@ -148,6 +148,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\firstMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\2017-03-31 1400 StdPlus\include\StdPlus\SockLibPlus.hpp" />
+    <ClInclude Include="..\..\src\SockLib\TcpSocket.hpp" />
+    <ClInclude Include="..\..\src\SockLib\TestServer.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

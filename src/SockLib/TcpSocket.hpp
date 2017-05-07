@@ -31,6 +31,9 @@ public:
         }
     }
 
+    Socket(const Socket &) = delete;
+    void operator=(const Socket &) = delete;
+    
     int recv(void *buf, int size)
     {
         using namespace stdplus;
@@ -55,17 +58,25 @@ public:
         return sizeSend_byte;
     }
 
-private:
     void stop()
     {
         using namespace stdplus;
+        AMSG("Stop socket: " + to_string(*this));
 
         int result = sl_disconnect(m_socket);
 
         if (result < 0)
             throw std::logic_error(sl_error_str(result));
+
+        m_socket = 0;
     }
 
+    bool isStoped() const { return !m_socket; }
+
+    void setName(std::string name) { m_name = name; }
+
+private:
+    std::string m_name = "NoName";
     RawSocket   m_socket;
     std::string m_ip;
     int         m_port           = 0;
@@ -76,6 +87,7 @@ private:
 std::ostream & operator<<(std::ostream & os, const Socket & s)
 {
     os
+        << "name="      << s.m_name           << "; "
         << "id="        << s.m_socket         << "; "
         << "ip="        << s.m_ip             << "; "
         << "port="      << s.m_port           << "; "
@@ -114,7 +126,7 @@ public:
         }
     }
 
-    Socket connectToServer(std::string serverIp, int serverPort)
+    Socket * connectToServer(std::string serverIp, int serverPort)
     {
         using namespace stdplus;
 
@@ -125,10 +137,10 @@ public:
 
         RawSocket rawSocket = result;
 
-        return Socket(rawSocket, serverIp, serverPort);
+        return new Socket(rawSocket, serverIp, serverPort);
     }
 
-    void startListenPort(int port, int backlog = 1)
+    void startListenPortInOtherThread(int port, int backlog = 1)
     {
         AFUN;
 
@@ -163,7 +175,7 @@ public:
         AVAR(m_isListening);
     }
 
-    std::vector<Socket> getClients() 
+    std::vector<Socket *> getClients() 
     {
         std::lock_guard<std::mutex> guard(m_mutexClients);
         m_isClientsUpdate = false;
@@ -201,9 +213,9 @@ private:
 
             RawSocket rawSocket = result;
             std::string ip = sl_inet_ntoa(rawIpAdress);
-            Socket clientSocket = Socket(rawSocket, ip, port);
+            Socket * clientSocket = new Socket(rawSocket, ip, port);
 
-            AVAR(clientSocket);
+            AVAR(*clientSocket);
             std::lock_guard<std::mutex> guard(m_mutexClients);
             m_clients.push_back(clientSocket);
 
@@ -219,14 +231,14 @@ private:
         return counter;
     }
 
-    int                 m_timeout_ms      = 1000;
-    bool                m_isNonBlockMode  = true;
-
-    bool                m_isListening     = false;
-    bool                m_isClientsUpdate = false;
-    std::mutex          m_mutexClients;
-    std::vector<Socket> m_clients;
-    std::thread         m_listenThread;
+    int                   m_timeout_ms      = 1000;
+    bool                  m_isNonBlockMode  = true;
+                          
+    bool                  m_isListening     = false;
+    bool                  m_isClientsUpdate = false;
+    std::mutex            m_mutexClients;
+    std::vector<Socket *> m_clients;
+    std::thread           m_listenThread;
 };
 
 
