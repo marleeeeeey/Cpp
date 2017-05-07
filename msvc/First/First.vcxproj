@@ -117,7 +117,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STD_PLUS_DEBUG_PRINT_OFF;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(STD_PLUS_DIR)\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STD_PLUS_DEBUG_PRINT_OFF;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(STD_PLUS_DIR)\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -146,12 +146,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\SockLib\SockLib.cpp" />
+    <ClCompile Include="..\..\src\firstMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\SockLib\SockLib.h" />
-    <ClInclude Include="..\src\SockLib\TestSockLib.hpp" />
+    <ClInclude Include="..\..\..\2017-03-31 1400 StdPlus\include\StdPlus\SockLibPlus.hpp" />
+    <ClInclude Include="..\..\src\SockLib\TcpSocket.hpp" />
+    <ClInclude Include="..\..\src\SockLib\TestServer.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

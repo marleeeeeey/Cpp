@@ -15,18 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SockLib\SockLib.cpp">
+    <ClCompile Include="..\..\src\firstMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\SockLib\TestSockLib.hpp">
+    <ClInclude Include="..\..\..\2017-03-31 1400 StdPlus\include\StdPlus\SockLibPlus.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SockLib\SockLib.h">
+    <ClInclude Include="..\..\src\SockLib\TestServer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\SockLib\TcpSocket.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
