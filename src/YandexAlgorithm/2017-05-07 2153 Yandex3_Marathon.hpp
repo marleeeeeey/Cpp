@@ -59,6 +59,17 @@ struct Line
 
         return ret;
     }
+
+    Coord rectArea() const
+    {
+        Point tl = topLeftCorner();
+        Point br = bottomRightCorner();
+
+        Coord cols = br.col - tl.col + 1;
+        Coord rows = br.row - tl.row + 1;
+
+        return cols * rows;
+    }
 };
 
 std::ostream & operator<<(std::ostream & os, const Line & line)
@@ -79,8 +90,9 @@ public:
     MagicWorld()
     {
         init();
-        step01_fillLines();
-        step02_alg01_printLinesAsRect();
+        step10_fillLines();
+        step15_sortLinesByArea();
+        step20_alg01_printLinesAsRect();
         step99_printAnswer();
     }
 
@@ -111,7 +123,7 @@ private:
         }
     }
     
-    void step01_fillLines()
+    void step10_fillLines()
     {
         for (size_t i = 0; i < k; i++)
         {
@@ -143,7 +155,16 @@ private:
         }
     }
 
-    void step02_alg01_printLinesAsRect()
+    void step15_sortLinesByArea()
+    {
+        std::sort(lines.begin(), lines.end(), 
+            [](const Line & left, const Line & right)
+        {
+            return left.rectArea() > right.rectArea();
+        });
+    }
+
+    void step20_alg01_printLinesAsRect()
     {
         int index = 0;
         for (auto & line : lines)
