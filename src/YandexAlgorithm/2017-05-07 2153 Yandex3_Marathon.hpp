@@ -91,6 +91,7 @@ public:
     {
         init();
         step10_fillLines();
+        step13_groupByVertSide();
         step15_sortLinesByArea();
         step20_alg01_printLinesAsRect();
         step99_printAnswer();
@@ -155,12 +156,17 @@ private:
         }
     }
 
+    void step13_groupByVertSide()
+    {
+
+    }
+
     void step15_sortLinesByArea()
     {
         std::sort(lines.begin(), lines.end(), 
             [](const Line & left, const Line & right)
         {
-            return left.rectArea() > right.rectArea();
+             left.rectArea() > right.rectArea();
         });
     }
 
