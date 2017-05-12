@@ -1,6 +1,34 @@
 #include "StdPlus/StdPlus.h"
 #include "TcpSocket.hpp"
 
+class ClientManager
+{
+public:
+    ClientManager()
+    {
+
+    }
+
+    ~ClientManager()
+    {
+
+    }
+    
+    void updateClientsFrom(std::vector<Socket *> clients)
+    {
+        m_allClients = clients;
+    }
+    
+    // TODO
+    // calc unworking
+    // calc remove
+
+private:
+    std::vector<Socket *> m_workingClients;
+    std::vector<Socket *> m_allClients;
+
+};
+
 int main()
 {
     AMSG("hello from TestServer");
