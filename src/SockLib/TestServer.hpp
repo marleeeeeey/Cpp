@@ -14,18 +14,45 @@ public:
 
     }
     
-    void updateClientsFrom(std::vector<Socket *> clients)
+    void updateClientsFrom(std::vector<Socket *> allClients)
     {
-        m_allClients = clients;
+        AFUN;
+        AVAR(m_workingClients.size());
+        AVAR(allClients.size());
+
+        std::sort(m_workingClients.begin(), m_workingClients.end());
+        std::sort(allClients.begin(), allClients.end());
+
+        std::vector<Socket *> newClients(
+            (std::max)(m_workingClients.size(), allClients.size()));
+
+        auto it = std::set_difference(
+            allClients.begin(), allClients.end(),
+            m_workingClients.begin(), m_workingClients.end(), 
+            newClients.begin());
+
+        newClients.resize(it - newClients.begin());
+
+        AVAR(newClients.size());
+
+        for (Socket * newClient : newClients)
+        {
+            runOnNewClient(newClient);
+        }
     }
     
+    void runOnNewClient(Socket * client)
+    {
+        AFUN;
+        AVAR(client);
+    }
+
     // TODO
     // calc unworking
     // calc remove
 
 private:
     std::vector<Socket *> m_workingClients;
-    std::vector<Socket *> m_allClients;
 
 };
 
@@ -35,6 +62,7 @@ int main()
 
     try
     {
+        ClientManager cm;
         SocketFactory sf;
         sf.startListenPortInOtherThread(100);
         while (true)
@@ -42,10 +70,14 @@ int main()
             if (sf.isClientsUpdate())
             {
                 AMSG("clients update");
-                for (Socket * client : sf.getClients())
-                {
-                    AVAR(*client);
-                }
+                std::vector<Socket *> allClients = sf.getClients();
+                cm.updateClientsFrom(allClients);
+
+//                 for (Socket * client : allClients)
+//                 {
+//                     AVAR(*client);
+//                 }
+
             }
 
             int a;

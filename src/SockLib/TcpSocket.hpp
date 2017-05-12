@@ -200,7 +200,7 @@ private:
             
             if (result < 0)
             {
-                AMSG("Wait listner timeout. "
+                AMSG("Wait listner problem "
                     + stdplus::to_string((SocketStateEnum)result));
                 continue;
             }
@@ -225,8 +225,7 @@ private:
         return counter;
     }
 
-    int                   m_acceptTimeout_ms = 1000;
-                          
+    int                   m_acceptTimeout_ms = 1000;                          
     bool                  m_isListening     = false;
     bool                  m_isClientsUpdate = false;
     std::mutex            m_mutexClients;
