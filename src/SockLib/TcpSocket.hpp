@@ -2,7 +2,7 @@
 #define SockLib_h__
 
 #include "StdPlus/StdPlus.h"    
-#include "StdPlus/SockLibPlus.hpp"
+#include "StdPlus/SockWinPlus.hpp"
 
 typedef int RawSocket;
 
@@ -41,7 +41,7 @@ public:
         int sizeRead_byte = sl_read(m_socket, buf, size);
 
         if (sizeRead_byte < 0)
-            throw std::logic_error(sl_error_str(sizeRead_byte));
+            throw static_cast<SocketStateEnum>(sizeRead_byte);
 
         return sizeRead_byte;
     }
@@ -53,7 +53,7 @@ public:
         int sizeSend_byte = sl_write(m_socket, buf, size);
 
         if (sizeSend_byte < 0)
-            throw std::logic_error(sl_error_str(sizeSend_byte));
+            throw static_cast<SocketStateEnum>(sizeSend_byte);
 
         return sizeSend_byte;
     }
@@ -66,7 +66,7 @@ public:
         int result = sl_disconnect(m_socket);
 
         if (result < 0)
-            throw std::logic_error(sl_error_str(result));
+            throw static_cast<SocketStateEnum>(result);
 
         m_socket = 0;
     }
@@ -133,7 +133,7 @@ public:
         int result = sl_connect_to_server(serverIp.c_str(), serverPort);
 
         if (result < 0)
-            throw std::logic_error(sl_error_str(result));
+            throw std::logic_error(stdplus::to_string((SocketStateEnum)result));
 
         RawSocket rawSocket = result;
 
@@ -150,7 +150,7 @@ public:
             "0.0.0.0", port, backlog, m_isNonBlockMode);
 
         if (result < 0)
-            throw std::logic_error(sl_error_str(result));
+            throw std::logic_error(stdplus::to_string((SocketStateEnum)result));
 
         RawSocket rawServerSocket = result;
 
@@ -204,11 +204,11 @@ private:
             {
                 if (m_isNonBlockMode)
                 {
-                    AMSG("Wait listner timeout. " + to_string(sl_error_str(result)));
+                    AMSG("Wait listner timeout. " + to_string((SocketStateEnum)result));
                     continue;
                 }
                 else
-                    throw std::logic_error(sl_error_str(result));
+                    throw static_cast<SocketStateEnum>(result);
             }
 
             RawSocket rawSocket = result;
