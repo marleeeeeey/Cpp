@@ -20,6 +20,14 @@ int main()
                 }
             }
 
+            int a;
+            ABIND_INT(a, 0);
+            if (a > 0)
+            {
+                sf.stopListen();
+                break;
+            }
+
             stdplus::thread_sleep(1000);
         }
         AMSG("press any key for stop listen port");

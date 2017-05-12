@@ -147,7 +147,7 @@ public:
         using namespace stdplus;
 
         int result = sl_make_server_socket_ex(
-            "0.0.0.0", port, backlog, m_isNonBlockMode);
+            "0.0.0.0", port, backlog);
 
         if (result < 0)
             throw std::logic_error(stdplus::to_string((SocketStateEnum)result));
@@ -196,19 +196,13 @@ private:
             int result = 0;
             unsigned rawIpAdress;
 
-            result = sl_select(rawServerSocket, m_timeout_ms);
-
-            result = sl_accept(rawServerSocket, &rawIpAdress);
+            result = sl_accept(rawServerSocket, &rawIpAdress, m_acceptTimeout_ms);
             
             if (result < 0)
             {
-                if (m_isNonBlockMode)
-                {
-                    AMSG("Wait listner timeout. " + to_string((SocketStateEnum)result));
-                    continue;
-                }
-                else
-                    throw static_cast<SocketStateEnum>(result);
+                AMSG("Wait listner timeout. "
+                    + stdplus::to_string((SocketStateEnum)result));
+                continue;
             }
 
             RawSocket rawSocket = result;
@@ -231,8 +225,7 @@ private:
         return counter;
     }
 
-    int                   m_timeout_ms      = 1000;
-    bool                  m_isNonBlockMode  = true;
+    int                   m_acceptTimeout_ms = 1000;
                           
     bool                  m_isListening     = false;
     bool                  m_isClientsUpdate = false;
