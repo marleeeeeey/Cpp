@@ -29,5 +29,8 @@
     <ClInclude Include="..\..\src\SockLib\TcpSocket.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\YandexAlgorithm\2017-05-14 0958 Yandex_Round01.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
