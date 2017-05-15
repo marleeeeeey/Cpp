@@ -11,9 +11,9 @@ bool SocketUtil::StaticInit()
 	{
 		ReportError ("Starting Up");
 		return false;
-    }
+	}
 #endif
-    return true;
+	return true;
 }
 
 void SocketUtil::CleanUp()
