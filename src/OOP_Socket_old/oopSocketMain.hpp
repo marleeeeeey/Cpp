@@ -1,7 +1,8 @@
 #include "StdPlus/StdInclude.h"
 
-#include "SocketAddress.hpp"
-#include "SocketAddressFactory.hpp"
+#include "SocketAddress.h"
+#include "SocketAddressFactory.h"
+#include "TCPSocket.h"
 
 int main()
 {
