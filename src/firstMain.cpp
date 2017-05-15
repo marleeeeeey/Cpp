@@ -12,7 +12,7 @@
 //#include "YandexAlgorithm/YandexAlgo2017.hpp"
 //#include "YandexAlgorithm/2017-04-30 1137 YandexAlgoRound2.hpp"
 //#include "YandexAlgorithm/2017-05-07 2153 Yandex3_Marathon.hpp"
-#include "YandexAlgorithm/2017-05-14 0958 Yandex_Round01.hpp"
+//#include "YandexAlgorithm/2017-05-14 0958 Yandex_Round01.hpp"
 
 
 //#include "SiteCodility/test_demo.hpp"
@@ -24,3 +24,4 @@
 
 
 //#include "SockLib/TestServer.hpp"
+#include "OOP_Socket/oopSocketMain.hpp"
