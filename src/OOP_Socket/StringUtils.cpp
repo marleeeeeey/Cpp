@@ -9,6 +9,8 @@ void OutputDebugString(const char* inString)
 }
 #endif
 
+#include "StdPlus/StdPlus.h"
+
 string StringUtils::GetCommandLineArg(int inIndex)
 {
     if (inIndex < __argc)
@@ -38,8 +40,9 @@ string StringUtils::Sprintf(const char* inFormat, ...)
 
 void StringUtils::Log( const char* inFormat )
 {
-    OutputDebugString( inFormat );
-    OutputDebugString( "\n" );
+//     OutputDebugString(inFormat);
+//     OutputDebugString("\n");
+    AMSG(inFormat);
 }
 
 void StringUtils::Log(const char* inFormat, ...)
@@ -55,7 +58,9 @@ void StringUtils::Log(const char* inFormat, ...)
 #else
     vsnprintf(temp, 4096, inFormat, args);
 #endif
-    OutputDebugString(temp);
-    OutputDebugString("\n");
+//     OutputDebugString(temp);
+//     OutputDebugString("\n");
+    AMSG(temp);
+
 }
 

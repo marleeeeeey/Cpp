@@ -1,5 +1,6 @@
 #include "RoboCatPCH.h"
 
+#include "StdPlus/StdPlus.h"
 
 
 bool SocketUtil::StaticInit()
@@ -30,18 +31,26 @@ void SocketUtil::ReportError(const char* inOperationDesc)
     LPVOID lpMsgBuf;
     DWORD errorNum = GetLastError();
 
-    FormatMessage(
-        FORMAT_MESSAGE_ALLOCATE_BUFFER |
-        FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS,
-        NULL,
-        errorNum,
-        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-        (LPTSTR)&lpMsgBuf,
-        0, NULL);
+//     FormatMessage(
+//         FORMAT_MESSAGE_ALLOCATE_BUFFER |
+//         FORMAT_MESSAGE_FROM_SYSTEM |
+//         FORMAT_MESSAGE_IGNORE_INSERTS,
+//         NULL,
+//         errorNum,
+//         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+//         (LPTSTR)&lpMsgBuf,
+//         0, NULL);
+// 
+// 
+//     LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
 
+    std::string msg = 
+        "Error " 
+        + stdplus::to_string(inOperationDesc) + " "
+        + "lastError=" + stdplus::to_string(errorNum) + " "
+        ;
 
-    LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
+    AMSG(msg);
 #else
     LOG("Error: %hs", inOperationDesc);
 #endif
