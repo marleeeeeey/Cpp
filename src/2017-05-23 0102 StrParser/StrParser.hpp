@@ -19,6 +19,11 @@ public:
         splitAssignData(m_shortNamed, true);
     }
     
+    std::string getValue(const std::string & key)
+    {
+        return getValue<std::string>(key);
+    }
+
     template<typename T>
     T getValue(const std::string & key)
     {
@@ -27,7 +32,7 @@ public:
 
         auto itKey = m_keys.find(key);
         if (itKey != m_keys.end())
-            return T(1);
+            return T();
 
         auto itKeyValue = m_keyValues.find(key);
         if (itKeyValue != m_keyValues.end())
@@ -149,6 +154,7 @@ int main(int argc, char** argv)
         bool karamba = cmdParser.getValue<bool>("karamba");
         AVAR(lopka);
         AVAR(karamba);
+        cmdParser.getValue("kuku");
     }
     catch (const std::exception & exeptionCmdParse)
     {
