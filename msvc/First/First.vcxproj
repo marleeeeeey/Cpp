@@ -147,24 +147,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\firstMain.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\Main.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\RoboCatPCH.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\SocketAddress.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\SocketAddressFactory.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\SocketUtil.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\StringUtils.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\TCPSocket.cpp" />
-    <ClCompile Include="..\..\src\OOP_Socket\UDPSocket.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\src\OOP_Socket\RoboCatPCH.h" />
-    <ClInclude Include="..\..\src\OOP_Socket\RoboCatShared.h" />
-    <ClInclude Include="..\..\src\OOP_Socket\SocketAddress.h" />
-    <ClInclude Include="..\..\src\OOP_Socket\SocketAddressFactory.h" />
-    <ClInclude Include="..\..\src\OOP_Socket\SocketUtil.h" />
-    <ClInclude Include="..\..\src\OOP_Socket\StringUtils.h" />
-    <ClInclude Include="..\..\src\OOP_Socket\TCPSocket.h" />
-    <ClInclude Include="..\..\src\OOP_Socket\UDPSocket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

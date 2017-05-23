@@ -15,13 +15,15 @@
 //#include "YandexAlgorithm/2017-05-14 0958 Yandex_Round01.hpp"
 
 
-//#include "SiteCodility/test_demo.hpp"
-//#include "SiteCodility/test01.hpp"
-//#include "SiteCodility/test02.hpp"
-//#include "SiteCodility/test03.hpp"
-//#include "SiteCodility/test04.hpp"
-//#include "SiteCodility/test05.hpp"
+//#include "2017-04-28 SiteCodility/test_demo.hpp"
+//#include "2017-04-28 SiteCodility/test01.hpp"
+//#include "2017-04-28 SiteCodility/test02.hpp"
+//#include "2017-04-28 SiteCodility/test03.hpp"
+//#include "2017-04-28 SiteCodility/test04.hpp"
+//#include "2017-04-28 SiteCodility/test05.hpp"
 
 
 //#include "SockLib/TestServer.hpp"
 //#include "OOP_Socket/oopSocketMain.hpp"
+
+#include "2017-05-23 0102 StrParser/StrParser.hpp"
