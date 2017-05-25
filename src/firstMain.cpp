@@ -26,4 +26,7 @@
 //#include "SockLib/TestServer.hpp"
 //#include "OOP_Socket/oopSocketMain.hpp"
 
-#include "2017-05-23 0102 UseCmdParser/UseCmdParser.hpp"
+//#include "2017-05-23 0102 UseCmdParser/UseCmdParser.hpp"
+
+
+#include "2017-05-26 0041 ClientServerChat/ChatServerMain.hpp"
