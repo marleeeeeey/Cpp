@@ -6,13 +6,10 @@
 
 int main(int argc, char** argv)
 {
-    AFUN;
-
     ChatServer cs;
     cs.setCmdArgs(argc, argv);
     cs.start();
 
-    APAUSE_MSG("kill me!");
-
+    APAUSE_MSG("press any key for kill server");
     return 0;
 }

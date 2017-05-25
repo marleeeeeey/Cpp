@@ -35,15 +35,9 @@ public:
         m_listenSocket->Bind(SocketAddress(m_bindIp, m_bindPort));
         m_listenSocket->Listen(m_backlog);
 
-        while (true)
-        {
-            SocketAddress addressNewClient;
-            std::shared_ptr<TCPSocket> clientSocket
-                = m_listenSocket->Accept(addressNewClient);
-            AVAR(addressNewClient);
-
-        }
-
+        SocketAddress addressNewClient;
+        auto clientSocket = m_listenSocket->Accept(addressNewClient);
+        AVAR(addressNewClient);
     }
 
 private:
