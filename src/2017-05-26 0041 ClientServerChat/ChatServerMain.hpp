@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ChatInclude.h"
+#include "OopSocket/OopSocket.h"
+#include "StdPlus/StdPlus.h"
 #include "ChatServer.hpp"
 
 int main(int argc, char** argv)
