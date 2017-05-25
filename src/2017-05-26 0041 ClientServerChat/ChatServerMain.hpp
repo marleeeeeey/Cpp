@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OopSocket/OopSocket.h"
+#include "OopSocket/OopSocket.h"    // Order important! This is first include!
 #include "StdPlus/StdPlus.h"
 #include "ChatServer.hpp"
 
