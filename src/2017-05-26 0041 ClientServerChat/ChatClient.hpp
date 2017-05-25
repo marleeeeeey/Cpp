@@ -30,6 +30,21 @@ public:
 
         m_socket = SocketUtil::CreateTCPSocket(INET);
         m_socket->Connect(SocketAddress(m_serverIp, m_serverPort));
+
+        std::string sendMsg = "Hahahah";
+        Transfer::send(m_socket, sendMsg);
+        AVAR(sendMsg);
+
+
+        std::vector<std::string> sendMassages
+        {
+            "qwer", "adfasdfasdfasdf", "oiuo",
+            "hjkghkghjk", "dfghdfghdfgh", "cbcv",
+        };
+
+        AVAR(sendMassages);
+        Transfer::send(m_socket, sendMassages);
+
     }
 
 private:

@@ -38,6 +38,16 @@ public:
         SocketAddress addressNewClient;
         auto clientSocket = m_listenSocket->Accept(addressNewClient);
         AVAR(addressNewClient);
+
+
+        std::string recvMsg;
+        Transfer::recv(clientSocket, &recvMsg);
+        AVAR(recvMsg);
+
+
+        std::vector<std::string> recieveMessages;
+        Transfer::recv(clientSocket, &recieveMessages);
+        AVAR(recieveMessages);
     }
 
 private:
