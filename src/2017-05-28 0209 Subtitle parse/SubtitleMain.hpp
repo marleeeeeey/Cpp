@@ -12,6 +12,9 @@ public:
     }
 
     stdplus::CmdParser cmd;
+    std::string originalFileName;
+    std::string exportFileName;
+    const std::string dictFileName = "dict.txt";
 
 private:
 
@@ -20,16 +23,13 @@ private:
     void operator=(const AppData &) = delete;
 };
 
-void saveAllWords()
+std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t minSizeWord = 3)
 {
-    auto & cmd = AppData::instanse().cmd;
-
-    std::string subtitleFileName = cmd.indexedValues().at(1);
-    std::string exportFileName = subtitleFileName + "export";
-    AVAR(subtitleFileName);
-    std::ifstream file(subtitleFileName);
-    std::ofstream exportFile(exportFileName);
-    std::string fileAsString = stdplus::readText(file);
+    auto & app = AppData::instanse();
+    auto & cmd = app.cmd;
+    
+    std::ifstream originalFile(fileName);
+    std::string fileAsString = stdplus::readText(originalFile);
 
     std::for_each(fileAsString.begin(), fileAsString.end(),
         [](char & ch)
@@ -47,9 +47,9 @@ void saveAllWords()
     std::vector<std::string> words = stdplus::split(fileAsString, ' ');
 
     auto it = std::remove_if(words.begin(), words.end(),
-        [](const std::string & word)
+        [minSizeWord](const std::string & word)
     {
-        if (word.size() < 3)
+        if (word.size() < minSizeWord)
             return true;
 
         return false;
@@ -66,12 +66,16 @@ void saveAllWords()
         uniqueWords.insert(word);
     }
 
+    return uniqueWords;
+}
 
-    for (auto & word : uniqueWords)
-    {
-        exportFile << word << "\n";
-    }
-
+void diffTwoFiles()
+{
+    auto & app = AppData::instanse();
+    
+    std::ifstream origFile(app.originalFileName);
+    std::ifstream exportFile(app.exportFileName);
+    
 }
 
 void help()
@@ -80,19 +84,25 @@ void help()
     APAUSE;
 }
 
+
 int main(int argc, char ** argv)
 {
-    auto & cmd = AppData::instanse().cmd;
+    auto & app = AppData::instanse();
+    auto & cmd = app.cmd;
     cmd.parseData(argc, argv);
-
-    bool isSaveAllWords = cmd.getValue<bool>("saveAllWords", false);
+    app.originalFileName = cmd.indexedValues().at(1);
+    app.exportFileName = app.originalFileName + "export";
     
-    if (isSaveAllWords)
+    auto uniqueWords = getAllUniqueWords(app.originalFileName);
+
     {
-        saveAllWords();
-        return 0;
+        std::ofstream exportFile(app.exportFileName);
+        for (auto & word : uniqueWords)
+            exportFile << word << "\n";
     }
 
+    APAUSE_MSG("open " + app.exportFileName + " and delete all knows words. After press any key.");
+    
 
     help();
 }
