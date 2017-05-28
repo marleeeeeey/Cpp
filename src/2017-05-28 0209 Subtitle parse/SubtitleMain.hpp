@@ -2,6 +2,37 @@
 
 #include "StdPlus\StdPlus.h"
 
+class ci_char_traits : public std::char_traits<char>
+{
+public:
+    static bool eq(const _Elem & _Left, const _Elem & _Right)
+    {
+        return tolower(_Left) == tolower(_Right);
+    }
+
+    static bool lt(const _Elem & _Left, const _Elem & _Right)
+    {
+        return tolower(_Left) < tolower(_Right);
+    }
+
+    static int compare(const _Elem *s1, const _Elem *s2, size_t _Count)
+    {
+        return memicmp(s1, s2, _Count);
+    }
+
+    static const char * find(const _Elem * s, size_t n, const _Elem & a)
+    {
+        while (n-- && tolower(*s) != tolower(a))
+        {
+            ++s;
+        }
+        return n >= 0 ? s : 0;
+    }
+
+};
+
+typedef std::basic_string<char, ci_char_traits> ci_string;
+
 class AppData
 {
 public:
@@ -72,8 +103,13 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t min
 
 void appendToDict(std::set<std::string> knowsWords)
 {
+    if (knowsWords.empty())
+        return;
+
     auto & app = AppData::instanse();
     std::ofstream exportFile(app.dictFileName, std::ostream::app);
+
+    exportFile << "-----------------------------------------------------\n";
 
     for (auto & word : knowsWords)
         exportFile << word << "\n";
@@ -139,21 +175,73 @@ void parseCmd(int argc, char ** argv)
     app.translateFileName = app.originalFileName + "translate";
 }
 
+struct DictLine
+{
+    std::string originalWord;
+    std::string translate;
+};
+
+std::ostream & operator<<(std::ostream & os, const DictLine & d)
+{
+    os
+        << d.originalWord << "=" << d.translate
+        ;
+
+    return os;
+}
+
+std::vector<DictLine> readDict(const std::string & dictFileName)
+{
+    std::ifstream dictFile(dictFileName);
+
+    std::string line;
+    std::vector<DictLine> dictLines;
+
+    while (std::getline(dictFile, line))
+    {
+        auto splitLine = stdplus::split(line, '=');       
+        
+        DictLine dictLine;
+        dictLine.originalWord = stdplus::trim(splitLine.at(0));
+        dictLine.translate = stdplus::trim(splitLine.at(1));
+
+        dictLines.push_back(dictLine);
+    }
+    
+    return dictLines;
+}
+
 int main(int argc, char ** argv)
 {
     auto & app = AppData::instanse();
     parseCmd(argc, argv);
-    changeWordsAndAppendToDict();
+
+
+
+//     changeWordsAndAppendToDict();
+// 
+//     {
+//         std::ofstream translateFile(app.translateFileName);
+//     }
+//     
+//     AMSG("open file " + app.translateFileName);
+//     APAUSE_MSG("Insert translate of all new words. After press any key...");
+    
+
+    std::string dictFileName = app.cmd.indexedValues().at(1);
+
+    auto dictLines = readDict(dictFileName);
+    AVAR(dictLines.size());
 
     {
-        std::ofstream translateFile(app.translateFileName);
-    }
-    
-    AMSG("open file " + app.translateFileName);
-    APAUSE_MSG("Insert translate of all new words. After press any key...");
-    
-    //std::ifstream translateFile(app.translateFileName);
+        std::ofstream testFile("testFile.txt");
 
+        for (auto & line : dictLines)
+        {
+            testFile << line << "\n";
+        }
+
+    }
 
     APAUSE_MSG("Press any key for quit application");
 }
