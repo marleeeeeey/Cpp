@@ -318,7 +318,8 @@ int main(int argc, char ** argv)
     Dictionary d;
     d.load(app.originalFileName);
     AVAR(d);
-
+    
     APAUSE;
     return 0;
+
 }

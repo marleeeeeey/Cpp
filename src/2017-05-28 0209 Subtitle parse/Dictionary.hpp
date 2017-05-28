@@ -3,6 +3,11 @@
 #include "StdPlus/StdPlus.h"
 #include "EnglishWord.hpp"
 
+// add 
+// 1. time group
+// 2. ...
+// 3. getVector words
+
 
 class Dictionary
 {
