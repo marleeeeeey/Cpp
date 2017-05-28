@@ -69,12 +69,6 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t min
     return uniqueWords;
 }
 
-struct DictLine
-{
-    std::string english;
-    std::vector<std::string> translates;
-};
-
 void appendToDict(std::set<std::string> knowsWords)
 {
     auto & app = AppData::instanse();
@@ -102,14 +96,10 @@ std::set<std::string> getOnlyInFirst(
     return setWords;
 }
 
-int main(int argc, char ** argv)
+void changeWordsAndAppendToDict()
 {
     auto & app = AppData::instanse();
-    auto & cmd = app.cmd;
-    cmd.parseData(argc, argv);
-    app.originalFileName = cmd.indexedValues().at(1);
-    app.exportFileName = app.originalFileName + "export";
-    
+
     auto allWords = getAllUniqueWords(app.originalFileName);
     AVAR(allWords.size());
 
@@ -128,14 +118,34 @@ int main(int argc, char ** argv)
 
     AMSG("open " + stdplus::fileNamePrepare(app.exportFileName));
     APAUSE_MSG("Delete all knows words. After press any key.");
-    
+
     auto newWords = getAllUniqueWords(app.exportFileName);
     AVAR(newWords.size());
 
     auto knowsWords = getOnlyInFirst(allWithoutDictWords, newWords);
     AVAR(knowsWords.size());
-    
+
     appendToDict(knowsWords);
+}
+
+void parseCmd(int argc, char ** argv)
+{
+
+    auto & app = AppData::instanse();
+    auto & cmd = app.cmd;
+    cmd.parseData(argc, argv);
+    app.originalFileName = cmd.indexedValues().at(1);
+    app.exportFileName = app.originalFileName + "export";
+
+}
+
+int main(int argc, char ** argv)
+{
+    parseCmd(argc, argv);
+
+    changeWordsAndAppendToDict();
+
+
 
     APAUSE_MSG("Press any key for quit application");
 }
