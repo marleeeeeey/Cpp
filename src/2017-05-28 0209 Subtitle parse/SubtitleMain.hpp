@@ -14,6 +14,7 @@ public:
     stdplus::CmdParser cmd;
     std::string originalFileName;
     std::string exportFileName;
+    std::string translateFileName;
     const std::string dictFileName = "dict.txt";
 
 private:
@@ -130,21 +131,28 @@ void changeWordsAndAppendToDict()
 
 void parseCmd(int argc, char ** argv)
 {
-
     auto & app = AppData::instanse();
     auto & cmd = app.cmd;
     cmd.parseData(argc, argv);
     app.originalFileName = cmd.indexedValues().at(1);
     app.exportFileName = app.originalFileName + "export";
-
+    app.translateFileName = app.originalFileName + "translate";
 }
 
 int main(int argc, char ** argv)
 {
+    auto & app = AppData::instanse();
     parseCmd(argc, argv);
-
     changeWordsAndAppendToDict();
 
+    {
+        std::ofstream translateFile(app.translateFileName);
+    }
+    
+    AMSG("open file " + app.translateFileName);
+    APAUSE_MSG("Insert translate of all new words. After press any key...");
+    
+    //std::ifstream translateFile(app.translateFileName);
 
 
     APAUSE_MSG("Press any key for quit application");
