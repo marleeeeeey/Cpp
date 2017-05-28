@@ -1,6 +1,8 @@
 #pragma once
 
 #include "StdPlus\StdPlus.h"
+#include "EnglishWord.hpp"
+#include "Dictionary.hpp"
 
 class ci_char_traits : public std::char_traits<char>
 {
@@ -45,7 +47,6 @@ public:
     stdplus::CmdParser cmd;
     std::string originalFileName;
     std::string exportFileName;
-    //std::string translateFileName;
     std::string newSubFileName;
     const std::string dictFileName = "dict.txt";
 
@@ -67,7 +68,7 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t min
     std::for_each(fileAsString.begin(), fileAsString.end(),
         [](char & ch)
     {
-        if (!isalpha(ch))
+        if (!isalpha(ch) && ch != '\'')
         {
             ch = ' ';
         }
@@ -78,6 +79,9 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t min
     });
 
     std::vector<std::string> words = stdplus::split(fileAsString, ' ');
+
+    for_each(words.begin(), words.end(),
+        [](std::string & word) { word = stdplus::trim(word, " \n\'\t"); });
 
     auto it = std::remove_if(words.begin(), words.end(),
         [minSizeWord](const std::string & word)
@@ -173,7 +177,6 @@ void parseCmd(int argc, char ** argv)
     cmd.parseData(argc, argv);
     app.originalFileName = cmd.indexedValues().at(1);
     app.exportFileName = app.originalFileName + "export";
-    //app.translateFileName = app.originalFileName + "translate";
     app.newSubFileName = app.originalFileName + "new";
 }
 
@@ -208,9 +211,22 @@ std::vector<DictLine> readDict(const std::string & dictFileName)
     std::string line;
     std::vector<DictLine> dictLines;
 
+    int numLine = 0;
+
     while (std::getline(dictFile, line))
     {
+        numLine++;
+
         auto splitLine = stdplus::split(line, '=');       
+
+        if (splitLine.size() == 1)
+        {
+            splitLine.push_back("");
+        }
+        else if (splitLine.size() > 2)
+        {
+            AMSG("WARNING: more = in line " + stdplus::to_string(numLine) + ": " + line);
+        }
         
         DictLine dictLine;
         dictLine.originalWord = stdplus::trim(splitLine.at(0));
@@ -258,7 +274,7 @@ void replaceAll(std::string & source, const std::string & oldValue, const std::s
 }
 
 
-int main(int argc, char ** argv)
+int main1(int argc, char ** argv)
 {
     auto & app = AppData::instanse();
     parseCmd(argc, argv);
@@ -289,4 +305,20 @@ int main(int argc, char ** argv)
 
 
     APAUSE_MSG("Press any key for quit application");
+
+    return 0;
+}
+
+
+int main(int argc, char ** argv)
+{
+    auto & app = AppData::instanse();
+    parseCmd(argc, argv);
+
+    Dictionary d;
+    d.load(app.originalFileName);
+    AVAR(d);
+
+    APAUSE;
+    return 0;
 }
