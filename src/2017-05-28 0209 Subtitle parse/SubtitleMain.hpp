@@ -69,21 +69,38 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t min
     return uniqueWords;
 }
 
-void diffTwoFiles()
+struct DictLine
+{
+    std::string english;
+    std::vector<std::string> translates;
+};
+
+void appendToDict(std::set<std::string> knowsWords)
 {
     auto & app = AppData::instanse();
-    
-    std::ifstream origFile(app.originalFileName);
-    std::ifstream exportFile(app.exportFileName);
-    
+    std::ofstream exportFile(app.dictFileName, std::ostream::app);
+
+    for (auto & word : knowsWords)
+        exportFile << word << "\n";
+
 }
 
-void help()
+std::set<std::string> getOnlyInFirst(
+    std::set<std::string> &first, std::set<std::string> &second)
 {
-    AFUN;
-    APAUSE;
-}
+    std::vector<std::string> onlyInFirst(first.size());
+    auto it = std::set_difference(first.begin(), first.end(),
+        second.begin(), second.end(), onlyInFirst.begin());
+    onlyInFirst.resize(it - onlyInFirst.begin());
 
+    std::set<std::string> setWords;
+    for (auto & word : onlyInFirst)
+    {
+        setWords.insert(word);
+    }
+
+    return setWords;
+}
 
 int main(int argc, char ** argv)
 {
@@ -93,16 +110,32 @@ int main(int argc, char ** argv)
     app.originalFileName = cmd.indexedValues().at(1);
     app.exportFileName = app.originalFileName + "export";
     
-    auto uniqueWords = getAllUniqueWords(app.originalFileName);
+    auto allWords = getAllUniqueWords(app.originalFileName);
+    AVAR(allWords.size());
+
+    // TODO !!! In dict include translate too
+    auto dictWords = getAllUniqueWords(app.dictFileName);
+    AVAR(dictWords.size());
+
+    auto allWithoutDictWords = getOnlyInFirst(allWords, dictWords);
+    AVAR(allWithoutDictWords.size());
 
     {
         std::ofstream exportFile(app.exportFileName);
-        for (auto & word : uniqueWords)
+        for (auto & word : allWithoutDictWords)
             exportFile << word << "\n";
     }
 
-    APAUSE_MSG("open " + app.exportFileName + " and delete all knows words. After press any key.");
+    AMSG("open " + stdplus::fileNamePrepare(app.exportFileName));
+    APAUSE_MSG("Delete all knows words. After press any key.");
     
+    auto newWords = getAllUniqueWords(app.exportFileName);
+    AVAR(newWords.size());
 
-    help();
+    auto knowsWords = getOnlyInFirst(allWithoutDictWords, newWords);
+    AVAR(knowsWords.size());
+    
+    appendToDict(knowsWords);
+
+    APAUSE_MSG("Press any key for quit application");
 }
