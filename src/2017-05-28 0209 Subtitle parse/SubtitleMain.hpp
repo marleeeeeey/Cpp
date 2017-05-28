@@ -45,7 +45,8 @@ public:
     stdplus::CmdParser cmd;
     std::string originalFileName;
     std::string exportFileName;
-    std::string translateFileName;
+    //std::string translateFileName;
+    std::string newSubFileName;
     const std::string dictFileName = "dict.txt";
 
 private:
@@ -172,13 +173,23 @@ void parseCmd(int argc, char ** argv)
     cmd.parseData(argc, argv);
     app.originalFileName = cmd.indexedValues().at(1);
     app.exportFileName = app.originalFileName + "export";
-    app.translateFileName = app.originalFileName + "translate";
+    //app.translateFileName = app.originalFileName + "translate";
+    app.newSubFileName = app.originalFileName + "new";
 }
 
 struct DictLine
 {
     std::string originalWord;
     std::string translate;
+
+    std::string combo() const
+    {
+        std::string bigWord = originalWord;
+        for_each(bigWord.begin(), bigWord.end(), 
+            [](char & ch) { ch = toupper(ch); });
+
+        return bigWord + "(" + translate + ")";
+    }
 };
 
 std::ostream & operator<<(std::ostream & os, const DictLine & d)
@@ -211,37 +222,71 @@ std::vector<DictLine> readDict(const std::string & dictFileName)
     return dictLines;
 }
 
+void replaceAll(std::string & source, const std::string & oldValue, const std::string & newValue)
+{
+    size_t index = 0;
+
+    while ((index = source.find(oldValue, index)) != std::string::npos)
+    {
+        size_t charAfterWordIndex = index + oldValue.size();
+        if (charAfterWordIndex >= source.size())
+            return;
+
+        char charAfterWord = source.at(charAfterWordIndex);
+        if (isalpha(charAfterWord))
+        {
+            index = charAfterWordIndex;
+            continue;
+        }
+
+
+        size_t charBeforeWordIndex = index - 1;
+        if (charBeforeWordIndex > 0)
+        {
+            char charBeforeWord = source.at(charBeforeWordIndex);
+            if (isalpha(charBeforeWord))
+            {
+                index = charAfterWordIndex;
+                continue;
+            }
+        }
+
+
+        source.replace(index, oldValue.size(), newValue);
+        index += newValue.size();
+    };
+}
+
+
 int main(int argc, char ** argv)
 {
     auto & app = AppData::instanse();
     parseCmd(argc, argv);
 
-
-
-//     changeWordsAndAppendToDict();
-// 
-//     {
-//         std::ofstream translateFile(app.translateFileName);
-//     }
-//     
-//     AMSG("open file " + app.translateFileName);
-//     APAUSE_MSG("Insert translate of all new words. After press any key...");
-    
-
-    std::string dictFileName = app.cmd.indexedValues().at(1);
-
-    auto dictLines = readDict(dictFileName);
+    changeWordsAndAppendToDict();
+        
+    AMSG("open file " + app.exportFileName);
+    APAUSE_MSG("Add translate of all new words (Use =). After press any key...");
+        
+    auto dictLines = readDict(app.exportFileName);
     AVAR(dictLines.size());
+    
+    std::ifstream originalFile(app.originalFileName);
+    std::string originalText = stdplus::readText(originalFile);
+    originalFile.close();
 
-    {
-        std::ofstream testFile("testFile.txt");
+    for_each(originalText.begin(), originalText.end(),
+        [](char & ch) { ch = tolower(ch); });
 
-        for (auto & line : dictLines)
-        {
-            testFile << line << "\n";
-        }
-
+    for (const auto & dictLine : dictLines)
+    {        
+        replaceAll(originalText, dictLine.originalWord, dictLine.combo());
     }
+
+    std::ofstream newSubFile(app.newSubFileName);
+    newSubFile << originalText;
+    newSubFile.close();
+
 
     APAUSE_MSG("Press any key for quit application");
 }
