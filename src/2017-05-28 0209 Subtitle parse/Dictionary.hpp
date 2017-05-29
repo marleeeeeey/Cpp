@@ -7,6 +7,7 @@
 // 1. time group
 // 2. ...
 // 3. getVector words
+// 4. add property like as command line
 
 
 class Dictionary
@@ -49,7 +50,7 @@ public:
     {
         std::ofstream os(_fileName);
 
-        for (const auto & word : words)
+        for (const auto & word : m_words)
         {
             os << word << "\n";
         }
@@ -57,34 +58,71 @@ public:
 
     void addWord(const EnglishWord & _word)
     {
-        auto insertResult = words.insert(_word);
+        auto insertResult = m_words.insert(_word);
 
         if (insertResult.second == false)
         {             
             EnglishWord curWord = *insertResult.first;
-            words.erase(insertResult.first);
+            m_words.erase(insertResult.first);
             curWord.merge(_word);
-            words.insert(curWord);
+            m_words.insert(curWord);
         }
     }
 
-    void addWord(const std::string & _word, const std::string & _translate)
+    void addWord(const std::string & _word, int _level = 0)
     {
-        EnglishWord newWord(_word, _translate);
+        EnglishWord newWord(_word, "", _level);
         addWord(newWord);
     }
 
+    void addWord(const std::string & _word, const std::string & _translate, int _level = 0)
+    {
+        EnglishWord newWord(_word, _translate, _level);
+        addWord(newWord);
+    }
+
+    std::string getTranslate(const std::string & _word)
+    {
+        EnglishWord target(_word);
+        auto it = m_words.find(target);
+        if (it == m_words.end())
+            throw std::logic_error("Not found this word!");
+
+        return it->translate();
+    }
+
+    size_t size() { return m_words.size(); }
+
+    std::vector<EnglishWord> getWordsByLevel(int minLevel = -999999, int maxLevel = 999999)
+    {
+        std::vector<EnglishWord> targerWords(m_words.size());
+        auto it = std::copy_if(m_words.begin(), m_words.end(), targerWords.begin(),
+            [minLevel, maxLevel](const EnglishWord & w) 
+        {
+            int level = w.level();
+
+            if (level >= minLevel && level <= maxLevel)
+                return true;
+
+            return false;
+        });
+
+        targerWords.resize(std::distance(targerWords.begin(), it));
+
+        return targerWords;
+    }
+
 private:
-    std::set<EnglishWord> words;
+    std::set<EnglishWord> m_words;
 };
 
 std::ostream & operator<<(std::ostream & os, const Dictionary & d)
 {
     os
-        << "size=" << d.words.size() << "; "
+        << "size=" << d.m_words.size() << "; "
         ;
 
-    for (const auto & word : d.words)
+    for (const auto & word : d.m_words)
     {
         os << word << "\n";
     }

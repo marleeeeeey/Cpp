@@ -4,65 +4,75 @@
 
 class EnglishWord
 {
-    friend bool operator<(const EnglishWord & _left, const EnglishWord & _right);
+    friend bool operator<(const EnglishWord & left, const EnglishWord & right);
     friend std::ostream & operator<<(std::ostream & os, const EnglishWord & d);
 
 public:
-    explicit EnglishWord(const std::string & _word, const std::string & _translate = "")
+
+    explicit EnglishWord(const std::string & word="", const std::string & translate = "", int level = 0)
     {
-        word = _word;
-        addTranslate(_translate);
-        level = 0;
+        m_word = word;
+        addTranslate(translate);
+        m_level = level;
     }
 
-    void addTranslate(const std::string & _translate)
+    std::string getWord() const { return m_word; }
+
+    std::string translate() const 
     {
-        if (_translate.empty())
+        if (m_translates.empty())
+            return "---";
+
+        return *m_translates.begin();
+    }
+    void addTranslate(const std::string & translate)
+    {
+        if (translate.empty())
             return;
         
-        translates.insert(translatePrepare(_translate));
+        m_translates.insert(translatePrepare(translate));
     }
 
-    void levelUp() { ++level; }
-    void levelDown() { --level; }
-
-    void setLevel(int _level) { level = _level; }
+    void levelUp() { ++m_level; }
+    void levelDown() { --m_level; }
+    int level() const { return m_level; }
+    void setLevel(int level) { m_level = level; }
 
     void merge(const EnglishWord & other)
     {
-        if (this->word != other.word)
+        if (this->m_word != other.m_word)
             throw std::exception("not equle words");
 
-        level = (std::max)(level, other.level);
+        m_level = (std::max)(m_level, other.m_level);
 
-        translates.insert(other.translates.begin(), other.translates.end());
+        m_translates.insert(other.m_translates.begin(), other.m_translates.end());
     }
     
 private:
-    std::string translatePrepare(const std::string & _translate)
+    std::string translatePrepare(const std::string & translate)
     {
         // TODO
-        return _translate;
+        return translate;
     }
 
-    std::string word;
-    std::set<std::string> translates;
-    int level;
+    std::string           m_word;
+    std::set<std::string> m_translates;
+    int                   m_level;
 };
 
-bool operator<(const EnglishWord & _left, const EnglishWord & _right)
+bool operator<(const EnglishWord & left, const EnglishWord & right)
 {
-    return _left.word < _right.word;
+    return left.m_word < right.m_word;
 }
 
 std::ostream & operator<<(std::ostream & os, const EnglishWord & d)
 {
     os
-        << d.word << "; "
-        << d.level << "; "
+        << d.m_word << "; "
+        << d.m_level << "; "
         ;
 
-    for (auto & tranlate : d.translates)
+    for (auto & tranlate : d.m_translates)
     {
         os << tranlate << "; ";
     }
