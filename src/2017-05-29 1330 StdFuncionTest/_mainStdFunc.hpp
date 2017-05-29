@@ -72,13 +72,18 @@ int main(int argc, char ** argv)
 
     // *** use std::function for both ***
 
+    using namespace std::placeholders;
+
     std::vector<StdFuncPtr> stdFuncs
     {
         sum,
         diff,
-        std::bind(&Math::sum, &math, a, b),
-        std::bind(&Math::diff, &math, a, b),
+        std::bind(&Math::sum, &math, _1, _2),
+        std::bind(&Math::diff, &math, _1, _2),
     };
+    
+    ARED(a);
+    ARED(b);
 
     for (StdFuncPtr funPtr : stdFuncs)
     {
