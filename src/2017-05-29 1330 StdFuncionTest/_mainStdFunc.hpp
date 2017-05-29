@@ -67,7 +67,6 @@ int main(int argc, char ** argv)
     for (ClassFuncPtr classFunPtr : classFuncs)
     {
         AVAR((math.*classFunPtr)(a, b));
-        //AVAR(classFunPtr(a, b));
     }
 
 
