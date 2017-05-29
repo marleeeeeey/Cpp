@@ -30,4 +30,5 @@
 
 
 //#include "2017-05-26 0041 ClientServerChat/ChatServerMain.hpp"
-#include "2017-05-28 0209 Subtitle parse/SubtitleMain.hpp"
+//#include "2017-05-28 0209 Subtitle parse/SubtitleMain.hpp"
+#include "2017-05-29 1330 StdFuncionTest/_mainStdFunc.hpp"
