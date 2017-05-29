@@ -27,9 +27,9 @@ public:
 };
 
 
-typedef double(*FuncPtr)(double, double);
-typedef double(Math::*ClassFuncPtr)(double, double);
-typedef std::function<double(double, double)> StdFuncPtr;
+using FuncPtr = double(*)(double, double);
+using ClassFuncPtr = double(Math::*)(double, double);
+using StdFuncPtr = std::function<double(double, double)>;
 
 int main(int argc, char ** argv)
 {
@@ -60,7 +60,6 @@ int main(int argc, char ** argv)
     {
         &Math::sum,
         &Math::diff,
-
     };
 
 
