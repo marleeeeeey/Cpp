@@ -4,6 +4,53 @@
 #include "EnglishWord.hpp"
 #include "Dictionary.hpp"
 
+class FileName
+{
+public:
+    FileName() { }
+    
+    FileName(const std::string & fullName)
+    {
+        makeFromFullName(fullName);
+    }
+    
+    std::string getFullName() const
+    {
+        return path + name + "." + ext;
+    }
+
+    std::string path;
+    std::string name;
+    std::string ext;
+
+private:
+    void makeFromFullName(const std::string & fullName)
+    {
+        // TODO
+
+        size_t dotIndex = fullName.find_last_of('.');
+
+        name = fullName.substr(0, dotIndex);
+
+        size_t slashIndex = name.find_last_of('\\');
+        path = name.substr(0, slashIndex + 1);
+        name = name.substr(slashIndex + 1);
+
+        ext = fullName.substr(dotIndex + 1);
+    }
+};
+
+std::ostream & operator<<(std::ostream & os, const FileName & d)
+{
+    os
+        << "path=" << d.path << "; "
+        << "name=" << d.name << "; "
+        << "ext=" << d.ext << "; "
+        ;
+
+    return os;
+}
+
 class AppData
 {
 public:
@@ -14,14 +61,17 @@ public:
     }
 
     stdplus::CmdParser cmd;
-    std::string originalFileName;
-    std::string exportFileName;
-    std::string newSubFileName;
-    const std::string dictFileName = "dict.csv";
+    FileName originalFileName;
+    FileName exportFileName;
+    FileName dictFileName = "dict.csv";
 
 private:
 
-    AppData() {};
+    AppData() 
+    {
+
+    };
+
     AppData(const AppData &) = delete;
     void operator=(const AppData &) = delete;
 };
@@ -37,7 +87,7 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t min
     std::for_each(fileAsString.begin(), fileAsString.end(),
         [](char & ch)
     {
-        if (!isalpha(ch) && ch != '\'')
+        if (ch >= 0 && ch <= 255 && !isalpha(ch) && ch != '\'')
         {
             ch = ' ';
         }
@@ -50,7 +100,7 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t min
     std::vector<std::string> words = stdplus::split(fileAsString, ' ');
 
     for_each(words.begin(), words.end(),
-        [](std::string & word) { word = stdplus::trim(word, " \n\'\t"); });
+        [](std::string & word) { word = stdplus::trim(word, " \n\'\t’‘’‘"); });
 
     auto it = std::remove_if(words.begin(), words.end(),
         [minSizeWord](const std::string & word)
@@ -115,8 +165,8 @@ void parseCmd(int argc, char ** argv)
     auto & cmd = app.cmd;
     cmd.parseData(argc, argv);
     app.originalFileName = cmd.indexedValues().at(1);
-    app.exportFileName = app.originalFileName + "export";
-    app.newSubFileName = app.originalFileName + "new";
+    app.exportFileName = app.originalFileName;
+    app.exportFileName.name += "_tr";
 }
 
 void replaceAll(std::string & source, const std::string & oldValue, const std::string & newValue)
@@ -160,10 +210,10 @@ int main(int argc, char ** argv)
     parseCmd(argc, argv);
 
     Dictionary dict;
-    dict.load(app.dictFileName);
+    dict.load(app.dictFileName.getFullName());
     AVAR(dict.size());
 
-    auto allTextWords = getAllUniqueWords(app.originalFileName);
+    auto allTextWords = getAllUniqueWords(app.originalFileName.getFullName());
     AVAR(allTextWords.size());
 
     for (auto & w : allTextWords)
@@ -178,46 +228,55 @@ int main(int argc, char ** argv)
 
     auto unknownInThisText = getIntersection(allTextWords, allUnknowWords);
     {
-        std::ofstream os(app.exportFileName);
+        std::ofstream os(app.exportFileName.getFullName());
         for (auto & word : unknownInThisText)
             os << word << "\n";
     }
 
     std::string cmd = "call \"c:\\Program Files\\Notepad++\\notepad++.exe\" ";
-    cmd += "\"" + app.exportFileName + "\"";
+    cmd += "\"" + app.exportFileName.getFullName() + "\"";
     AVAR(cmd);
     system(cmd.c_str());
     APAUSE;
 
-    auto newUnknowWords = getAllUniqueWords(app.exportFileName);
+    auto newUnknowWords = getAllUniqueWords(app.exportFileName.getFullName());
     auto newKnowsWords = getOnlyInFirst(unknownInThisText, newUnknowWords);
+    AVAR(newUnknowWords.size());
 
     for (auto & w : newKnowsWords)
         dict.addWord(w, 1);
 
 
     {
-        std::string originalString = stdplus::readText(app.originalFileName);
+        std::string originalString = stdplus::readText(app.originalFileName.getFullName());
         originalString = stdplus::tolower(originalString);
 
-        for (auto & w : newUnknowWords)
+        for (auto & word : newUnknowWords)
         {
-            std::string bigWord = w;
+            std::string bigWord = word;
             for_each(bigWord.begin(), bigWord.end(),
                 [](char & ch) { ch = toupper(ch); });
 
-            replaceAll(originalString, w, 
-                bigWord + "(" + dict.getTranslate(w) + ")");
+            try
+            {
+                replaceAll(originalString, word,
+                    bigWord + "(" + dict.getTranslate(word) + ")");            	
+            }
+            catch (std::logic_error & exceptGetTraslate)
+            {
+                AVAR(exceptGetTraslate.what());
+                AVAR(word);
+            }
         }
 
-        std::ofstream os(app.exportFileName);
+        std::ofstream os(app.exportFileName.getFullName());
         os << originalString;
     }
 
 
     AVAR(dict.size());
 
-    dict.saveAs(app.dictFileName);
+    dict.saveAs(app.dictFileName.getFullName());
 
     APAUSE;
     return 0;
