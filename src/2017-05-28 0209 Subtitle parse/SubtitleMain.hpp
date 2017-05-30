@@ -3,6 +3,7 @@
 #include "StdPlus\StdPlus.h"
 #include "EnglishWord.hpp"
 #include "Dictionary.hpp"
+#include "IniParser.hpp"
 
 class FileName
 {
@@ -16,17 +17,27 @@ public:
     
     std::string getFullName() const
     {
+        if (isEmpty)
+            return "";
+
         return path + name + "." + ext;
     }
+
+    bool empty() { return isEmpty; }
 
     std::string path;
     std::string name;
     std::string ext;
 
+    void operator=(const std::string & fullName)
+    {
+        makeFromFullName(fullName);
+    }
+
 private:
     void makeFromFullName(const std::string & fullName)
     {
-        // TODO
+        isEmpty = false;
 
         size_t dotIndex = fullName.find_last_of('.');
 
@@ -38,6 +49,8 @@ private:
 
         ext = fullName.substr(dotIndex + 1);
     }
+
+    bool isEmpty = true;
 };
 
 std::ostream & operator<<(std::ostream & os, const FileName & d)
@@ -64,12 +77,14 @@ public:
     FileName originalFileName;
     FileName exportFileName;
     FileName dictFileName = "dict.csv";
+    std::string settingsFileName = "settings.ini";
+    IniParser settings;
 
 private:
 
     AppData() 
     {
-
+        settings.load(settingsFileName);
     };
 
     AppData(const AppData &) = delete;
@@ -78,6 +93,8 @@ private:
 
 std::set<std::string> getAllUniqueWords(const std::string & fileName, size_t minSizeWord = 3)
 {
+    AEXCEPT_IF(fileName.empty());
+
     auto & app = AppData::instanse();
     auto & cmd = app.cmd;
     
@@ -164,9 +181,17 @@ void parseCmd(int argc, char ** argv)
     auto & app = AppData::instanse();
     auto & cmd = app.cmd;
     cmd.parseData(argc, argv);
-    app.originalFileName = cmd.indexedValues().at(1);
-    app.exportFileName = app.originalFileName;
-    app.exportFileName.name += "_tr";
+
+    if (cmd.indexedValues().size() > 1)
+    {
+        app.originalFileName = cmd.indexedValues().at(1);
+        app.exportFileName = app.originalFileName;
+        app.exportFileName.name += "_tr";
+    }
+    else
+    {
+        app.exportFileName = "temp.txt";
+    }
 }
 
 void replaceAll(std::string & source, const std::string & oldValue, const std::string & newValue)
@@ -213,7 +238,37 @@ int main(int argc, char ** argv)
     dict.load(app.dictFileName.getFullName());
     AVAR(dict.size());
 
-    auto allTextWords = getAllUniqueWords(app.originalFileName.getFullName());
+    std::set<std::string> allTextWords;
+
+    bool isCompareMode = app.originalFileName.empty() && app.settings.exist("compare");
+
+    if (isCompareMode)
+    {
+        for (auto & fileName : app.settings.getValues("compare"))
+        {
+            auto curUniqueWords = getAllUniqueWords(fileName);
+            if (allTextWords.empty())
+            {
+                allTextWords = curUniqueWords;
+                continue;
+            }
+
+            std::vector<std::string> curWordUnion(curUniqueWords.size());
+
+            std::set_intersection(allTextWords.begin(), allTextWords.end(),
+                curUniqueWords.begin(), curUniqueWords.end(), curWordUnion.begin());
+
+            allTextWords.clear();
+
+            for (auto & w : curWordUnion)
+                allTextWords.insert(w);
+        }
+    }
+    else
+    {
+        allTextWords = getAllUniqueWords(app.originalFileName.getFullName());
+    }
+
     AVAR(allTextWords.size());
 
     for (auto & w : allTextWords)
@@ -240,13 +295,23 @@ int main(int argc, char ** argv)
     APAUSE;
 
     auto newUnknowWords = getAllUniqueWords(app.exportFileName.getFullName());
-    auto newKnowsWords = getOnlyInFirst(unknownInThisText, newUnknowWords);
     AVAR(newUnknowWords.size());
+    auto newKnowsWords = getOnlyInFirst(unknownInThisText, newUnknowWords);
+    AVAR(newKnowsWords.size());
+
+    int learningWordValue = 1;
+    if (!newUnknowWords.empty() && isCompareMode)
+    {
+        ARED(learningWordValue);
+    }
+
+    for (auto & w : newUnknowWords)
+        dict.addWord(w, learningWordValue);
 
     for (auto & w : newKnowsWords)
         dict.addWord(w, 1);
 
-
+    if (!isCompareMode)
     {
         std::string originalString = stdplus::readText(app.originalFileName.getFullName());
         originalString = stdplus::tolower(originalString);
