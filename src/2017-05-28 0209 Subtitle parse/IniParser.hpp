@@ -4,6 +4,7 @@
 
 class IniParser
 {
+    using KeyValues = std::map<std::string, std::vector<std::string>>;
     friend std::ostream & operator<<(std::ostream & os, const IniParser & d);
 
 public:
@@ -12,7 +13,7 @@ public:
 
     }
 
-    void load(const std::string & settingsFileName = "settings.ini")
+    inline void load(const std::string & settingsFileName = "settings.ini")
     {
         std::ifstream ifs(settingsFileName);
 
@@ -25,7 +26,6 @@ public:
                 throw std::logic_error("error settings in line " + line);
 
             std::string key = assignSplit.front();
-            AVAR(key);
 
             if (assignSplit.size() == 1)
             {
@@ -38,21 +38,19 @@ public:
 
             for (auto & val : values)
                 val = stdplus::trim(val);
-
-            AVAR(values);
-
+            
             auto & targetValues = m_keyValues[key];
             targetValues.insert(targetValues.end(), values.begin(), values.end());
         }
         
     }
 
-    std::vector<std::string> getValues(const std::string & key) const
+    inline std::vector<std::string> getValues(const std::string & key) const
     {
         return m_keyValues.at(key);
     }
 
-    bool exist(const std::string & key) 
+    inline bool exist(const std::string & key) 
     {
         try
         {
@@ -65,7 +63,10 @@ public:
         }
     }
 
+    inline KeyValues & keyValues() { return m_keyValues; }
+
 private:
-    std::map<std::string, std::vector<std::string>> m_keyValues;
+
+    KeyValues m_keyValues;
 
 };
