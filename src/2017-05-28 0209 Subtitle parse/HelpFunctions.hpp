@@ -71,9 +71,10 @@ std::set<std::string> getOnlyInFirst(
 }
 
 std::set<std::string> getIntersection(
-    std::set<std::string> &first, std::set<std::string> &second)
+    const std::set<std::string> & first, const std::set<std::string> & second)
 {
     std::vector<std::string> onlyInFirst(first.size());
+
     auto it = std::set_intersection(first.begin(), first.end(),
         second.begin(), second.end(), onlyInFirst.begin());
     onlyInFirst.resize(it - onlyInFirst.begin());

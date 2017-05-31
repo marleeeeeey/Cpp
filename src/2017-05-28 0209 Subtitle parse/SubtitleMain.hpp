@@ -103,16 +103,6 @@ std::set<std::string> getAppUniqueWords()
     return allTextWords;
 }
 
-void openExportFileForUserEdit()
-{
-    auto & app = AppData::instanse();
-    std::string cmd = "call \"c:\\Program Files\\Notepad++\\notepad++.exe\" ";
-    cmd += "\"" + app.exportFileName.getFullName() + "\"";
-    AVAR(cmd);
-    system(cmd.c_str());
-    APAUSE;
-}
-
 void addWordsToSubtitle(const std::set<std::string> & newUnknowWords)
 {
     auto & app = AppData::instanse();
@@ -141,17 +131,10 @@ void addWordsToSubtitle(const std::set<std::string> & newUnknowWords)
     os << originalString;
 }
 
-int main(int argc, char ** argv)
+std::set<std::string> getUnknownWordsFromDict()
 {
     auto & app = AppData::instanse();
-    parseCmd(argc, argv);
 
-    std::set<std::string> allWordsFromText = getAppUniqueWords();
-    AVAR(allWordsFromText.size());
-
-    for (auto & w : allWordsFromText)
-        app.dict.addWord(w);
-    
     auto unknownEnglishWordsFromDict = app.dict.getWordsByLevel(0, 0);
     AVAR(unknownEnglishWordsFromDict.size());
 
@@ -159,24 +142,59 @@ int main(int argc, char ** argv)
     for (auto & engWord : unknownEnglishWordsFromDict)
         unknownWordsFromDict.insert(engWord.getWord());
 
-    auto unknownWordsFromText = getIntersection(allWordsFromText, unknownWordsFromDict);
-    AVAR(unknownWordsFromText.size());
-    {
-        std::ofstream os(app.exportFileName.getFullName());
-        for (auto & word : unknownWordsFromText)
-            os << word << "\n";
-    }
+    return unknownWordsFromDict;
+}
 
-    if (!unknownWordsFromText.empty())
-        openExportFileForUserEdit();
+std::set<std::string> getUnknownWordsFromFile(
+    const std::string & fileName, const std::set<std::string> & unknownWordsFromDict)
+{
+    auto & app = AppData::instanse();
+
+    auto allWordsFromFile = getAllUniqueWords(fileName);
+    auto unknownWordsFromFile = getIntersection(allWordsFromFile, unknownWordsFromDict);
+    
+    for (auto & w : unknownWordsFromFile)
+        app.dict.addWord(w);
+
+    return unknownWordsFromFile;
+}
+
+void makeEditFileForUser(std::set<std::string> &unknownWordsFromFile)
+{
+    auto & app = AppData::instanse();
+
+    std::ofstream os(app.exportFileName.getFullName());
+    for (auto & word : unknownWordsFromFile)
+        os << word << "\n";
+    os.close();
+
+    std::string cmd = "call \"c:\\Program Files\\Notepad++\\notepad++.exe\" ";
+    cmd += "\"" + app.exportFileName.getFullName() + "\"";
+    AVAR(cmd);
+    system(cmd.c_str());
+    APAUSE;
+}
+
+int main(int argc, char ** argv)
+{
+    auto & app = AppData::instanse();
+    parseCmd(argc, argv);
+
+    auto unknownWordsFromDict = getUnknownWordsFromDict();
+        
+    auto unknownWordsFromFile = getUnknownWordsFromFile(app.originalFileName.getFullName(), unknownWordsFromDict);
+    AVAR(unknownWordsFromFile.size());
+
+    if (!unknownWordsFromFile.empty())
+        makeEditFileForUser(unknownWordsFromFile);
 
     auto newUnknowWords = getAllUniqueWords(app.exportFileName.getFullName());
     AVAR(newUnknowWords.size());
 
-    auto newKnowsWords = getOnlyInFirst(unknownWordsFromText, newUnknowWords);
+    auto newKnowsWords = getOnlyInFirst(unknownWordsFromFile, newUnknowWords);
     AVAR(newKnowsWords.size());
 
-    int learningWordValue = 1;
+    int learningWordValue = 0;
     if (!newUnknowWords.empty() && app.isCompareMode)
     {
         ARED(learningWordValue);
