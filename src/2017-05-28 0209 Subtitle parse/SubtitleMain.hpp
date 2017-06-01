@@ -175,6 +175,71 @@ void makeEditFileForUser(std::set<std::string> &unknownWordsFromFile)
     APAUSE;
 }
 
+size_t freqWord(const std::string & text, const std::string & word)
+{
+    size_t counter = 0;
+
+    size_t index = 0;
+
+    while ((index = text.find(word, index)) != std::string::npos)
+    {
+        size_t charAfterWordIndex = index + word.size();
+        if (charAfterWordIndex >= text.size())
+            break;
+
+        char charAfterWord = text.at(charAfterWordIndex);
+        if (isalpha(charAfterWord))
+        {
+            index = charAfterWordIndex;
+            continue;
+        }
+
+
+        size_t charBeforeWordIndex = index - 1;
+        if (charBeforeWordIndex > 0)
+        {
+            char charBeforeWord = text.at(charBeforeWordIndex);
+            if (isalpha(charBeforeWord))
+            {
+                index = charAfterWordIndex;
+                continue;
+            }
+        }
+
+        index += word.size();
+        counter++;
+    };
+
+    return counter;
+}
+
+std::set<std::string> geTopUnknownWordsInFile(
+    const std::string & fileName, std::set<std::string> & unknownWordsFromDict, int maxCount = 100)
+{
+    auto unknownWordsFromFile = getUnknownWordsFromFile(fileName, unknownWordsFromDict);
+    std::string fileAsString = stdplus::readText(fileName);
+
+    using WordCounter = std::pair<std::string, size_t>;
+
+    std::vector<WordCounter> WordCounters;
+    for (auto & w : unknownWordsFromFile)
+        WordCounters.push_back(std::make_pair(w, freqWord(fileAsString, w)));
+
+    std::sort(WordCounters.begin(), WordCounters.end(),
+        [](const WordCounter & left, const WordCounter & right)
+    { return left.second < right.second; });
+
+    if (WordCounters.size() < maxCount)
+        maxCount = WordCounters.size();
+
+    std::set<std::string> topWords;
+
+    std::for_each(WordCounters.rbegin(), WordCounters.rbegin() + maxCount,
+        [&topWords](const WordCounter & wc) { topWords.insert(wc.first); });
+
+    return topWords;
+}
+
 int main(int argc, char ** argv)
 {
     auto & app = AppData::instanse();
@@ -209,9 +274,13 @@ int main(int argc, char ** argv)
     if (!app.isCompareMode)
         addWordsToSubtitle(newUnknowWords);
 
-    AVAR(app.dict.size());
+    auto topWords = geTopUnknownWordsInFile(
+        app.originalFileName.getFullName(), unknownWordsFromDict);
 
-    app.dict.saveAs(app.dictFileName.getFullName());
+    app.dict.saveAs(app.dictFileName.getFullName(), newUnknowWords, topWords);
+
+    AVAR(topWords.size());
+    AVAR(app.dict.size());
 
     APAUSE;
     return 0;

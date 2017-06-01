@@ -26,6 +26,9 @@ public:
         std::string line;
         while (std::getline(is, line))
         {
+            if (line.find(';') == std::string::npos)
+                continue;
+
             auto parts = stdplus::split(line, ';');
             for_each(parts.begin(), parts.end(), 
                 [](std::string & p) { stdplus::trim(p, " \t\n\r\f\v,.!?"); });
@@ -46,14 +49,42 @@ public:
         
     }
 
-    void saveAs(const std::string & _fileName)
+    void saveAs(const std::string & fileName, 
+        std::set<std::string> fileUnknowns = {}, std::set<std::string> topWords = {})
     {
-        std::ofstream os(_fileName);
+        std::ofstream os(fileName);
+        
+        std::vector<EnglishWord> vecWords;
+        for (const auto & ew : m_words)
+            vecWords.push_back(ew);
 
-        for (const auto & word : m_words)
+        auto itFile = std::partition(vecWords.begin(), vecWords.end(),
+            [&](const EnglishWord & ew)
         {
-            os << word << "\n";
-        }
+            auto it = fileUnknowns.find(ew.getWord());
+            return it != fileUnknowns.end();
+        });
+
+
+        auto itBest = std::partition(vecWords.begin(), itFile,
+            [&](const EnglishWord & ew)
+        {
+            auto it = topWords.find(ew.getWord());
+            return it != topWords.end();
+        });
+
+        std::for_each(vecWords.begin(), itBest,
+            [&](const EnglishWord & ew) { os << ew << "\n"; });
+
+        os << "------------------------------------------------------- \n";
+
+        std::for_each(itBest, itFile,
+            [&](const EnglishWord & ew) { os << ew << "\n"; });
+
+        os << "------------------------------------------------------- \n";
+
+        std::for_each(itFile, vecWords.end(),
+            [&](const EnglishWord & ew) { os << ew << "\n"; });
     }
 
     void addWord(const EnglishWord & _word)
