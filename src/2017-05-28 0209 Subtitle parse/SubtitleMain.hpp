@@ -259,17 +259,26 @@ int main(int argc, char ** argv)
     auto newKnowsWords = getOnlyInFirst(unknownWordsFromFile, newUnknowWords);
     AVAR(newKnowsWords.size());
 
-    int learningWordValue = 0;
+    int unknownWordsLevel = 0;
     if (!newUnknowWords.empty() && app.isCompareMode)
     {
-        ARED(learningWordValue);
+        ARED(unknownWordsLevel);
     }
 
-    for (auto & w : newUnknowWords)
-        app.dict.addWord(w, learningWordValue);
 
-    for (auto & w : newKnowsWords)
-        app.dict.addWord(w, 1);
+    for (auto & w : newUnknowWords)
+        app.dict.addWord(w, unknownWordsLevel);
+
+
+    if (!newKnowsWords.empty())
+    {
+        int knownWordsLevel = 1;
+        ARED(knownWordsLevel);
+
+        for (auto & w : newKnowsWords)
+            app.dict.addWord(w, knownWordsLevel);
+    }
+
 
     if (!app.isCompareMode)
         addWordsToSubtitle(newUnknowWords);
