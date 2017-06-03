@@ -54,7 +54,7 @@ std::set<std::string> getAllUniqueWords(const std::string & fileName,
 }
 
 std::set<std::string> getOnlyInFirst(
-    std::set<std::string> &first, std::set<std::string> &second)
+    const std::set<std::string> &first, const std::set<std::string> &second)
 {
     std::vector<std::string> onlyInFirst(first.size());
     auto it = std::set_difference(first.begin(), first.end(),

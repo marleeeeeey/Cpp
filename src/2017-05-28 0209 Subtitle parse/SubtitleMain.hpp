@@ -66,231 +66,300 @@ void parseCmd(int argc, char ** argv)
     AVAR(app.isCompareMode);
 }
 
-std::set<std::string> getAppUniqueWords()
+class SubtitleApplication
 {
-    auto & app = AppData::instanse();
-
-    std::set<std::string> allTextWords;
-
-    if (app.isCompareMode)
+public:
+    SubtitleApplication()
     {
-        for (auto & fileName : app.settings.getValues("compare"))
+        auto & app = AppData::instanse();
+
+        auto knownWordsFromDict = getKnownWordsFromDict();
+
+        size_t numberWordsInFile = 0;
+        auto unknownWordsFromFile = getUnknownWordsFromFile(
+            app.originalFileName.getFullName(), knownWordsFromDict, &numberWordsInFile);
+        AVAR(unknownWordsFromFile.size());
+
+        double persentKnowns = (double)unknownWordsFromFile.size() / numberWordsInFile;
+        AVAR(persentKnowns);
+
+        if (!unknownWordsFromFile.empty())
+            makeEditFileForUser(unknownWordsFromFile);
+
+        auto newUnknowWords = getAllUniqueWords(app.exportFileName.getFullName());
+        AVAR(newUnknowWords.size());
+
+        auto newKnowsWords = getOnlyInFirst(unknownWordsFromFile, newUnknowWords);
+        AVAR(newKnowsWords.size());
+
+        int unknownWordsLevel = 0;
+        if (!newUnknowWords.empty() && app.isCompareMode)
         {
-            AMSG("get unique words from file " + stdplus::fileNamePrepare(fileName));
-            auto curUniqueWords = getAllUniqueWords(fileName);
-            if (allTextWords.empty())
+            ARED(unknownWordsLevel);
+        }
+
+
+        for (auto & w : newUnknowWords)
+            app.dict.addWord(w, unknownWordsLevel);
+
+
+        if (!newKnowsWords.empty())
+        {
+            int knownWordsLevel = 1;
+            ARED(knownWordsLevel);
+
+            for (auto & w : newKnowsWords)
+                app.dict.addWord(w, knownWordsLevel);
+        }
+
+
+        if (!app.isCompareMode)
+            addWordsToSubtitle(newUnknowWords);
+
+
+        unknownWordsFromFile = getUnknownWordsFromFile(app.originalFileName.getFullName(), knownWordsFromDict);
+
+        auto topWords = geTopUnknownWordsInFile(
+            app.originalFileName.getFullName(), unknownWordsFromFile);
+
+        app.dict.saveAs(app.dictFileName.getFullName(), newUnknowWords, topWords);
+
+        AVAR(topWords.size());
+        AVAR(app.dict.size());
+
+        APAUSE;
+    }
+
+    ~SubtitleApplication()
+    {
+
+    }
+
+private:
+
+    std::set<std::string> getAppUniqueWords()
+    {
+        auto & app = AppData::instanse();
+
+        std::set<std::string> allTextWords;
+
+        if (app.isCompareMode)
+        {
+            for (auto & fileName : app.settings.getValues("compare"))
             {
-                allTextWords = curUniqueWords;
-                continue;
+                AMSG("get unique words from file " + stdplus::fileNamePrepare(fileName));
+                auto curUniqueWords = getAllUniqueWords(fileName);
+                if (allTextWords.empty())
+                {
+                    allTextWords = curUniqueWords;
+                    continue;
+                }
+
+                std::vector<std::string> curWordUnion(curUniqueWords.size());
+
+                std::set_intersection(allTextWords.begin(), allTextWords.end(),
+                    curUniqueWords.begin(), curUniqueWords.end(), curWordUnion.begin());
+
+                allTextWords.clear();
+
+                for (auto & w : curWordUnion)
+                    allTextWords.insert(w);
             }
-
-            std::vector<std::string> curWordUnion(curUniqueWords.size());
-
-            std::set_intersection(allTextWords.begin(), allTextWords.end(),
-                curUniqueWords.begin(), curUniqueWords.end(), curWordUnion.begin());
-
-            allTextWords.clear();
-
-            for (auto & w : curWordUnion)
-                allTextWords.insert(w);
         }
-    }
-    else
-    {
-        allTextWords = getAllUniqueWords(app.originalFileName.getFullName());
+        else
+        {
+            allTextWords = getAllUniqueWords(app.originalFileName.getFullName());
+        }
+
+        return allTextWords;
     }
 
-    return allTextWords;
-}
-
-void addWordsToSubtitle(const std::set<std::string> & newUnknowWords)
-{
-    auto & app = AppData::instanse();
-    std::string originalString = stdplus::readText(app.originalFileName.getFullName());
-    originalString = stdplus::tolower(originalString);
-
-    for (auto & word : newUnknowWords)
+    void addWordsToSubtitle(const std::set<std::string> & newUnknowWords)
     {
-        std::string bigWord = word;
-        for_each(bigWord.begin(), bigWord.end(),
-            [](char & ch) { ch = toupper(ch); });
+        auto & app = AppData::instanse();
+        std::string originalString = stdplus::readText(app.originalFileName.getFullName());
+        originalString = stdplus::tolower(originalString);
 
-        try
+        for (auto & word : newUnknowWords)
         {
-            stdplus::replaceAll(originalString, word,
-                bigWord + "(" + app.dict.getTranslate(word) + ")");
+            std::string bigWord = word;
+            for_each(bigWord.begin(), bigWord.end(),
+                [](char & ch) { ch = toupper(ch); });
+
+            try
+            {
+                stdplus::replaceWordAtAll(originalString, word,
+                    bigWord + "(" + app.dict.getTranslate(word) + ")");
+            }
+            catch (std::logic_error & exceptGetTraslate)
+            {
+                AVAR(exceptGetTraslate.what());
+                AVAR(word);
+            }
         }
-        catch (std::logic_error & exceptGetTraslate)
-        {
-            AVAR(exceptGetTraslate.what());
-            AVAR(word);
-        }
+
+        std::ofstream os(app.exportFileName.getFullName());
+        os << originalString;
     }
 
-    std::ofstream os(app.exportFileName.getFullName());
-    os << originalString;
-}
-
-std::set<std::string> getUnknownWordsFromDict()
-{
-    auto & app = AppData::instanse();
-
-    auto unknownEnglishWordsFromDict = app.dict.getWordsByLevel(0, 0);
-    AVAR(unknownEnglishWordsFromDict.size());
-
-    std::set<std::string> unknownWordsFromDict;
-    for (auto & engWord : unknownEnglishWordsFromDict)
-        unknownWordsFromDict.insert(engWord.getWord());
-
-    return unknownWordsFromDict;
-}
-
-std::set<std::string> getUnknownWordsFromFile(
-    const std::string & fileName, const std::set<std::string> & unknownWordsFromDict)
-{
-    auto & app = AppData::instanse();
-
-    auto allWordsFromFile = getAllUniqueWords(fileName);
-    auto unknownWordsFromFile = getIntersection(allWordsFromFile, unknownWordsFromDict);
-    
-    for (auto & w : unknownWordsFromFile)
-        app.dict.addWord(w);
-
-    return unknownWordsFromFile;
-}
-
-void makeEditFileForUser(std::set<std::string> &unknownWordsFromFile)
-{
-    auto & app = AppData::instanse();
-
-    std::ofstream os(app.exportFileName.getFullName());
-    for (auto & word : unknownWordsFromFile)
-        os << word << "\n";
-    os.close();
-
-    std::string cmd = "call \"c:\\Program Files\\Notepad++\\notepad++.exe\" ";
-    cmd += "\"" + app.exportFileName.getFullName() + "\"";
-    AVAR(cmd);
-    system(cmd.c_str());
-    APAUSE;
-}
-
-size_t freqWord(const std::string & text, const std::string & word)
-{
-    size_t counter = 0;
-
-    size_t index = 0;
-
-    while ((index = text.find(word, index)) != std::string::npos)
+    std::set<std::string> getUnknownWordsFromDict()
     {
-        size_t charAfterWordIndex = index + word.size();
-        if (charAfterWordIndex >= text.size())
-            break;
+        auto & app = AppData::instanse();
 
-        char charAfterWord = text.at(charAfterWordIndex);
-        if (isalpha(charAfterWord))
+        auto unknownEnglishWordsFromDict = app.dict.getWordsByLevel(0, 0);
+        AVAR(unknownEnglishWordsFromDict.size());
+
+        std::set<std::string> unknownWordsFromDict;
+        for (auto & engWord : unknownEnglishWordsFromDict)
+            unknownWordsFromDict.insert(engWord.getWord());
+
+        return unknownWordsFromDict;
+    }
+
+    std::set<std::string> getKnownWordsFromDict()
+    {
+        auto & app = AppData::instanse();
+
+        auto knownEnglishWordsFromDict = app.dict.getWordsByLevel(1);
+        AVAR(knownEnglishWordsFromDict.size());
+
+        std::set<std::string> knownWordsFromDict;
+        for (auto & engWord : knownEnglishWordsFromDict)
+            knownWordsFromDict.insert(engWord.getWord());
+
+        return knownWordsFromDict;
+    }
+
+    std::set<std::string> getKnownWordsFromFile(
+        const std::string & fileName, const std::set<std::string> & knownWordsFromDict)
+    {
+        auto & app = AppData::instanse();
+
+        auto allWordsFromFile = getAllUniqueWords(fileName);
+        auto knownWordsFromFile = getIntersection(allWordsFromFile, knownWordsFromDict);
+
+        for (auto & w : knownWordsFromFile)
+            app.dict.addWord(w);
+
+        return knownWordsFromFile;
+    }
+
+
+
+    std::set<std::string> getUnknownWordsFromFile(
+        const std::string & fileName, const std::set<std::string> & knownWordsFromDict, size_t * numberAllWords = nullptr)
+    {
+        auto & app = AppData::instanse();
+
+        auto allWordsFromFile = getAllUniqueWords(fileName);
+
+        if (numberAllWords)
+            *numberAllWords = allWordsFromFile.size();
+
+        auto unknownWordsFromFile = getOnlyInFirst(allWordsFromFile, knownWordsFromDict);
+
+        for (auto & w : unknownWordsFromFile)
+            app.dict.addWord(w);
+
+        return unknownWordsFromFile;
+    }
+
+    void makeEditFileForUser(std::set<std::string> &unknownWordsFromFile)
+    {
+        auto & app = AppData::instanse();
+
+        std::ofstream os(app.exportFileName.getFullName());
+        for (auto & word : unknownWordsFromFile)
+            os << word << "\n";
+        os.close();
+
+        std::string cmd = "call \"c:\\Program Files\\Notepad++\\notepad++.exe\" ";
+        cmd += "\"" + app.exportFileName.getFullName() + "\"";
+        AVAR(cmd);
+        system(cmd.c_str());
+        APAUSE;
+    }
+
+    size_t freqWord(const std::string & text, const std::string & word)
+    {
+        size_t counter = 0;
+
+        size_t index = 0;
+
+        while ((index = text.find(word, index)) != std::string::npos)
         {
-            index = charAfterWordIndex;
-            continue;
-        }
+            size_t charAfterWordIndex = index + word.size();
+            if (charAfterWordIndex >= text.size())
+                break;
 
-
-        size_t charBeforeWordIndex = index - 1;
-        if (charBeforeWordIndex > 0)
-        {
-            char charBeforeWord = text.at(charBeforeWordIndex);
-            if (isalpha(charBeforeWord))
+            char charAfterWord = text.at(charAfterWordIndex);
+            if (!stdplus::isWordSplitter(charAfterWord))
             {
                 index = charAfterWordIndex;
                 continue;
             }
-        }
 
-        index += word.size();
-        counter++;
-    };
 
-    return counter;
-}
+            size_t charBeforeWordIndex = index - 1;
+            if (charBeforeWordIndex > 0)
+            {
+                char charBeforeWord = text.at(charBeforeWordIndex);
+                if (!stdplus::isWordSplitter(charBeforeWord))
+                {
+                    index = charAfterWordIndex;
+                    continue;
+                }
+            }
 
-std::set<std::string> geTopUnknownWordsInFile(
-    const std::string & fileName, std::set<std::string> & unknownWordsFromDict, int maxCount = 100)
-{
-    auto unknownWordsFromFile = getUnknownWordsFromFile(fileName, unknownWordsFromDict);
-    std::string fileAsString = stdplus::readText(fileName);
+            index += word.size();
+            counter++;
+        };
+
+        return counter;
+    }
 
     using WordCounter = std::pair<std::string, size_t>;
 
-    std::vector<WordCounter> WordCounters;
-    for (auto & w : unknownWordsFromFile)
-        WordCounters.push_back(std::make_pair(w, freqWord(fileAsString, w)));
+    std::vector<WordCounter> getListFrequency(const std::string & fileName, std::set<std::string> & unknownWordsFromFile)
+    {
+        std::string fileAsString = stdplus::readText(fileName);
 
-    std::sort(WordCounters.begin(), WordCounters.end(),
-        [](const WordCounter & left, const WordCounter & right)
-    { return left.second < right.second; });
+        std::vector<WordCounter> wordCounters;
+        for (auto & w : unknownWordsFromFile)
+            wordCounters.push_back(std::make_pair(w, freqWord(fileAsString, w)));
 
-    if (WordCounters.size() < maxCount)
-        maxCount = WordCounters.size();
+        std::sort(wordCounters.begin(), wordCounters.end(),
+            [](const WordCounter & left, const WordCounter & right)
+        { return left.second < right.second; });
 
-    std::set<std::string> topWords;
+        return wordCounters;
+    }
 
-    std::for_each(WordCounters.rbegin(), WordCounters.rbegin() + maxCount,
-        [&topWords](const WordCounter & wc) { topWords.insert(wc.first); });
+    std::set<std::string> geTopUnknownWordsInFile(
+        const std::string & fileName, std::set<std::string> & unknownWordsFromFile, size_t maxCount = 100)
+    {
+        auto wordCounters = getListFrequency(fileName, unknownWordsFromFile);
 
-    return topWords;
-}
+        if (wordCounters.size() < maxCount)
+            maxCount = wordCounters.size();
+
+        std::set<std::string> topWords;
+
+        std::for_each(wordCounters.rbegin(), wordCounters.rbegin() + maxCount,
+            [&topWords](const WordCounter & wc) { topWords.insert(wc.first); });
+
+        return topWords;
+    }
+
+
+};
 
 int main(int argc, char ** argv)
 {
     auto & app = AppData::instanse();
     parseCmd(argc, argv);
+    
+    SubtitleApplication sa;
 
-    auto unknownWordsFromDict = getUnknownWordsFromDict();
-        
-    auto unknownWordsFromFile = getUnknownWordsFromFile(app.originalFileName.getFullName(), unknownWordsFromDict);
-    AVAR(unknownWordsFromFile.size());
-
-    if (!unknownWordsFromFile.empty())
-        makeEditFileForUser(unknownWordsFromFile);
-
-    auto newUnknowWords = getAllUniqueWords(app.exportFileName.getFullName());
-    AVAR(newUnknowWords.size());
-
-    auto newKnowsWords = getOnlyInFirst(unknownWordsFromFile, newUnknowWords);
-    AVAR(newKnowsWords.size());
-
-    int unknownWordsLevel = 0;
-    if (!newUnknowWords.empty() && app.isCompareMode)
-    {
-        ARED(unknownWordsLevel);
-    }
-
-
-    for (auto & w : newUnknowWords)
-        app.dict.addWord(w, unknownWordsLevel);
-
-
-    if (!newKnowsWords.empty())
-    {
-        int knownWordsLevel = 1;
-        ARED(knownWordsLevel);
-
-        for (auto & w : newKnowsWords)
-            app.dict.addWord(w, knownWordsLevel);
-    }
-
-
-    if (!app.isCompareMode)
-        addWordsToSubtitle(newUnknowWords);
-
-    auto topWords = geTopUnknownWordsInFile(
-        app.originalFileName.getFullName(), unknownWordsFromDict);
-
-    app.dict.saveAs(app.dictFileName.getFullName(), newUnknowWords, topWords);
-
-    AVAR(topWords.size());
-    AVAR(app.dict.size());
-
-    APAUSE;
     return 0;
 }

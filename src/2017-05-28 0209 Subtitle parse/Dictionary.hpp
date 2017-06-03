@@ -65,13 +65,13 @@ public:
             return it != fileUnknowns.end();
         });
 
-
         auto itBest = std::partition(vecWords.begin(), itFile,
             [&](const EnglishWord & ew)
         {
             auto it = topWords.find(ew.getWord());
             return it != topWords.end();
         });
+
 
         std::for_each(vecWords.begin(), itBest,
             [&](const EnglishWord & ew) { os << ew << "\n"; });
