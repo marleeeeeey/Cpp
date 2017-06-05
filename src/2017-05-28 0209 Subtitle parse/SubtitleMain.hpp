@@ -280,15 +280,15 @@ private:
         APAUSE;
     }
 
-    size_t freqWord(const std::string & text, const std::string & word)
+    int freqWord(const std::string & text, const std::string & word)
     {
-        size_t counter = 0;
+        int counter = 0;
 
         size_t index = 0;
 
         while ((index = text.find(word, index)) != std::string::npos)
         {
-            size_t charAfterWordIndex = index + word.size();
+            int charAfterWordIndex = index + word.size();
             if (charAfterWordIndex >= text.size())
                 break;
 
@@ -300,7 +300,7 @@ private:
             }
 
 
-            size_t charBeforeWordIndex = index - 1;
+            int charBeforeWordIndex = index - 1;
             if (charBeforeWordIndex > 0)
             {
                 char charBeforeWord = text.at(charBeforeWordIndex);
