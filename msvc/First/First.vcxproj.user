@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommandArguments>"c:\Users\marle\Downloads\_English Films\2002 The Lord of the Rings - The Two Towers [ORIGINAL + SUB]\The.Lord.of.the.Rings.The.Two.Towers.2002.ExD.1080p.BrRip.x264.YIFY.srt"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>MySettings.ini</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommandArguments>"g:\__today\123123123.txt"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>MySettings.ini</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>"c:\Users\marle\Downloads\2005 Harry Potter and the Goblet of Fire [ORIGINAL + SUB]\Harry.Potter.and.the.Goblet.of.Fire.2005.1080p.BrRip.x264.YIFY.srt"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>MySettings.ini</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>"g:\__today\123123123.txt"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>MySettings.ini</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>
