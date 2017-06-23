@@ -13,25 +13,13 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\OopSocket">
-      <UniqueIdentifier>{0b64b2b3-181f-4e72-8180-f85896ee47c2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\firstMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketAddress.cpp">
-      <Filter>Source Files\OopSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketUtil.cpp">
-      <Filter>Source Files\OopSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\TCPSocket.cpp">
-      <Filter>Source Files\OopSocket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\UDPSocket.cpp">
-      <Filter>Source Files\OopSocket</Filter>
+    <ClCompile Include="..\..\src\2017-06-22 0846 UnzipManager\UnzipApplication.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -150,10 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketAddress.cpp" />
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketUtil.cpp" />
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\TCPSocket.cpp" />
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\UDPSocket.cpp" />
+    <ClCompile Include="..\..\src\2017-06-22 0846 UnzipManager\UnzipApplication.cpp" />
     <ClCompile Include="..\..\src\firstMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

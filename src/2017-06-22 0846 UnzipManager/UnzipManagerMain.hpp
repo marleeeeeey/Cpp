@@ -1,20 +1,16 @@
 
-
-#include "StdPlus/StdPlus.h"
-
+#include "UnzipApplication.h"
 
 int main(int argc, char ** argv)
 {
-    AMSG("Hello from UnzipManager");
+    try
+    {
+        UnzipApplication app(argc, argv);
+    }
+    catch (std::logic_error & e)
+    {
+        AMSG(std::string("APPLICATION ERROR: ") + e.what());
+    }
 
-    stdplus::SimpleCmdParser cmd;
-    cmd.parseData(argc, argv);
-
-    std::string fileName = cmd.indexedValues().at(1);
-
-    stdplus::SimpleSettingsPlus settings;
-    settings.open(fileName);
-
-
-    APAUSE;
+    APAUSE_MSG("Press any key for close programm");
 }
