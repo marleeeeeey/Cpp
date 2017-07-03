@@ -18,8 +18,5 @@
     <ClCompile Include="..\..\src\firstMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\2017-06-22 0846 UnzipManager\UnzipApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
