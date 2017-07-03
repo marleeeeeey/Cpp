@@ -76,10 +76,13 @@ std::ostream & operator<<(std::ostream & os, const FileLiner & d)
 
 int main(int argc, char ** argv)
 {
-    std::ofstream report(stdplus::dateTimeStr() + " report.txt");
+    std::string reportFileName = stdplus::dateTimeStr() + " Report.txt";
+
+    std::ofstream report(reportFileName);
     LOG_STD_REGISTER_STREAM(report);
 
     AMSG("developer: Tyulenev  Sergey <marleeeeeey@gmail.com>");
+    AMSG("all code: https://github.com/marleeeeeey/CppTests/blob/master/src/2017-07-03%201604%20CodeLiner/CodeLinerMain.hpp");
     ASPLIT;
 
     std::string dir = ".";
@@ -126,5 +129,6 @@ int main(int argc, char ** argv)
     AVAR(sumFill);
     ASPLIT;
 
+    AMSG("You can see Report " + reportFileName);
     APAUSE_MSG("PRESS ANY KEY FOR CLOSE CONSOLE");
 }
