@@ -3,14 +3,13 @@
 #include "StdPlus/StdPlus.h"
 
 
-
 template <typename T>
 double getAverage(const std::vector<T> & d)
 {
     if (d.empty())
         return 0;
 
-    T sum = std::accumulate(d.begin(), d.end(), 0);
+    T sum = std::accumulate(d.begin(), d.end(), (T)0);
     double average = (double)sum / d.size();
     return average;
 }
@@ -175,7 +174,8 @@ private:
         }
         catch (std::logic_error &)
         {
-            m_settings.setValue("fileMasks", "*.cpp;*.h;*.hpp;*.cs;*.c;");
+            ARED(DEFAULT_FILE_MASKS);
+            m_settings.setValue("fileMasks", DEFAULT_FILE_MASKS);
             m_settings.save(SETTINGS_FILE_NAME);
         }
     }
@@ -191,8 +191,9 @@ private:
     }
 
 
-    const std::string SETTINGS_FILE_NAME = "settigs.ini";
-    const std::string REPORT_FILE_NAME = stdplus::dateTimeStr() + " Report.txt";
+    const std::string SETTINGS_FILE_NAME = "settings.ini";
+    const std::string REPORT_FILE_NAME   = stdplus::dateTimeStr() + " Report.txt";
+    std::string       DEFAULT_FILE_MASKS = "*.cpp;*.h;*.hpp;*.cs;*.c;";
 
     stdplus::SimpleSettingsPlus m_settings;
     std::ofstream               m_reportFile;
@@ -200,9 +201,9 @@ private:
     std::vector<std::string>    m_fileMasks; 
     std::string                 m_mainDir = ".";
 
-    int m_sumEmpty = 0;
-    int m_sumFill = 0;
-    int m_sumComment = 0;
+    int    m_sumEmpty        = 0;
+    int    m_sumFill         = 0;
+    int    m_sumComment      = 0;
     double m_averageLineSize = 0;
 
 };
