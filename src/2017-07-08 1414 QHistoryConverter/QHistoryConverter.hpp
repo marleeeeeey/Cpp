@@ -77,6 +77,10 @@ int main(int argc, char ** argv)
 {
     try
     {
+        LOG_STD_MSG("developer: Tyulenev  Sergey <marleeeeeey@gmail.com>");
+        LOG_STD_MSG("You can download source code from:");
+        LOG_STD_MSG("https://github.com/marleeeeeey/CppTests/blob/master/src/2017-07-08%201414%20QHistoryConverter/QHistoryConverter.hpp");
+        LOG_STD_SPLIT;
         HistoryApp app(argc, argv);
     }
     catch (std::logic_error & eApp)
