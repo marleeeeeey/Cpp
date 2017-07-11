@@ -1,6 +1,19 @@
 #pragma once
 
 #include "StdPlus/StdPlus.h"
+#include <boost/algorithm/string.hpp>
+
+struct WordWithTranslate
+{
+    std::string original;
+    std::string translate;
+};
+
+std::ostream & operator<<(std::ostream & os, const WordWithTranslate & d)
+{
+    os << d.original << " >> " << d.translate;
+    return os;
+}
 
 class HistoryApp
 {
@@ -13,44 +26,76 @@ public:
         m_fileName = argv[1];
         LOG_STD_VAR(m_fileName);
 
-        fillParagraphsFromFile();
+        m_file.open(m_fileName);
+
+        while(parseSection())/*nothing to do*/;
+
         makeResultFile();
+    }
+
+    ~HistoryApp()
+    {
+        m_file.close();
     }
 
 private:
 
-    void fillParagraphsFromFile()
+    bool parseSection()
     {
-        std::ifstream file(m_fileName);
-        std::string line;
+        auto originalLines = readOriginal();
 
-        std::string paragraph;
+        if (originalLines.empty()) return false;
 
-        while (std::getline(file, line))
+        auto translateLines = readTranslate();
+        std::string notUsedLine;
+        std::getline(m_file, notUsedLine);
+
+        if (originalLines.size() > translateLines.size())
+            throw std::logic_error("ERROR: originalLines.size() > translateLines.size()");
+            //return false;
+
+        WordWithTranslate tw;
+        for (unsigned i = 0; i < originalLines.size(); ++i)
         {
-            int findResult = line.find(END_PART);
-
-            if (findResult == std::string::npos)
-            {
-                if (!line.empty())
-                {
-                    paragraph.insert(paragraph.end(), line.begin(), line.end());
-                    paragraph += " ";
-                }
-                continue;
-            }
-
-            m_paragraphs.push_back(paragraph);
-            paragraph.clear();
-
-            while (std::getline(file, line))
-            {
-                if (line == SPLITTER)
-                    break;
-            }
+            tw.original += originalLines.at(i) + " ";
+            tw.translate += translateLines.at(i) + " ";
         }
 
+        AVAR(tw);
+        m_tranlateDict.push_back(tw);     
 
+        return true;
+    }
+
+    std::vector<std::string> readBlock(std::string endPart)
+    {
+        std::vector<std::string> lines;
+        std::string line;
+        
+        while (std::getline(m_file, line))
+        {
+            boost::algorithm::erase_all(line, SPLITTER);
+
+            if (line.find(endPart) != std::string::npos)
+            {
+                lines.pop_back();    // remove last empty string
+                return lines;
+            }
+
+            lines.push_back(line);
+        }
+
+        return lines;
+    }
+
+    std::vector<std::string> readOriginal()
+    {
+        return readBlock(END_ORIGINAL);
+    }
+
+    std::vector<std::string> readTranslate()
+    {
+        return readBlock(END_TRANSLATE);
     }
 
     void makeResultFile()
@@ -59,18 +104,19 @@ private:
             + " Result from " + stdplus::fileNameFromFullPath(m_fileName);
 
         std::ofstream resultFile(resultFileName);
-        for (auto & line : m_paragraphs)
-        {
-            resultFile << line << std::endl;
-        }
 
-        LOG_STD_VAR(m_paragraphs.size());
+        for (auto & tw : m_tranlateDict)
+            resultFile << tw.original << SPLITTER << tw.translate << std::endl;
+
+        LOG_STD_VAR(m_tranlateDict.size());
     }
     
-    const std::string SPLITTER = "================================";
-    const std::string END_PART = "English to Russian]";
-    std::vector<std::string> m_paragraphs;
-    std::string              m_fileName;
+    const std::string END_TRANSLATE = "================================";
+    const std::string END_ORIGINAL = "Translate >";
+    const std::string SPLITTER = "\t";
+    std::string       m_fileName;
+    std::ifstream     m_file;
+    std::vector<WordWithTranslate> m_tranlateDict;
 };
 
 int main(int argc, char ** argv)
