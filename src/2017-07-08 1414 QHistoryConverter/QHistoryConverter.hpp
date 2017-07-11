@@ -52,7 +52,6 @@ private:
 
         if (originalLines.size() > translateLines.size())
             throw std::logic_error("ERROR: originalLines.size() > translateLines.size()");
-            //return false;
 
         WordWithTranslate tw;
         for (unsigned i = 0; i < originalLines.size(); ++i)
@@ -61,7 +60,6 @@ private:
             tw.translate += translateLines.at(i) + " ";
         }
 
-        AVAR(tw);
         m_tranlateDict.push_back(tw);     
 
         return true;
@@ -123,6 +121,8 @@ int main(int argc, char ** argv)
 {
     try
     {
+        LOG_STD_MSG("QHistoryConverter v 1.1");
+        LOG_STD_MSG("Convert QTranslate.history.txt to file which you can import in ANKI");
         LOG_STD_MSG("developer: Tyulenev  Sergey <marleeeeeey@gmail.com>");
         LOG_STD_MSG("You can download source code from:");
         LOG_STD_MSG("https://github.com/marleeeeeey/CppTests/blob/master/src/2017-07-08%201414%20QHistoryConverter/QHistoryConverter.hpp");
