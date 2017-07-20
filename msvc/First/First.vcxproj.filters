@@ -13,10 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\TcpSocket">
+      <UniqueIdentifier>{4b3b6843-eab6-4b26-837e-0fd088c240fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\firstMain.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketAddress.cpp">
+      <Filter>Source Files\TcpSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketAddressFactory.cpp">
+      <Filter>Source Files\TcpSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketUtil.cpp">
+      <Filter>Source Files\TcpSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\TCPSocket.cpp">
+      <Filter>Source Files\TcpSocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\UDPSocket.cpp">
+      <Filter>Source Files\TcpSocket</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
