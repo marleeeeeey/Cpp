@@ -37,7 +37,14 @@ int main(int argc, char ** argv)
     {
         LOG_STD_VAR(i);
         char ch;
-        clientSock->Receive(&ch, sizeof(ch));
+        try
+        {
+            clientSock->Receive(&ch, sizeof(ch));
+        }
+        catch (std::logic_error & e)
+        {
+            LOG_STD_MSG(e.what());
+        }
         LOG_STD_VAR(ch);
     }
 
