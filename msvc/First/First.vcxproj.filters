@@ -21,19 +21,19 @@
     <ClCompile Include="..\..\src\firstMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketAddress.cpp">
+    <ClCompile Include="..\..\..\2017-03-31_1400_StdPlus\src\OopSocket\SocketAddress.cpp">
       <Filter>Source Files\TcpSocket</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketAddressFactory.cpp">
+    <ClCompile Include="..\..\..\2017-03-31_1400_StdPlus\src\OopSocket\SocketAddressFactory.cpp">
       <Filter>Source Files\TcpSocket</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\SocketUtil.cpp">
+    <ClCompile Include="..\..\..\2017-03-31_1400_StdPlus\src\OopSocket\SocketUtil.cpp">
       <Filter>Source Files\TcpSocket</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\TCPSocket.cpp">
+    <ClCompile Include="..\..\..\2017-03-31_1400_StdPlus\src\OopSocket\TCPSocket.cpp">
       <Filter>Source Files\TcpSocket</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\2017-03-31 1400 StdPlus\src\OopSocket\UDPSocket.cpp">
+    <ClCompile Include="..\..\..\2017-03-31_1400_StdPlus\src\OopSocket\UDPSocket.cpp">
       <Filter>Source Files\TcpSocket</Filter>
     </ClCompile>
   </ItemGroup>

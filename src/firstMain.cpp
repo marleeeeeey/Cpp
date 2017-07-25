@@ -35,4 +35,5 @@
 //#include "2017-06-09 1801 GoogleMock and OpenCV/MockMain.hpp"
 //#include "2017-06-22 0846 UnzipManager/UnzipManagerMain.hpp"
 //#include "2017-07-03 1604 CodeLiner/CodeLinerMain.hpp"
-#include "2017-07-08 1414 QHistoryConverter/QHistoryConverter.hpp"
+//#include "2017-07-08 1414 QHistoryConverter/QHistoryConverter.hpp"
+#include "2017-07-25 0409 TcpReciever/TcpRecieverMain.hpp"
