@@ -14,9 +14,6 @@ SET(SOURCE_FILES
     
 ADD_LIBRARY(my_math_lib ${SOURCE_FILES} ${HEADER_FILES})
 
-
-# Specify here the include directories exported
-# by this library
 TARGET_INCLUDE_DIRECTORIES(my_math_lib PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
