@@ -1,3 +1,3 @@
-enable_testing()
+ENABLE_TESTING()
 
-add_subdirectory(test_my_math)
+ADD_SUBDIRECTORY(test_my_math)
