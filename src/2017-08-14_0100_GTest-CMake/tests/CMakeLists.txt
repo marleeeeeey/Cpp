@@ -1,7 +1,4 @@
-PROJECT(my_math_lib_test)
 ENABLE_TESTING()
-
-# gtest #
 
 FIND_PATH(GTEST_INCLUDE_DIR
           NAMES gtest/gtest.h
@@ -28,19 +25,9 @@ INCLUDE_DIRECTORIES(SYSTEM
 
 LINK_DIRECTORIES(SYSTEM 
                  $ENV{GTEST_ROOT}../build/googlemock/
-                 $ENV{GTEST_ROOT}../build/googlemock/gtest/)                    
-                    
-INCLUDE_DIRECTORIES(SYSTEM my_math_lib_INCLUDE_DIRS)
+                 $ENV{GTEST_ROOT}../build/googlemock/gtest/)                                        
 
-ADD_EXECUTABLE(my_math_lib_test
-               main.cpp
-               test_my_math.cpp)
-
-TARGET_LINK_LIBRARIES(my_math_lib_test
-                      gtest 
-                      gtest_main
-                      gmock
-                      gmock_main
-                      my_math_lib)
-
-ADD_TEST(NAME my_math_lib_test COMMAND my_math_lib_test)
+#*************************************************************                 
+#*************************************************************
+                 
+ADD_SUBDIRECTORY(test_my_math)

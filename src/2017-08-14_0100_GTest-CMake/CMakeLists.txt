@@ -4,4 +4,4 @@ PROJECT(calculator)
 
 ADD_SUBDIRECTORY(main)
 ADD_SUBDIRECTORY(my_math_lib)
-ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(tests)
