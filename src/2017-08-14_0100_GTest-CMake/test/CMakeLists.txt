@@ -1,3 +1,2 @@
-ENABLE_TESTING()
 
 ADD_SUBDIRECTORY(test_my_math)

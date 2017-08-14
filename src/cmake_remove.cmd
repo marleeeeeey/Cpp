@@ -1,0 +1,1 @@
+rd build /s /q
