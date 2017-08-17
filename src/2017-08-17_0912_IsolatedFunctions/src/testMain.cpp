@@ -106,8 +106,6 @@ TEST(readVectorBoolFromBinFile, NotExistFile)
 {
     std::string fileName = "NotExistsFile.txt";
 
-    //auto vec = readVectorBoolFromBinFile(fileName, 0);
-
     try
     {
         auto vec = readVectorBoolFromBinFile(fileName, 10);
@@ -121,7 +119,7 @@ TEST(readVectorBoolFromBinFile, NotExistFile)
 
 }
 
-TEST(readVectorBoolFromBinFile, RealFile)
+TEST(DISABLED_readVectorBoolFromBinFile, RealFile)
 {    
     std::string fileName1 = "Starter.xml";
     readVectorBoolFromBinFile(fileName1, 48201*8);

@@ -23,9 +23,6 @@ std::vector<bool> charToVectorBool(const char ch)
 
 std::vector<bool> readVectorBoolFromBinFile(std::string & fileName, size_t countBit)
 {
-    std::vector<bool> codes;
-    codes.reserve(countBit);
-
     std::ifstream ifs(fileName, std::ios_base::binary);
     if (!ifs.is_open())
         throw std::logic_error("ERROR: File '" + fileName + "' cannot open");
@@ -33,13 +30,17 @@ std::vector<bool> readVectorBoolFromBinFile(std::string & fileName, size_t count
     ifs.seekg(0, ifs.end);
     int length = ifs.tellg();
     ifs.seekg(0, ifs.beg);
-    char * buffer = new char[length];
-    ifs.read(buffer, length);
-    ifs.close();
 
     if (countBit > length * 8)
         throw std::logic_error("ERROR: Too small file '" + fileName + "'" 
             + " for countBit=" + std::to_string(countBit));
+
+    char * buffer = new char[length];
+    ifs.read(buffer, length);
+    ifs.close();
+
+    std::vector<bool> codes;
+    codes.reserve(countBit);
 
     for (int i = 0; i < length; ++i)
     {
