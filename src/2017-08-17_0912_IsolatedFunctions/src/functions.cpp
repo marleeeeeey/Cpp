@@ -13,8 +13,9 @@ std::vector<bool> charToVectorBool(const char ch)
 
     for (int bitIndex = 7; bitIndex >= 0; --bitIndex)
     {
-        char bit = 1 << bitIndex;
-        bits.push_back(ch & bit);
+        int bitPos = 1 << bitIndex;        
+        int bit = ch & bitPos;
+        bits.push_back(static_cast<bool>(bit));
     }
     
     return bits;
@@ -23,23 +24,33 @@ std::vector<bool> charToVectorBool(const char ch)
 std::vector<bool> readVectorBoolFromBinFile(std::string & fileName, size_t countBit)
 {
     std::vector<bool> codes;
-    std::ifstream ifs(fileName);
+    codes.reserve(countBit);
 
-    while (countBit > 0)
+    std::ifstream ifs(fileName, std::ios_base::binary);
+    if (!ifs.is_open())
+        throw std::logic_error("ERROR: File '" + fileName + "' cannot open");
+
+    ifs.seekg(0, ifs.end);
+    int length = ifs.tellg();
+    ifs.seekg(0, ifs.beg);
+    char * buffer = new char[length];
+    ifs.read(buffer, length);
+    ifs.close();
+
+    if (countBit > length * 8)
+        throw std::logic_error("ERROR: Too small file '" + fileName + "'" 
+            + " for countBit=" + std::to_string(countBit));
+
+    for (int i = 0; i < length; ++i)
     {
-        char ch;
-        ifs >> ch;
-        if (!ifs.good())
-            break;
+        char & ch = buffer[i];
         auto bits = charToVectorBool(ch);
         const size_t portionSize = std::min<size_t>(countBit, 8);
         codes.insert(codes.end(), bits.begin(), bits.begin() + portionSize);
         countBit -= portionSize;
+        if (countBit == 0)
+            break;
     }
-
-    if (countBit > 0)
-        throw std::logic_error("Error: Cannot read required number of bits from file '"
-            + fileName + "'. LessCountBit=" + std::to_string(countBit));
 
     return codes;
 }

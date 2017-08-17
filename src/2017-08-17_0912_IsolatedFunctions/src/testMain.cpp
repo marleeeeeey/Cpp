@@ -3,7 +3,7 @@
 #include <StdPlus/StdPlus.h>
 #include "functions.h"
 
-TEST(Simple, One) 
+TEST(Simple, One)
 {
     EXPECT_EQ(one(), 1);
 }
@@ -106,7 +106,7 @@ TEST(readVectorBoolFromBinFile, NotExistFile)
 {
     std::string fileName = "NotExistsFile.txt";
 
-    auto vec = readVectorBoolFromBinFile(fileName, 0);
+    //auto vec = readVectorBoolFromBinFile(fileName, 0);
 
     try
     {
@@ -119,6 +119,15 @@ TEST(readVectorBoolFromBinFile, NotExistFile)
         //AMSG(std::string("GOOD: catch: ") + e.what());
     }
 
+}
+
+TEST(readVectorBoolFromBinFile, RealFile)
+{    
+    std::string fileName1 = "Starter.xml";
+    readVectorBoolFromBinFile(fileName1, 48201*8);
+
+    std::string fileName2 = "toeplitz_seed_16777282";
+    readVectorBoolFromBinFile(fileName2, 16777282);
 }
 
 int main(int argc, char **argv)
