@@ -1,113 +1,112 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <StdPlus/StdPlus.h>
 #include "functions.h"
+#include <fstream>
 
 TEST(Simple, One)
 {
-    EXPECT_EQ(one(), 1);
+	EXPECT_EQ(one(), 1);
 }
 
-TEST(read_vector_bool_from_bin_file, ExactSize)
+TEST(read_vector_bool_from_bin_file, exact_size)
 {
-    std::string fileName = "karamba.txt";
+	std::string file_name = "karamba.txt";
 
-    std::vector<std::string> strings = 
-    { "karamba", "qwerqwer", "asdfasdfa", "", "qwerqwexcvz" };
+	std::vector<std::string> strings =
+	{ "karamba", "qwerqwer", "asdfasdfa", "", "qwerqwexcvz" };
 
-    for (auto & str : strings)
-    {
-        int countBytes = str.size();
-        std::ofstream ofs(fileName);
-        ofs << str;
-        ofs.close();
+	for (auto & str : strings)
+	{
+		int count_bytes = str.size();
+		std::ofstream ofs(file_name);
+		ofs << str;
+		ofs.close();
 
-        size_t countBits = countBytes * 8;
-        auto vec = read_vector_bool_from_bin_file(fileName, countBits);
-        EXPECT_EQ(vec.size(), countBits);
-    }
+		size_t count_bits = count_bytes * 8;
+		auto vec = read_vector_bool_from_bin_file(file_name, count_bits);
+		EXPECT_EQ(vec.size(), count_bits);
+	}
 }
 
-TEST(read_vector_bool_from_bin_file, LessSize)
+TEST(read_vector_bool_from_bin_file, less_size)
 {
-    std::string fileName = "karamba.txt";
+	std::string file_name = "karamba.txt";
 
-    std::vector<std::string> strings =
-    { "karamba", "qwerqwer", "asdfasdfa", "qwerqwexcvz" };
+	std::vector<std::string> strings =
+	{ "karamba", "qwerqwer", "asdfasdfa", "qwerqwexcvz" };
 
-    for (auto & str : strings)
-    {
-        int countBytes = str.size();
-        std::ofstream ofs(fileName);
-        ofs << str;
-        ofs.close();
+	for (auto & str : strings)
+	{
+		int count_bytes = str.size();
+		std::ofstream ofs(file_name);
+		ofs << str;
+		ofs.close();
 
-        size_t countBits = countBytes * 8 - 5;
-        auto vec = read_vector_bool_from_bin_file(fileName, countBits);
-        EXPECT_EQ(vec.size(), countBits);
-    }
+		size_t count_bits = count_bytes * 8 - 5;
+		auto vec = read_vector_bool_from_bin_file(file_name, count_bits);
+		EXPECT_EQ(vec.size(), count_bits);
+	}
 }
 
-TEST(read_vector_bool_from_bin_file, MoreSize)
+TEST(read_vector_bool_from_bin_file, more_size)
 {
-    std::string fileName = "karamba.txt";
+	std::string file_name = "karamba.txt";
 
-    std::vector<std::string> strings =
-    { "karamba", "qwerqwer", "asdfasdfa", "qwerqwexcvz", "" };
+	std::vector<std::string> strings =
+	{ "karamba", "qwerqwer", "asdfasdfa", "qwerqwexcvz", "" };
 
-    for (auto & str : strings)
-    {
-        int countBytes = str.size();
-        std::ofstream ofs(fileName);
-        ofs << str;
-        ofs.close();
+	for (auto & str : strings)
+	{
+		int count_bytes = str.size();
+		std::ofstream ofs(file_name);
+		ofs << str;
+		ofs.close();
 
-        size_t countBits = countBytes * 8 + 5;
-        try
-        {
-            auto vec = read_vector_bool_from_bin_file(fileName, countBits);
-            AMSG("ERROR: Not exception in MoreSize request");
-            throw;                
-        }
-        catch (std::logic_error & e)
-        {
-            AMSG(std::string("GOOD: catch: ") + e.what());
-        }
-    }
+		size_t count_bits = count_bytes * 8 + 5;
+		try
+		{
+			auto vec = read_vector_bool_from_bin_file(file_name, count_bits);
+			ADD_FAILURE() << "Expected std::logic_error, but wrong exception cathed";
+			throw;
+		}
+		catch (std::logic_error &)
+		{
+			SUCCEED();
+		}
+	}
 }
 
-TEST(read_vector_bool_from_bin_file, NotExistFile)
+TEST(read_vector_bool_from_bin_file, not_exists_file)
 {
-    std::string fileName = "NotExistsFile.txt";
+	std::string file_name = "NotExistsFile.txt";
 
-    try
-    {
-        auto vec = read_vector_bool_from_bin_file(fileName, 10);
-        AMSG("ERROR: Not exception in MoreSize request");
-        throw;
-    }
-    catch (std::logic_error & e)
-    {
-        AMSG(std::string("GOOD: catch: ") + e.what());
-    }
-
+	try
+	{
+		auto vec = read_vector_bool_from_bin_file(file_name, 10);
+		ADD_FAILURE() << "Expected std::logic_error, but wrong exception cathed";
+		throw;
+	}
+	catch (std::logic_error &)
+	{
+		SUCCEED();
+	}
 }
 
-TEST(DISABLED_readVectorBoolFromBinFile, RealFile)
-{    
-    std::string fileName1 = "Starter.xml";
-    read_vector_bool_from_bin_file(fileName1, 48201*8);
+TEST(DISABLED_readVectorBoolFromBinFile, real_file)
+{
+	std::string file_name_1 = "Starter.xml";
+	read_vector_bool_from_bin_file(file_name_1, 48201 * 8);
 
-    std::string fileName2 = "toeplitz_seed_16777282";
-    read_vector_bool_from_bin_file(fileName2, 16777282);
+	std::string file_name_2 = "toeplitz_seed_16777282";
+	read_vector_bool_from_bin_file(file_name_2, 16777282);
 }
 
 int main(int argc, char **argv)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-    int ret = RUN_ALL_TESTS();    
-    
-    std::cin.get();    
+	::testing::InitGoogleTest(&argc, argv);
+	int ret = RUN_ALL_TESTS();
 
-    return ret;
+	std::cin.get();
+
+	return ret;
 }
