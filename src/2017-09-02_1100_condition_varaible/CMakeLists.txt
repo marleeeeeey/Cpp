@@ -1,0 +1,13 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.9.0)
+
+PROJECT(condition_varaible)
+
+FILE(GLOB_RECURSE SOURCE_FILES
+    "*.cpp"
+    "*.c"
+    "*.h"
+    "*.hpp")
+
+ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCE_FILES})
+
+#TARGET_LINK_LIBRARIES(${PROJECT_NAME} <lib_names> )
