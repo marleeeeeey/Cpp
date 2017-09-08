@@ -85,15 +85,50 @@ void test03()
     }
 }
 
+void test04()
+{
+    unsigned long a = 0x12345678;
+    AHEX(a);
+
+    short st = a >> 16;
+    short ml = a;
+
+    AHEX(st);
+    AHEX(ml);
+}
+
+void test05()
+{
+    AMSG("input '777' for exit");
+    unsigned long a = 1;
+    while (a != 777)
+    {
+        ARED(a);
+        AHEX(a);
+
+        short st = a >> 16;
+        short ml = a;
+
+        AHEX(st);
+        AHEX(ml);
+    }
+}
+
 int main()
 {
-    test01();
-    ASPLIT;
+//     test01();
+//     ASPLIT;
+//
+//     test02();
+//     ASPLIT;
+//
+//     test03();
+//     ASPLIT;
+//
+//     test04();
+//     ASPLIT;
 
-    test02();
-    ASPLIT;
-
-    test03();
+    test05();
     ASPLIT;
 
     APAUSE;
