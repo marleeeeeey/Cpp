@@ -2,10 +2,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.9.0)
 
 PROJECT(cmd_parser_crosscompile)
 
+INCLUDE_DIRECTORIES(
+ $ENV{STD_PLUS_DIR}/include
+ )
+
 FILE(GLOB_RECURSE SOURCE_FILES
-    "*.cpp"
-    "*.c"
-    "*.h"
-    "*.hpp")
+    "src/*.*")
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCE_FILES})
