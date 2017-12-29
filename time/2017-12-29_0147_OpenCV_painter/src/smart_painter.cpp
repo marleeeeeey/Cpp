@@ -1,5 +1,6 @@
 #include "smart_painter.h"
 
+
 SmartPainter::SmartPainter(std::string win_name)
     : _win_name(win_name)
 {
@@ -40,14 +41,31 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags, void *userdata)
 
 void SmartPainter::on_mouse(int event, int x, int y, int flags)
 {
+    enum MouseEventFlagsADV
+    {
+        EVENT_FLAG_WHEELFORWARD = 0x20000,
+    };
+
     using namespace std;
     using namespace cv;
 
     cv::Point p(x, y);
 
-    if  ( event == EVENT_LBUTTONDOWN )
+    if(event == EVENT_LBUTTONDOWN)
     {
          _poliline.push_back(p);
+    }
+
+    if(event == EVENT_MOUSEWHEEL)
+    {
+        if(flags & EVENT_FLAG_WHEELFORWARD)
+        {
+            on_wheel(true);
+        }
+        else
+        {
+            on_wheel(false);
+        }
     }
 
     if ( event == EVENT_MOUSEMOVE )
@@ -58,20 +76,48 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags)
     {
         std::cout
                 << "event = " << event << "; "
-                << "flags = " << flags << "; "
+                << "flags = " << std::hex << flags << std::dec << "; "
+                //<< "EVENT_FLAG_LBUTTON = "  << (bool)( flags & EVENT_FLAG_LBUTTON  ) << "; "
+                //<< "EVENT_FLAG_RBUTTON = "  << (bool)( flags & EVENT_FLAG_RBUTTON  ) << "; "
+                //<< "EVENT_FLAG_MBUTTON = "  << (bool)( flags & EVENT_FLAG_MBUTTON  ) << "; "
+                //<< "EVENT_FLAG_CTRLKEY = "  << (bool)( flags & EVENT_FLAG_CTRLKEY  ) << "; "
+                //<< "EVENT_FLAG_SHIFTKEY = " << (bool)( flags & EVENT_FLAG_SHIFTKEY ) << "; "
+                //<< "EVENT_FLAG_ALTKEY = "   << (bool)( flags & EVENT_FLAG_ALTKEY   ) << "; "
+                //<< "EVENT_FLAG_WHEELFORWARD = "   << (bool)( flags & EVENT_FLAG_WHEELFORWARD   ) << "; "
                 << std::endl;
     }
 }
 
 void SmartPainter::draw(cv::Mat canvas)
 {
-    for (cv::Point & p : _poliline)
+    std::vector<cv::Point> pl = _poliline;
+
+    for (cv::Point & p : pl)
     {
-        cv::circle(canvas, p, 10, _line_color);
+        p.x *= _scale;
+        p.y *= _scale;
+        cv::circle(canvas, p, 10, _line_color, _thickness);
     }
 
     std::vector<std::vector<cv::Point>> polilines;
-    polilines.push_back(_poliline);
+    polilines.push_back(pl);
     bool is_closed = true;
-    cv::polylines(canvas, polilines, is_closed, _line_color);
+    cv::polylines(canvas, polilines, is_closed, _line_color, _thickness);
+}
+
+void SmartPainter::on_wheel(bool is_forward)
+{
+    float scale_step = 1.1;
+    if(is_forward)
+    {
+        _scale *= scale_step;
+    }
+    else
+    {
+        _scale /= scale_step;
+    }
+
+    if(_scale < 0.001) _scale = 0.001;
+    if(_scale > 100) _scale = 100;
+
 }
