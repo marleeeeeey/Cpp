@@ -17,7 +17,7 @@ private:
 
     std::string _win_name;
     std::vector<std::vector<cv::Point2f>> _polilines;
-    cv::Scalar _line_color = cv::Scalar(100, 100, 100);
+    cv::Scalar _line_color = cv::Scalar(255, 255, 0);
     float _scale = 1;
     int _thickness = 4;
     cv::Point _move_position;

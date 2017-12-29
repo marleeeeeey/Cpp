@@ -1,5 +1,5 @@
 #include "smart_painter.h"
-
+#include <sstream>
 
 void scaling_point(const cv::Point & center, cv::Point & p, float scale)
 {
@@ -10,6 +10,21 @@ SmartPainter::SmartPainter(std::string win_name)
     : _win_name(win_name)
 {
     _polilines.resize(2);
+    std::vector<cv::Point2f> points
+    {
+        cv::Point2f(10.02, 10.04),
+        cv::Point2f(10.03, 10.04),
+        cv::Point2f(10.04, 10.04),
+        cv::Point2f(10.05, 10.04),
+        cv::Point2f(10.06, 10.04),
+        cv::Point2f(10.07, 10.04),
+        cv::Point2f(10.08, 10.04),
+        cv::Point2f(10.09, 10.04),
+    };
+
+    auto & v = _polilines.at(1);
+    v.insert(v.end(), points.begin(), points.end());
+
     cv::namedWindow(_win_name);
     cv::setMouseCallback(_win_name, on_mouse, this);
 
@@ -114,6 +129,10 @@ void SmartPainter::draw(cv::Mat canvas)
 
     bool is_closed = true;
     cv::polylines(canvas, pls, is_closed, _line_color, _thickness);
+
+    std::stringstream ss;
+    ss << "scale = " << _scale;
+    cv::putText(canvas, ss.str(), cv::Point(30, 30), 1, 3, _line_color, _thickness);
 }
 
 void SmartPainter::on_wheel(bool is_forward)
@@ -131,7 +150,7 @@ void SmartPainter::on_wheel(bool is_forward)
     }
 
     if(_scale < 0.001) _scale = 0.001;
-    if(_scale > 100) _scale = 100;
+    if(_scale > 10000) _scale = 10000;
 }
 
 template<typename T>
