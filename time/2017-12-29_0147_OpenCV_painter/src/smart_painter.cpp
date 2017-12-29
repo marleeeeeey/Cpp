@@ -52,7 +52,7 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags)
 
     if ( event == EVENT_MOUSEMOVE )
     {
-         //cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+         // cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
     }
     else
     {
