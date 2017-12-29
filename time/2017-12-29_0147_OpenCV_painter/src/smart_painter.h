@@ -12,10 +12,11 @@ private:
     void on_mouse(int event, int x, int y, int flags);
     void draw(cv::Mat canvas);
     void on_wheel(bool is_forward);
-    void scaling_point(cv::Point & p, float scale);
+    template<typename T>
+    cv::Point_<T> scaling_point(const cv::Point_<T> &p, float scale);
 
     std::string _win_name;
-    std::vector<cv::Point> _poliline;
+    std::vector<std::vector<cv::Point2f>> _polilines;
     cv::Scalar _line_color = cv::Scalar(100, 100, 100);
     float _scale = 1;
     int _thickness = 4;

@@ -9,6 +9,7 @@ void scaling_point(const cv::Point & center, cv::Point & p, float scale)
 SmartPainter::SmartPainter(std::string win_name)
     : _win_name(win_name)
 {
+    _polilines.resize(2);
     cv::namedWindow(_win_name);
     cv::setMouseCallback(_win_name, on_mouse, this);
 
@@ -58,14 +59,12 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags)
 
     if(event == EVENT_LBUTTONDOWN)
     {
-        scaling_point(p, 1/_scale);
-         _poliline.push_back(p);
+        p = scaling_point(p, 1/_scale);
+         _polilines[0].push_back(p);
     }
 
     if(event == EVENT_MOUSEWHEEL)
     {
-        _wheel_position = _move_position;
-
         if(flags & EVENT_FLAG_WHEELFORWARD)
         {
             on_wheel(true);
@@ -100,22 +99,27 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags)
 
 void SmartPainter::draw(cv::Mat canvas)
 {
-    std::vector<cv::Point> pl = _poliline;
+    std::vector<std::vector<cv::Point>> pls;
 
-    for (cv::Point & p : pl)
+    for(const auto & pl : _polilines)
     {
-        scaling_point(p, _scale);
-        cv::circle(canvas, p, 10, _line_color, _thickness);
+        pls.push_back(std::vector<cv::Point>());
+        auto & new_pl = pls.back();
+        for (const auto & p : pl)
+        {
+            new_pl.emplace_back(scaling_point(p, _scale));
+            cv::circle(canvas, new_pl.back(), 10, _line_color, _thickness);
+        }
     }
 
-    std::vector<std::vector<cv::Point>> polilines;
-    polilines.push_back(pl);
     bool is_closed = true;
-    cv::polylines(canvas, polilines, is_closed, _line_color, _thickness);
+    cv::polylines(canvas, pls, is_closed, _line_color, _thickness);
 }
 
 void SmartPainter::on_wheel(bool is_forward)
 {
+    _wheel_position = _move_position;
+
     float scale_step = 1.1;
     if(is_forward)
     {
@@ -128,13 +132,13 @@ void SmartPainter::on_wheel(bool is_forward)
 
     if(_scale < 0.001) _scale = 0.001;
     if(_scale > 100) _scale = 100;
-
 }
 
-void SmartPainter::scaling_point(cv::Point &p, float scale)
+template<typename T>
+cv::Point_<T> SmartPainter::scaling_point(const cv::Point_<T> &p, float scale)
 {
-    cv::Point & center = _wheel_position;
-    cv::Point normal = p - center;
+    cv::Point_<T> center = _wheel_position;
+    cv::Point_<T> normal = p - center;
     normal *= scale;
-    p = center + normal;
+    return center + normal;
 }
