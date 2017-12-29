@@ -1,6 +1,11 @@
 #include "smart_painter.h"
 
 
+void scaling_point(const cv::Point & center, cv::Point & p, float scale)
+{
+}
+
+
 SmartPainter::SmartPainter(std::string win_name)
     : _win_name(win_name)
 {
@@ -41,23 +46,26 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags, void *userdata)
 
 void SmartPainter::on_mouse(int event, int x, int y, int flags)
 {
+    using namespace std;
+    using namespace cv;
+
     enum MouseEventFlagsADV
     {
         EVENT_FLAG_WHEELFORWARD = 0x20000,
     };
 
-    using namespace std;
-    using namespace cv;
-
     cv::Point p(x, y);
 
     if(event == EVENT_LBUTTONDOWN)
     {
+        scaling_point(p, 1/_scale);
          _poliline.push_back(p);
     }
 
     if(event == EVENT_MOUSEWHEEL)
     {
+        _wheel_position = _move_position;
+
         if(flags & EVENT_FLAG_WHEELFORWARD)
         {
             on_wheel(true);
@@ -71,6 +79,7 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags)
     if ( event == EVENT_MOUSEMOVE )
     {
          // cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+        _move_position = p;
     }
     else
     {
@@ -88,14 +97,14 @@ void SmartPainter::on_mouse(int event, int x, int y, int flags)
     }
 }
 
+
 void SmartPainter::draw(cv::Mat canvas)
 {
     std::vector<cv::Point> pl = _poliline;
 
     for (cv::Point & p : pl)
     {
-        p.x *= _scale;
-        p.y *= _scale;
+        scaling_point(p, _scale);
         cv::circle(canvas, p, 10, _line_color, _thickness);
     }
 
@@ -120,4 +129,12 @@ void SmartPainter::on_wheel(bool is_forward)
     if(_scale < 0.001) _scale = 0.001;
     if(_scale > 100) _scale = 100;
 
+}
+
+void SmartPainter::scaling_point(cv::Point &p, float scale)
+{
+    cv::Point & center = _wheel_position;
+    cv::Point normal = p - center;
+    normal *= scale;
+    p = center + normal;
 }
