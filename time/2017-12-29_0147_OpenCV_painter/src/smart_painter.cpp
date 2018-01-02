@@ -1,11 +1,6 @@
 #include "smart_painter.h"
 #include <sstream>
 
-void scaling_point(const cv::Point & center, cv::Point & p, float scale)
-{
-}
-
-
 SmartPainter::SmartPainter(std::string win_name)
     : _win_name(win_name)
 {
@@ -13,12 +8,7 @@ SmartPainter::SmartPainter(std::string win_name)
     std::vector<cv::Point2f> points
     {
         cv::Point2f(10.02, 10.04),
-        cv::Point2f(10.03, 10.04),
-        cv::Point2f(10.04, 10.04),
-        cv::Point2f(10.05, 10.04),
         cv::Point2f(10.06, 10.04),
-        cv::Point2f(10.07, 10.04),
-        cv::Point2f(10.08, 10.04),
         cv::Point2f(10.09, 10.04),
     };
 
@@ -132,7 +122,7 @@ void SmartPainter::draw(cv::Mat canvas)
 
     std::stringstream ss;
     ss << "scale = " << _scale;
-    cv::putText(canvas, ss.str(), cv::Point(30, 30), 1, 3, _line_color, _thickness);
+    cv::putText(canvas, ss.str(), cv::Point(30, 30), 1, 2, _line_color, _thickness);
 }
 
 void SmartPainter::on_wheel(bool is_forward)
@@ -159,5 +149,16 @@ cv::Point_<T> SmartPainter::scaling_point(const cv::Point_<T> &p, float scale)
     cv::Point_<T> center = _wheel_position;
     cv::Point_<T> normal = p - center;
     normal *= scale;
-    return center + normal;
+    cv::Point_<T> ret = center + normal;
+
+    std::cout
+            << "SmartPainter::scaling_point: "
+            << "p=" << p << "; "
+            << "scale=" << scale << "; "
+            << "center=" << center << "; "
+            << "normal=" << p << "; "
+            << "ret=" << ret << "; "
+            << std::endl;
+
+    return ret;
 }
