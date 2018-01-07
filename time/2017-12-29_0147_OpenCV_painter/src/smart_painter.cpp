@@ -119,10 +119,6 @@ void SmartPainter::draw(cv::Mat canvas)
 
     bool is_closed = true;
     cv::polylines(canvas, pls, is_closed, _line_color, _thickness);
-
-    std::stringstream ss;
-    ss << "scale = " << _scale;
-    cv::putText(canvas, ss.str(), cv::Point(30, 30), 1, 2, _line_color, _thickness);
 }
 
 void SmartPainter::on_wheel(bool is_forward)
