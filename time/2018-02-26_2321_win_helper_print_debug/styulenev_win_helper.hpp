@@ -38,5 +38,12 @@ std::basic_ostream<wchar_t> & operator<<(std::basic_ostream<wchar_t>& os, const 
         << ")"
         ;
 
-    return os;    
+    return os;
 }
+
+//// Example:
+//
+// STYULENEV_OUT
+//     << "m_ClientRectWorksetTree=" << m_ClientRectWorksetTree << ", "
+//     << "point=" << point
+// STYULENEV_ENDL;
