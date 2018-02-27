@@ -34,7 +34,7 @@ std::basic_ostream<wchar_t> & operator<<(std::basic_ostream<wchar_t>& os, const 
     os
         << "("
         << point.x << ", "
-        << point.y << ", "
+        << point.y
         << ")"
         ;
 
