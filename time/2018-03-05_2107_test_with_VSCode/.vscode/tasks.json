@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build test_program",
+            "type": "shell",
+            "command": "g++.exe",
+            "args": [
+                "-g",
+                "main.cpp",
+                "-o",
+                "test_program"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
