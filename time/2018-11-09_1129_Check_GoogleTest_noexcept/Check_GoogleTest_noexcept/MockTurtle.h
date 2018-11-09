@@ -7,5 +7,5 @@ class MockTurtle : public TurtleIntf
 {
 public:
     MOCK_METHOD0(PenDown, void());
-    MOCK_METHOD1(Forward, bool(int distance));
+    GMOCK_METHOD1_(, noexcept, , Forward, bool(int distance));
 };
