@@ -27,10 +27,10 @@
     <ClInclude Include="Painter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Turtle.h">
+    <ClInclude Include="RealTurtle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RealTurtle.h">
+    <ClInclude Include="TurtleIntf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -42,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RealTurtle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GoogleTestForDummies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

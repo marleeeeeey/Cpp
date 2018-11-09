@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Painter.h"
 
-Painter::Painter(Turtle* turtle)
+Painter::Painter(TurtleIntf* turtle)
     : m_turtle(turtle)
 {
 }

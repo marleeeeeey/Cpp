@@ -1,13 +1,13 @@
 #pragma once
-#include "Turtle.h"
+#include "TurtleIntf.h"
 
 class Painter
 {
 public:
-    Painter(Turtle* turtle);
-    bool DrawCircle(int x, int y, int r);
+    Painter(TurtleIntf* turtle);
     ~Painter();
-
-    Turtle* m_turtle;
+    bool DrawCircle(int x, int y, int r);
+private:
+    TurtleIntf* m_turtle;
 };
 
