@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GoogleTestForDummies.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Painter.cpp" />
     <ClCompile Include="RealTurtle.cpp" />
     <ClCompile Include="stdafx.cpp">
