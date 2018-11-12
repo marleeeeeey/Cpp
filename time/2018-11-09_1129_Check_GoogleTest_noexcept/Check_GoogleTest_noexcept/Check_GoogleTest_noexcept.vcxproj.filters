@@ -33,6 +33,9 @@
     <ClInclude Include="TurtleIntf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="noexcept.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
