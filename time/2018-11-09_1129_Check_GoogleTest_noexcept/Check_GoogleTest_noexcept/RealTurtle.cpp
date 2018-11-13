@@ -21,6 +21,12 @@ void RealTurtle::PenDown()
 
 bool RealTurtle::Forward(int distance) noexcept
 {
+    m_lastForwardValue = distance;
     std::cout << "Forward" << distance << std::endl;
-    return false;
+    return true;
+}
+
+int RealTurtle::GetLastForwardValue()
+{
+    return m_lastForwardValue;
 }
