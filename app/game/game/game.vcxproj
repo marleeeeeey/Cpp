@@ -90,11 +90,21 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(PATH_TO_3RDPARTY)\SFML\SFML-2.5.1\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(PATH_TO_3RDPARTY)\SFML\SFML-2.5.1\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-main-d.lib;sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-system-d.lib;vorbisfile.lib;vorbisenc.lib;vorbis.lib;openal32.lib;ogg.lib;freetype.lib;flac.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>IF NOT ($(ConfigurationName)) == (Debug) GOTO END
+cd $(ProjectDir)
+copy /y $(PATH_TO_3RDPARTY)\SFML\SFML-2.5.1\bin\*.dll $(OutputPath)
+xcopy $(ProjectDir)\resources $(OutputPath)\resources\ /s /i /y
+:END</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
