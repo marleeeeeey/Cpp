@@ -9,6 +9,11 @@
 #include <ctime>
 #include <cstdlib>
 
+void changeBallColor(sf::CircleShape & ball)
+{
+    const sf::Color newColor(std::rand() % 0xff, std::rand() % 0xff, std::rand() % 0xff);
+    ball.setFillColor(newColor);
+}
 
 ////////////////////////////////////////////////////////////
 /// Entry point of application
@@ -20,12 +25,12 @@ int main()
 {
     std::srand(static_cast<unsigned int>(std::time(NULL)));
 
-    // Define some constants
-    const float pi = 3.14159f;
+    // Define some constants;
     const int gameWidth = 800;
     const int gameHeight = 600;
     sf::Vector2f paddleSize(25, 100);
     float ballRadius = 10.f;
+    bool isSurpriseEffectOn = true;
 
     // Create the window of the application
     sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight, 32), "SFML Pong",
@@ -117,7 +122,7 @@ int main()
                     do
                     {
                         // Make sure the ball initial angle is not too much vertical
-                        ballAngle = (std::rand() % 360) * 2 * pi / 360;
+                        ballAngle = Math::degToRad(std::rand() % 360);
                     }
                     while (std::abs(std::cos(ballAngle)) < 0.7f);
                 }
@@ -162,27 +167,39 @@ int main()
             // Move the ball
             float factor = ballSpeed * deltaTime;
             ball.move(std::cos(ballAngle) * factor, std::sin(ballAngle) * factor);
-
+            
             // Check collisions between the ball and the screen
+            // LEFT
             if (ball.getPosition().x - ballRadius < 0.f)
             {
                 isPlaying = false;
                 pauseMessage.setString("You lost!\nPress space to restart or\nescape to exit");
             }
+            // RIGHT
             if (ball.getPosition().x + ballRadius > gameWidth)
             {
                 isPlaying = false;
                 pauseMessage.setString("You won!\nPress space to restart or\nescape to exit");
             }
+            // TOP
             if (ball.getPosition().y - ballRadius < 0.f)
             {
                 ballSound.play();
+                if(isSurpriseEffectOn)
+                {
+                    changeBallColor(ball);
+                }
                 ballAngle = -ballAngle;
                 ball.setPosition(ball.getPosition().x, ballRadius + 0.1f);
             }
+            // BOTTOM
             if (ball.getPosition().y + ballRadius > gameHeight)
             {
                 ballSound.play();
+                if (isSurpriseEffectOn)
+                {
+                    changeBallColor(ball);
+                }
                 ballAngle = -ballAngle;
                 ball.setPosition(ball.getPosition().x, gameHeight - ballRadius - 0.1f);
             }
@@ -195,9 +212,9 @@ int main()
                 ball.getPosition().y - ballRadius <= leftPaddle.getPosition().y + paddleSize.y / 2)
             {
                 if (ball.getPosition().y > leftPaddle.getPosition().y)
-                    ballAngle = pi - ballAngle + (std::rand() % 20) * pi / 180;
+                    ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 20);
                 else
-                    ballAngle = pi - ballAngle - (std::rand() % 20) * pi / 180;
+                    ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 20);
 
                 ballSound.play();
                 ball.setPosition(leftPaddle.getPosition().x + ballRadius + paddleSize.x / 2 + 0.1f, ball.getPosition().y);
@@ -210,9 +227,9 @@ int main()
                 ball.getPosition().y - ballRadius <= rightPaddle.getPosition().y + paddleSize.y / 2)
             {
                 if (ball.getPosition().y > rightPaddle.getPosition().y)
-                    ballAngle = pi - ballAngle + (std::rand() % 20) * pi / 180;
+                    ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 20);
                 else
-                    ballAngle = pi - ballAngle - (std::rand() % 20) * pi / 180;
+                    ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 20);
 
                 ballSound.play();
                 ball.setPosition(rightPaddle.getPosition().x - ballRadius - paddleSize.x / 2 - 0.1f, ball.getPosition().y);
