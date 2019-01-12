@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <cmath>
 #include <ctime>
 #include <cstdlib>
 
@@ -31,6 +30,7 @@ int main()
     sf::Vector2f paddleSize(25, 100);
     float ballRadius = 10.f;
     bool isAutoChangeColor = true;
+    bool isSurpriseMode = true;
 
     // Create the window of the application
     sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight, 32), "SFML Pong",
@@ -186,6 +186,10 @@ int main()
             {
                 ballSound.play();
                 ballAngle = -ballAngle;
+                if(isSurpriseMode)
+                {
+                    ballAngle += Math::degToRad(Math::randRange(-30, 30));
+                }
                 ball.setPosition(ball.getPosition().x, ballRadius + 0.1f);
             }
             // BOTTOM
@@ -193,6 +197,10 @@ int main()
             {
                 ballSound.play();
                 ballAngle = -ballAngle;
+                if (isSurpriseMode)
+                {
+                    ballAngle += Math::degToRad(Math::randRange(-30, 30));
+                }
                 ball.setPosition(ball.getPosition().x, gameHeight - ballRadius - 0.1f);
             }
 
@@ -204,9 +212,9 @@ int main()
                 ball.getPosition().y - ballRadius <= leftPaddle.getPosition().y + paddleSize.y / 2)
             {
                 if (ball.getPosition().y > leftPaddle.getPosition().y)
-                    ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 20);
+                    ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
                 else
-                    ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 20);
+                    ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
 
                 ballSound.play();
                 if (isAutoChangeColor)
@@ -223,9 +231,9 @@ int main()
                 ball.getPosition().y - ballRadius <= rightPaddle.getPosition().y + paddleSize.y / 2)
             {
                 if (ball.getPosition().y > rightPaddle.getPosition().y)
-                    ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 20);
+                    ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
                 else
-                    ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 20);
+                    ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
 
                 ballSound.play();
                 if (isAutoChangeColor)
