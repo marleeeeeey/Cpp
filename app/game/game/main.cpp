@@ -30,7 +30,7 @@ int main()
     const int gameHeight = 600;
     sf::Vector2f paddleSize(25, 100);
     float ballRadius = 10.f;
-    bool isSurpriseEffectOn = true;
+    bool isAutoChangeColor = true;
 
     // Create the window of the application
     sf::RenderWindow window(sf::VideoMode(gameWidth, gameHeight, 32), "SFML Pong",
@@ -185,10 +185,6 @@ int main()
             if (ball.getPosition().y - ballRadius < 0.f)
             {
                 ballSound.play();
-                if(isSurpriseEffectOn)
-                {
-                    changeBallColor(ball);
-                }
                 ballAngle = -ballAngle;
                 ball.setPosition(ball.getPosition().x, ballRadius + 0.1f);
             }
@@ -196,10 +192,6 @@ int main()
             if (ball.getPosition().y + ballRadius > gameHeight)
             {
                 ballSound.play();
-                if (isSurpriseEffectOn)
-                {
-                    changeBallColor(ball);
-                }
                 ballAngle = -ballAngle;
                 ball.setPosition(ball.getPosition().x, gameHeight - ballRadius - 0.1f);
             }
@@ -217,6 +209,10 @@ int main()
                     ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 20);
 
                 ballSound.play();
+                if (isAutoChangeColor)
+                {
+                    changeBallColor(ball);
+                }
                 ball.setPosition(leftPaddle.getPosition().x + ballRadius + paddleSize.x / 2 + 0.1f, ball.getPosition().y);
             }
 
@@ -232,6 +228,10 @@ int main()
                     ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 20);
 
                 ballSound.play();
+                if (isAutoChangeColor)
+                {
+                    changeBallColor(ball);
+                }
                 ball.setPosition(rightPaddle.getPosition().x - ballRadius - paddleSize.x / 2 - 0.1f, ball.getPosition().y);
             }
         }
