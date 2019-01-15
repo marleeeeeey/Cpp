@@ -35,6 +35,15 @@ public:
     const sf::Vector2f& getPosition() const { return m_shape.getPosition(); }
     void draw(sf::RenderWindow& window)
     {
+        correctPosition(window);
+        window.draw(m_shape);
+    }
+    void move(float offsetX, float offsetY) { m_shape.move(offsetX, offsetY); }
+    const sf::Vector2f& getSize() const { return m_shape.getSize(); }
+
+private:
+    void correctPosition(sf::RenderWindow& window)
+    {
         std::pair<int, int> verticalBounds{ 0 + m_paddleSize.x / 2, window.getSize().x - m_paddleSize.x / 2 };
         std::pair<int, int> horizontalBounds{ 0 + m_paddleSize.y / 2, window.getSize().y - m_paddleSize.y / 2 };
 
@@ -51,15 +60,11 @@ public:
             yPos = std::make_optional(horizontalBounds.first);
 
         if (xPos.has_value())
-            m_shape.move(xPos.value(), 0);
+            m_shape.setPosition(xPos.value(), m_shape.getPosition().y);
 
         if (yPos.has_value())
-            m_shape.move(0, yPos.value());
-
-        window.draw(m_shape);
+            m_shape.setPosition(m_shape.getPosition().x, yPos.value());        
     }
-    void move(float offsetX, float offsetY) { m_shape.move(offsetX, offsetY); }
-    const sf::Vector2f& getSize() const { return m_shape.getSize(); }
 };
 
 class World
@@ -87,7 +92,6 @@ public:
         if (!ballSoundBuffer.loadFromFile("resources/ball.wav"))
             throw std::exception("can't load sound from file resources/ball.wav");
         sf::Sound ballSound{ ballSoundBuffer };
-
     }
 
     int main()
