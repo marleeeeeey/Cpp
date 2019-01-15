@@ -7,6 +7,7 @@
 #include <SFML/Audio.hpp>
 #include <ctime>
 #include <cstdlib>
+#include <optional>
 
 void changeBallColor(sf::CircleShape & ball)
 {
@@ -14,12 +15,58 @@ void changeBallColor(sf::CircleShape & ball)
     ball.setFillColor(newColor);
 }
 
+class Paddle
+{
+    sf::RectangleShape leftPaddle;
+    sf::Vector2f paddleSize{ 25, 100 };
+
+public:
+    Paddle()
+    {
+        leftPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
+        leftPaddle.setOutlineThickness(3);
+        leftPaddle.setOutlineColor(sf::Color::Black);
+        leftPaddle.setFillColor(sf::Color(100, 100, 200));
+        leftPaddle.setOrigin(paddleSize / 2.f);        
+    }
+
+    void setFillColor(const sf::Color& color) { leftPaddle.setFillColor(color); }
+    void setPosition(float x, float y) { leftPaddle.setPosition(x, y); }
+    const sf::Vector2f& getPosition() const { return leftPaddle.getPosition(); }
+    void draw(sf::RenderWindow& window)
+    {
+        std::pair<int, int> verticalBounds{ 0 + paddleSize.x / 2, window.getSize().x - paddleSize.x / 2 };
+        std::pair<int, int> horizontalBounds{ 0 + paddleSize.y / 2, window.getSize().y - paddleSize.y / 2 };
+
+        std::optional<int> xPos;
+        std::optional<int> yPos;
+
+        if (leftPaddle.getPosition().x > verticalBounds.second)
+            xPos = std::make_optional(verticalBounds.second);
+        else if (leftPaddle.getPosition().x < verticalBounds.first)
+            xPos = std::make_optional(verticalBounds.first);
+        else if (leftPaddle.getPosition().y > horizontalBounds.second)
+            yPos = std::make_optional(horizontalBounds.second);
+        else if (leftPaddle.getPosition().y < horizontalBounds.first)
+            yPos = std::make_optional(horizontalBounds.first);
+
+        if (xPos.has_value())
+            leftPaddle.move(xPos.value(), 0);
+
+        if (yPos.has_value())
+            leftPaddle.move(0, yPos.value());
+
+        window.draw(leftPaddle);
+    }
+    void move(float offsetX, float offsetY) { leftPaddle.move(offsetX, offsetY); }
+    const sf::Vector2f& getSize() const { return leftPaddle.getSize(); }
+};
+
 class World
 {
     // Define some constants;
     const int gameWidth = 800;
     const int gameHeight = 600;
-    sf::Vector2f paddleSize{ 25, 100 };
     float ballRadius = 10.f;
     bool isAutoChangeColor = true;
     bool isSurpriseMode = true;
@@ -46,20 +93,12 @@ public:
     int main()
     {
         // Create the left paddle
-        sf::RectangleShape leftPaddle;
-        leftPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
-        leftPaddle.setOutlineThickness(3);
-        leftPaddle.setOutlineColor(sf::Color::Black);
+        Paddle leftPaddle;
         leftPaddle.setFillColor(sf::Color(100, 100, 200));
-        leftPaddle.setOrigin(paddleSize / 2.f);
 
         // Create the right paddle
-        sf::RectangleShape rightPaddle;
-        rightPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
-        rightPaddle.setOutlineThickness(3);
-        rightPaddle.setOutlineColor(sf::Color::Black);
+        Paddle rightPaddle;
         rightPaddle.setFillColor(sf::Color(200, 100, 100));
-        rightPaddle.setOrigin(paddleSize / 2.f);
 
         // Create the ball
         sf::CircleShape ball;
@@ -116,8 +155,8 @@ public:
                         clock.restart();
 
                         // Reset the position of the paddles and ball
-                        leftPaddle.setPosition(10 + paddleSize.x / 2, gameHeight / 2);
-                        rightPaddle.setPosition(gameWidth - 10 - paddleSize.x / 2, gameHeight / 2);
+                        leftPaddle.setPosition(10, gameHeight / 2);
+                        rightPaddle.setPosition(gameWidth - 10, gameHeight / 2);
                         ball.setPosition(gameWidth / 2, gameHeight / 2);
 
                         // Reset the ball angle
@@ -135,20 +174,15 @@ public:
                 float deltaTime = clock.restart().asSeconds();
 
                 // Move the player's paddle
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) &&
-                    (leftPaddle.getPosition().y - paddleSize.y / 2 > 5.f))
-                {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                     leftPaddle.move(0.f, -paddleSpeed * deltaTime);
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
-                    (leftPaddle.getPosition().y + paddleSize.y / 2 < gameHeight - 5.f))
-                {
+
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
                     leftPaddle.move(0.f, paddleSpeed * deltaTime);
-                }
 
                 // Move the computer's paddle
-                if (((rightPaddleSpeed < 0.f) && (rightPaddle.getPosition().y - paddleSize.y / 2 > 5.f)) ||
-                    ((rightPaddleSpeed > 0.f) && (rightPaddle.getPosition().y + paddleSize.y / 2 < gameHeight - 5.f)))
+                if (((rightPaddleSpeed < 0.f) && (rightPaddle.getPosition().y > 5.f)) ||
+                    ((rightPaddleSpeed > 0.f) && (rightPaddle.getPosition().y < gameHeight - 5.f)))
                 {
                     rightPaddle.move(0.f, rightPaddleSpeed * deltaTime);
                 }
@@ -157,9 +191,9 @@ public:
                 if (AITimer.getElapsedTime() > AITime)
                 {
                     AITimer.restart();
-                    if (ball.getPosition().y + ballRadius > rightPaddle.getPosition().y + paddleSize.y / 2)
+                    if (ball.getPosition().y + ballRadius > rightPaddle.getPosition().y)
                         rightPaddleSpeed = paddleSpeed;
-                    else if (ball.getPosition().y - ballRadius < rightPaddle.getPosition().y - paddleSize.y / 2)
+                    else if (ball.getPosition().y - ballRadius < rightPaddle.getPosition().y)
                         rightPaddleSpeed = -paddleSpeed;
                     else
                         rightPaddleSpeed = 0.f;
@@ -207,7 +241,7 @@ public:
 
                 // Check the collisions between the ball and the paddles
                 // Left Paddle
-                if (ball.getPosition().x - ballRadius < leftPaddle.getPosition().x + paddleSize.x / 2 &&
+                if (ball.getPosition().x - ballRadius < leftPaddle.getPosition().x + leftPaddle.getSize().x / 2 &&
                     ball.getPosition().x - ballRadius > leftPaddle.getPosition().x &&
                     ball.getPosition().y + ballRadius >= leftPaddle.getPosition().y - paddleSize.y / 2 &&
                     ball.getPosition().y - ballRadius <= leftPaddle.getPosition().y + paddleSize.y / 2)
@@ -251,8 +285,8 @@ public:
             if (isPlaying)
             {
                 // Draw the paddles and the ball
-                window.draw(leftPaddle);
-                window.draw(rightPaddle);
+                leftPaddle.draw(window);
+                rightPaddle.draw(window);
                 window.draw(ball);
             }
             else
