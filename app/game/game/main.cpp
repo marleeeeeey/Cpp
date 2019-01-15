@@ -130,7 +130,7 @@ public:
         window.setVerticalSyncEnabled(true);
 
         // Load the sounds used in the game
-        std::string soundFileName = "resources/sansation.ttf";
+        std::string soundFileName = "resources/ball.wav";
         sf::SoundBuffer ballSoundBuffer;
         if (!ballSoundBuffer.loadFromFile(soundFileName))
         {
@@ -150,14 +150,13 @@ public:
         }
 
         pauseMessage.setFont(font);
+        pauseMessage.setString("Welcome to SFML pong!\nPress space to start the game");
 
         leftPaddle.setFillColor(sf::Color(100, 100, 200));
         rightPaddle.setFillColor(sf::Color(200, 100, 100));
-
-        pauseMessage.setString("Welcome to SFML pong!\nPress space to start the game");
     }
 
-    int main()
+    int mainLoop()
     {
         // Define the paddles properties
         sf::Clock AITimer;
@@ -339,15 +338,8 @@ public:
     }    
 };
 
-
-////////////////////////////////////////////////////////////
-/// Entry point of application
-///
-/// \return Application exit code
-///
-////////////////////////////////////////////////////////////
 int main()
 {
     World world;
-    return world.main();
+    return world.mainLoop();
 }
