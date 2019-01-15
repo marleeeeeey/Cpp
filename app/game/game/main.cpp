@@ -8,6 +8,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <optional>
+#include <sstream>
 
 class Paddle
 {
@@ -23,7 +24,6 @@ public:
         m_shape.setFillColor(sf::Color(100, 100, 200));
         m_shape.setOrigin(m_paddleSize / 2.f);        
     }
-
     void setFillColor(const sf::Color& color) { m_shape.setFillColor(color); }
     void setPosition(float x, float y) { m_shape.setPosition(x, y); }
     const sf::Vector2f& getPosition() const { return m_shape.getPosition(); }
@@ -87,6 +87,24 @@ public:
     float getRadius() const { return m_shape.getRadius(); }
 };
 
+class PauseMessage
+{
+    sf::Text pauseMessage;
+
+public:
+    PauseMessage()
+    {
+        sf::Text pauseMessage;
+        pauseMessage.setCharacterSize(40);
+        pauseMessage.setPosition(170.f, 150.f);
+        pauseMessage.setFillColor(sf::Color::White);
+        pauseMessage.setString("Welcome to SFML pong!\nPress space to start the game");        
+    }
+    void setFont(const sf::Font& font) { pauseMessage.setFont(font); }
+    void setString(const sf::String& string) { pauseMessage.setString(string); }
+    void draw(sf::RenderWindow& window) { window.draw(pauseMessage); }
+};
+
 class World
 {
     // Define some constants;
@@ -97,6 +115,11 @@ class World
 
     sf::RenderWindow window;
     sf::Sound ballSound;
+    Paddle leftPaddle;
+    Paddle rightPaddle;
+    Ball ball;
+    sf::Font font;
+    PauseMessage pauseMessage;
 
 public:
     World()
@@ -107,35 +130,35 @@ public:
         window.setVerticalSyncEnabled(true);
 
         // Load the sounds used in the game
+        std::string soundFileName = "resources/sansation.ttf";
         sf::SoundBuffer ballSoundBuffer;
-        if (!ballSoundBuffer.loadFromFile("resources/ball.wav"))
-            throw std::exception("can't load sound from file resources/ball.wav");
+        if (!ballSoundBuffer.loadFromFile(soundFileName))
+        {
+            std::stringstream ss;
+            ss << "can't load sound from file " << soundFileName;
+            throw std::runtime_error(ss.str());
+        }
         sf::Sound ballSound{ ballSoundBuffer };
+        
+        // Load the text font
+        std::string fontFileName = "resources/sansation.ttf";
+        if (!font.loadFromFile(fontFileName))
+        {
+            std::stringstream ss;
+            ss << "can't load font from file " << fontFileName;
+            throw std::runtime_error(ss.str());
+        }
+
+        pauseMessage.setFont(font);
+
+        leftPaddle.setFillColor(sf::Color(100, 100, 200));
+        rightPaddle.setFillColor(sf::Color(200, 100, 100));
+
+        pauseMessage.setString("Welcome to SFML pong!\nPress space to start the game");
     }
 
     int main()
     {
-        Paddle leftPaddle;
-        leftPaddle.setFillColor(sf::Color(100, 100, 200));
-
-        Paddle rightPaddle;
-        rightPaddle.setFillColor(sf::Color(200, 100, 100));
-
-        Ball ball;
-
-        // Load the text font
-        sf::Font font;
-        if (!font.loadFromFile("resources/sansation.ttf"))
-            return EXIT_FAILURE;
-
-        // Initialize the pause message
-        sf::Text pauseMessage;
-        pauseMessage.setFont(font);
-        pauseMessage.setCharacterSize(40);
-        pauseMessage.setPosition(170.f, 150.f);
-        pauseMessage.setFillColor(sf::Color::White);
-        pauseMessage.setString("Welcome to SFML pong!\nPress space to start the game");
-
         // Define the paddles properties
         sf::Clock AITimer;
         const sf::Time AITime = sf::seconds(0.1f);
@@ -299,15 +322,13 @@ public:
 
             if (isPlaying)
             {
-                // Draw the paddles and the ball
                 leftPaddle.draw(window);
                 rightPaddle.draw(window);
                 ball.draw(window);
             }
             else
             {
-                // Draw the pause message
-                window.draw(pauseMessage);
+                pauseMessage.draw(window);
             }
 
             // Display things on screen
