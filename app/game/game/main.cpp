@@ -9,12 +9,6 @@
 #include <cstdlib>
 #include <optional>
 
-void changeBallColor(sf::CircleShape & ball)
-{
-    const sf::Color newColor(std::rand() % 0xff, std::rand() % 0xff, std::rand() % 0xff);
-    ball.setFillColor(newColor);
-}
-
 class Paddle
 {
     sf::RectangleShape m_shape;
@@ -67,12 +61,37 @@ private:
     }
 };
 
+class Ball
+{
+    sf::CircleShape m_shape;
+    float ballRadius = 10.f;
+
+public:
+    Ball()
+    {
+        m_shape.setRadius(ballRadius - 3);
+        m_shape.setOutlineThickness(3);
+        m_shape.setOutlineColor(sf::Color::Black);
+        m_shape.setFillColor(sf::Color::White);
+        m_shape.setOrigin(ballRadius / 2, ballRadius / 2);        
+    }
+    void setPosition(float x, float y) { m_shape.setPosition(x, y); }
+    const sf::Vector2f& getPosition() const { return m_shape.getPosition(); }
+    void move(float offsetX, float offsetY) { m_shape.move(offsetX, offsetY); }
+    void changeRandomColor()
+    {
+        const sf::Color newColor(std::rand() % 0xff, std::rand() % 0xff, std::rand() % 0xff);
+        m_shape.setFillColor(newColor);
+    }
+    void draw(sf::RenderWindow& window) { window.draw(m_shape); }
+    float getRadius() const { return m_shape.getRadius(); }
+};
+
 class World
 {
     // Define some constants;
     const int gameWidth = 800;
     const int gameHeight = 600;
-    float ballRadius = 10.f;
     bool isAutoChangeColor = true;
     bool isSurpriseMode = true;
 
@@ -96,21 +115,13 @@ public:
 
     int main()
     {
-        // Create the left paddle
         Paddle leftPaddle;
         leftPaddle.setFillColor(sf::Color(100, 100, 200));
 
-        // Create the right paddle
         Paddle rightPaddle;
         rightPaddle.setFillColor(sf::Color(200, 100, 100));
 
-        // Create the ball
-        sf::CircleShape ball;
-        ball.setRadius(ballRadius - 3);
-        ball.setOutlineThickness(3);
-        ball.setOutlineColor(sf::Color::Black);
-        ball.setFillColor(sf::Color::White);
-        ball.setOrigin(ballRadius / 2, ballRadius / 2);
+        Ball ball;
 
         // Load the text font
         sf::Font font;
@@ -195,9 +206,9 @@ public:
                 if (AITimer.getElapsedTime() > AITime)
                 {
                     AITimer.restart();
-                    if (ball.getPosition().y + ballRadius > rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
+                    if (ball.getPosition().y + ball.getRadius() > rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
                         rightPaddleSpeed = paddleSpeed;
-                    else if (ball.getPosition().y - ballRadius < rightPaddle.getPosition().y - rightPaddle.getSize().y / 2)
+                    else if (ball.getPosition().y - ball.getRadius() < rightPaddle.getPosition().y - rightPaddle.getSize().y / 2)
                         rightPaddleSpeed = -paddleSpeed;
                     else
                         rightPaddleSpeed = 0.f;
@@ -209,19 +220,19 @@ public:
 
                 // Check collisions between the ball and the screen
                 // LEFT
-                if (ball.getPosition().x - ballRadius < 0.f)
+                if (ball.getPosition().x - ball.getRadius() < 0.f)
                 {
                     isPlaying = false;
                     pauseMessage.setString("You lost!\nPress space to restart or\nescape to exit");
                 }
                 // RIGHT
-                if (ball.getPosition().x + ballRadius > gameWidth)
+                if (ball.getPosition().x + ball.getRadius() > gameWidth)
                 {
                     isPlaying = false;
                     pauseMessage.setString("You won!\nPress space to restart or\nescape to exit");
                 }
                 // TOP
-                if (ball.getPosition().y - ballRadius < 0.f)
+                if (ball.getPosition().y - ball.getRadius() < 0.f)
                 {
                     ballSound.play();
                     ballAngle = -ballAngle;
@@ -229,10 +240,10 @@ public:
                     {
                         ballAngle += Math::degToRad(Math::randRange(-30, 30));
                     }
-                    ball.setPosition(ball.getPosition().x, ballRadius + 0.1f);
+                    ball.setPosition(ball.getPosition().x, ball.getRadius() + 0.1f);
                 }
                 // BOTTOM
-                if (ball.getPosition().y + ballRadius > gameHeight)
+                if (ball.getPosition().y + ball.getRadius() > gameHeight)
                 {
                     ballSound.play();
                     ballAngle = -ballAngle;
@@ -240,15 +251,15 @@ public:
                     {
                         ballAngle += Math::degToRad(Math::randRange(-30, 30));
                     }
-                    ball.setPosition(ball.getPosition().x, gameHeight - ballRadius - 0.1f);
+                    ball.setPosition(ball.getPosition().x, gameHeight - ball.getRadius() - 0.1f);
                 }
 
                 // Check the collisions between the ball and the paddles
                 // Left Paddle
-                if (ball.getPosition().x - ballRadius < leftPaddle.getPosition().x + leftPaddle.getSize().x / 2 &&
-                    ball.getPosition().x - ballRadius > leftPaddle.getPosition().x &&
-                    ball.getPosition().y + ballRadius >= leftPaddle.getPosition().y - leftPaddle.getSize().y / 2 &&
-                    ball.getPosition().y - ballRadius <= leftPaddle.getPosition().y + leftPaddle.getSize().y / 2)
+                if (ball.getPosition().x - ball.getRadius() < leftPaddle.getPosition().x + leftPaddle.getSize().x / 2 &&
+                    ball.getPosition().x - ball.getRadius() > leftPaddle.getPosition().x &&
+                    ball.getPosition().y + ball.getRadius() >= leftPaddle.getPosition().y - leftPaddle.getSize().y / 2 &&
+                    ball.getPosition().y - ball.getRadius() <= leftPaddle.getPosition().y + leftPaddle.getSize().y / 2)
                 {
                     if (ball.getPosition().y > leftPaddle.getPosition().y)
                         ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
@@ -258,16 +269,16 @@ public:
                     ballSound.play();
                     if (isAutoChangeColor)
                     {
-                        changeBallColor(ball);
+                        ball.changeRandomColor();
                     }
-                    ball.setPosition(leftPaddle.getPosition().x + ballRadius + leftPaddle.getSize().x / 2 + 0.1f, ball.getPosition().y);
+                    ball.setPosition(leftPaddle.getPosition().x + ball.getRadius() + leftPaddle.getSize().x / 2 + 0.1f, ball.getPosition().y);
                 }
 
                 // Right Paddle
-                if (ball.getPosition().x + ballRadius > rightPaddle.getPosition().x - rightPaddle.getSize().x / 2 &&
-                    ball.getPosition().x + ballRadius < rightPaddle.getPosition().x &&
-                    ball.getPosition().y + ballRadius >= rightPaddle.getPosition().y - rightPaddle.getSize().y / 2 &&
-                    ball.getPosition().y - ballRadius <= rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
+                if (ball.getPosition().x + ball.getRadius() > rightPaddle.getPosition().x - rightPaddle.getSize().x / 2 &&
+                    ball.getPosition().x + ball.getRadius() < rightPaddle.getPosition().x &&
+                    ball.getPosition().y + ball.getRadius() >= rightPaddle.getPosition().y - rightPaddle.getSize().y / 2 &&
+                    ball.getPosition().y - ball.getRadius() <= rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
                 {
                     if (ball.getPosition().y > rightPaddle.getPosition().y)
                         ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
@@ -277,9 +288,9 @@ public:
                     ballSound.play();
                     if (isAutoChangeColor)
                     {
-                        changeBallColor(ball);
+                        ball.changeRandomColor();
                     }
-                    ball.setPosition(rightPaddle.getPosition().x - ballRadius - rightPaddle.getSize().x / 2 - 0.1f, ball.getPosition().y);
+                    ball.setPosition(rightPaddle.getPosition().x - ball.getRadius() - rightPaddle.getSize().x / 2 - 0.1f, ball.getPosition().y);
                 }
             }
 
@@ -291,7 +302,7 @@ public:
                 // Draw the paddles and the ball
                 leftPaddle.draw(window);
                 rightPaddle.draw(window);
-                window.draw(ball);
+                ball.draw(window);
             }
             else
             {
