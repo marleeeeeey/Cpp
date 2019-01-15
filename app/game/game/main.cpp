@@ -17,49 +17,49 @@ void changeBallColor(sf::CircleShape & ball)
 
 class Paddle
 {
-    sf::RectangleShape leftPaddle;
-    sf::Vector2f paddleSize{ 25, 100 };
+    sf::RectangleShape m_shape;
+    sf::Vector2f m_paddleSize{ 25, 100 };
 
 public:
     Paddle()
     {
-        leftPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
-        leftPaddle.setOutlineThickness(3);
-        leftPaddle.setOutlineColor(sf::Color::Black);
-        leftPaddle.setFillColor(sf::Color(100, 100, 200));
-        leftPaddle.setOrigin(paddleSize / 2.f);        
+        m_shape.setSize(m_paddleSize - sf::Vector2f(3, 3));
+        m_shape.setOutlineThickness(3);
+        m_shape.setOutlineColor(sf::Color::Black);
+        m_shape.setFillColor(sf::Color(100, 100, 200));
+        m_shape.setOrigin(m_paddleSize / 2.f);        
     }
 
-    void setFillColor(const sf::Color& color) { leftPaddle.setFillColor(color); }
-    void setPosition(float x, float y) { leftPaddle.setPosition(x, y); }
-    const sf::Vector2f& getPosition() const { return leftPaddle.getPosition(); }
+    void setFillColor(const sf::Color& color) { m_shape.setFillColor(color); }
+    void setPosition(float x, float y) { m_shape.setPosition(x, y); }
+    const sf::Vector2f& getPosition() const { return m_shape.getPosition(); }
     void draw(sf::RenderWindow& window)
     {
-        std::pair<int, int> verticalBounds{ 0 + paddleSize.x / 2, window.getSize().x - paddleSize.x / 2 };
-        std::pair<int, int> horizontalBounds{ 0 + paddleSize.y / 2, window.getSize().y - paddleSize.y / 2 };
+        std::pair<int, int> verticalBounds{ 0 + m_paddleSize.x / 2, window.getSize().x - m_paddleSize.x / 2 };
+        std::pair<int, int> horizontalBounds{ 0 + m_paddleSize.y / 2, window.getSize().y - m_paddleSize.y / 2 };
 
         std::optional<int> xPos;
         std::optional<int> yPos;
 
-        if (leftPaddle.getPosition().x > verticalBounds.second)
+        if (m_shape.getPosition().x > verticalBounds.second)
             xPos = std::make_optional(verticalBounds.second);
-        else if (leftPaddle.getPosition().x < verticalBounds.first)
+        else if (m_shape.getPosition().x < verticalBounds.first)
             xPos = std::make_optional(verticalBounds.first);
-        else if (leftPaddle.getPosition().y > horizontalBounds.second)
+        else if (m_shape.getPosition().y > horizontalBounds.second)
             yPos = std::make_optional(horizontalBounds.second);
-        else if (leftPaddle.getPosition().y < horizontalBounds.first)
+        else if (m_shape.getPosition().y < horizontalBounds.first)
             yPos = std::make_optional(horizontalBounds.first);
 
         if (xPos.has_value())
-            leftPaddle.move(xPos.value(), 0);
+            m_shape.move(xPos.value(), 0);
 
         if (yPos.has_value())
-            leftPaddle.move(0, yPos.value());
+            m_shape.move(0, yPos.value());
 
-        window.draw(leftPaddle);
+        window.draw(m_shape);
     }
-    void move(float offsetX, float offsetY) { leftPaddle.move(offsetX, offsetY); }
-    const sf::Vector2f& getSize() const { return leftPaddle.getSize(); }
+    void move(float offsetX, float offsetY) { m_shape.move(offsetX, offsetY); }
+    const sf::Vector2f& getSize() const { return m_shape.getSize(); }
 };
 
 class World
