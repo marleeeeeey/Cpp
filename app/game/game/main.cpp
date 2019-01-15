@@ -155,8 +155,8 @@ public:
                         clock.restart();
 
                         // Reset the position of the paddles and ball
-                        leftPaddle.setPosition(10, gameHeight / 2);
-                        rightPaddle.setPosition(gameWidth - 10, gameHeight / 2);
+                        leftPaddle.setPosition(10 + leftPaddle.getSize().x / 2, gameHeight / 2);
+                        rightPaddle.setPosition(gameWidth - 10 - leftPaddle.getSize().x / 2, gameHeight / 2);
                         ball.setPosition(gameWidth / 2, gameHeight / 2);
 
                         // Reset the ball angle
@@ -181,8 +181,8 @@ public:
                     leftPaddle.move(0.f, paddleSpeed * deltaTime);
 
                 // Move the computer's paddle
-                if (((rightPaddleSpeed < 0.f) && (rightPaddle.getPosition().y > 5.f)) ||
-                    ((rightPaddleSpeed > 0.f) && (rightPaddle.getPosition().y < gameHeight - 5.f)))
+                if (((rightPaddleSpeed < 0.f) && (rightPaddle.getPosition().y - rightPaddle.getSize().y / 2 > 5.f)) ||
+                    ((rightPaddleSpeed > 0.f) && (rightPaddle.getPosition().y + rightPaddle.getSize().y / 2 < gameHeight - 5.f)))
                 {
                     rightPaddle.move(0.f, rightPaddleSpeed * deltaTime);
                 }
@@ -191,9 +191,9 @@ public:
                 if (AITimer.getElapsedTime() > AITime)
                 {
                     AITimer.restart();
-                    if (ball.getPosition().y + ballRadius > rightPaddle.getPosition().y)
+                    if (ball.getPosition().y + ballRadius > rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
                         rightPaddleSpeed = paddleSpeed;
-                    else if (ball.getPosition().y - ballRadius < rightPaddle.getPosition().y)
+                    else if (ball.getPosition().y - ballRadius < rightPaddle.getPosition().y - rightPaddle.getSize().y / 2)
                         rightPaddleSpeed = -paddleSpeed;
                     else
                         rightPaddleSpeed = 0.f;
@@ -243,8 +243,8 @@ public:
                 // Left Paddle
                 if (ball.getPosition().x - ballRadius < leftPaddle.getPosition().x + leftPaddle.getSize().x / 2 &&
                     ball.getPosition().x - ballRadius > leftPaddle.getPosition().x &&
-                    ball.getPosition().y + ballRadius >= leftPaddle.getPosition().y - paddleSize.y / 2 &&
-                    ball.getPosition().y - ballRadius <= leftPaddle.getPosition().y + paddleSize.y / 2)
+                    ball.getPosition().y + ballRadius >= leftPaddle.getPosition().y - leftPaddle.getSize().y / 2 &&
+                    ball.getPosition().y - ballRadius <= leftPaddle.getPosition().y + leftPaddle.getSize().y / 2)
                 {
                     if (ball.getPosition().y > leftPaddle.getPosition().y)
                         ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
@@ -256,14 +256,14 @@ public:
                     {
                         changeBallColor(ball);
                     }
-                    ball.setPosition(leftPaddle.getPosition().x + ballRadius + paddleSize.x / 2 + 0.1f, ball.getPosition().y);
+                    ball.setPosition(leftPaddle.getPosition().x + ballRadius + leftPaddle.getSize().x / 2 + 0.1f, ball.getPosition().y);
                 }
 
                 // Right Paddle
-                if (ball.getPosition().x + ballRadius > rightPaddle.getPosition().x - paddleSize.x / 2 &&
+                if (ball.getPosition().x + ballRadius > rightPaddle.getPosition().x - rightPaddle.getSize().x / 2 &&
                     ball.getPosition().x + ballRadius < rightPaddle.getPosition().x &&
-                    ball.getPosition().y + ballRadius >= rightPaddle.getPosition().y - paddleSize.y / 2 &&
-                    ball.getPosition().y - ballRadius <= rightPaddle.getPosition().y + paddleSize.y / 2)
+                    ball.getPosition().y + ballRadius >= rightPaddle.getPosition().y - rightPaddle.getSize().y / 2 &&
+                    ball.getPosition().y - ballRadius <= rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
                 {
                     if (ball.getPosition().y > rightPaddle.getPosition().y)
                         ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
@@ -275,7 +275,7 @@ public:
                     {
                         changeBallColor(ball);
                     }
-                    ball.setPosition(rightPaddle.getPosition().x - ballRadius - paddleSize.x / 2 - 0.1f, ball.getPosition().y);
+                    ball.setPosition(rightPaddle.getPosition().x - ballRadius - rightPaddle.getSize().x / 2 - 0.1f, ball.getPosition().y);
                 }
             }
 
