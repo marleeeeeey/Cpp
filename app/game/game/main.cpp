@@ -65,6 +65,7 @@ class Ball
 {
     sf::CircleShape m_shape;
     float ballRadius = 10.f;
+    sf::Sound ballSound;
 
 public:
     Ball()
@@ -85,6 +86,8 @@ public:
     }
     void draw(sf::RenderWindow& window) { window.draw(m_shape); }
     float getRadius() const { return m_shape.getRadius(); }
+    void setSoundBuffer(const sf::SoundBuffer & ballSoundBuffer) { ballSound.setBuffer(ballSoundBuffer); }
+    void playSound() { ballSound.play(); }
 };
 
 class PauseMessage
@@ -114,12 +117,12 @@ class World
     bool isSurpriseMode = true;
 
     sf::RenderWindow window;
-    sf::Sound ballSound;
     Paddle leftPaddle;
     Paddle rightPaddle;
     Ball ball;
     sf::Font font;
     PauseMessage pauseMessage;
+    sf::SoundBuffer ballSoundBuffer;
 
 public:
     World()
@@ -130,18 +133,17 @@ public:
         window.setVerticalSyncEnabled(true);
 
         // Load the sounds used in the game
-        std::string soundFileName = "resources/ball.wav";
-        sf::SoundBuffer ballSoundBuffer;
+        const std::string soundFileName = "resources/ball.wav";
         if (!ballSoundBuffer.loadFromFile(soundFileName))
         {
             std::stringstream ss;
             ss << "can't load sound from file " << soundFileName;
             throw std::runtime_error(ss.str());
         }
-        sf::Sound ballSound{ ballSoundBuffer };
+        ball.setSoundBuffer(ballSoundBuffer);
         
         // Load the text font
-        std::string fontFileName = "resources/sansation.ttf";
+        const std::string fontFileName = "resources/sansation.ttf";
         if (!font.loadFromFile(fontFileName))
         {
             std::stringstream ss;
@@ -256,7 +258,7 @@ public:
                 // TOP
                 if (ball.getPosition().y - ball.getRadius() < 0.f)
                 {
-                    ballSound.play();
+                    ball.playSound();
                     ballAngle = -ballAngle;
                     if (isSurpriseMode)
                     {
@@ -267,7 +269,7 @@ public:
                 // BOTTOM
                 if (ball.getPosition().y + ball.getRadius() > gameHeight)
                 {
-                    ballSound.play();
+                    ball.playSound();
                     ballAngle = -ballAngle;
                     if (isSurpriseMode)
                     {
@@ -288,7 +290,7 @@ public:
                     else
                         ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
 
-                    ballSound.play();
+                    ball.playSound();
                     if (isAutoChangeColor)
                     {
                         ball.changeRandomColor();
@@ -307,7 +309,7 @@ public:
                     else
                         ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
 
-                    ballSound.play();
+                    ball.playSound();
                     if (isAutoChangeColor)
                     {
                         ball.changeRandomColor();
