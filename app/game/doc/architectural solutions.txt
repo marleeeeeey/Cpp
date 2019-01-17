@@ -7,3 +7,6 @@
 	- Client send to server commands like paddleUp or paddleDown.
 	- World(Server) calculate position of all objects and send it back to Client.
 	- Controller equale to Client. Client should be NET client, Bot or set of Keyboard keys.
+    - World(Server) should know anything about window or any detals of realisation.
+    IMPLEMENTING_STEPS:
+        - Split World(Server) from Window
