@@ -109,9 +109,18 @@ public:
     void draw(sf::RenderWindow& window) { window.draw(pauseMessage); }
 };
 
+typedef sf::Vector2f Point;
+typedef sf::Vector2f Size;
+
 struct ServerPackage
 {
-    
+    sf::Vector2i screenSize;
+    Point leftPaddleCenter;
+    Size leftPaddleSize;
+    Point rightPaddleCenter;
+    Size rightPaddleSize;
+    Point ballCenter;
+    float ballRadius;
 };
 
 class Server
@@ -330,6 +339,19 @@ public:
 
     void setClient01(std::shared_ptr<IClient> client) { client01 = client; }
     void setClient02(std::shared_ptr<IClient> client) { client02 = client; }
+
+    ServerPackage getPackage()
+    {
+        ServerPackage sp {};
+        sp.screenSize = { gameWidth, gameHeight };
+        sp.leftPaddleCenter = leftPaddle.getPosition();
+        sp.leftPaddleSize = leftPaddle.getSize();
+        sp.rightPaddleCenter = rightPaddle.getPosition();
+        sp.rightPaddleSize = rightPaddle.getSize();
+        sp.ballCenter = ball.getPosition();
+        sp.ballRadius = ball.getRadius();
+        return sp;
+    }
 };
 
 class World
@@ -341,6 +363,8 @@ class World
     sf::RenderWindow window;
     Server server;
     ClientFactory clientFactory;
+    std::shared_ptr<IClient> client01;
+    std::shared_ptr<IClient> client02;
 
 public:
     World()
@@ -350,7 +374,8 @@ public:
     {
         std::srand(static_cast<unsigned int>(std::time(NULL)));
         window.setVerticalSyncEnabled(true);
-        server.setClient01(clientFactory.createClient(ControllerType::User));
+        client01 = clientFactory.createClient(ControllerType::User);
+        server.setClient01(client01);
     }
 
     int mainLoop()
@@ -376,6 +401,9 @@ public:
                 }
             }
 
+            const auto serverPackage = server.getPackage();
+            client01->setServerPackage(serverPackage);
+            //client02->setServerPackage(serverPackage);
             server.iterate();
 
             server.draw(window);
