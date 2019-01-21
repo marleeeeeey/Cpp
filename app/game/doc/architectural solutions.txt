@@ -1,0 +1,12 @@
+2019-01-11 
+- init game repo
+2019-01-17
+- add classes Paddle, Ball, PauseMessage and World.
+- IDEA: Add class Controller to get control action independent (from keybord, from user, from net).
+	- Controller is a part of class World(Server).
+	- Client send to server commands like paddleUp or paddleDown.
+	- World(Server) calculate position of all objects and send it back to Client.
+	- Controller equale to Client. Client should be NET client, Bot or set of Keyboard keys.
+    - World(Server) should know anything about window or any detals of realisation.
+    IMPLEMENTING_STEPS:
+        - Split World(Server) from Window
