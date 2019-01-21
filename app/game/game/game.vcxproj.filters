@@ -21,7 +21,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ControllerFactory.h">
+    <ClInclude Include="ClientFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ControllerFactory.cpp">
+    <ClCompile Include="ClientFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

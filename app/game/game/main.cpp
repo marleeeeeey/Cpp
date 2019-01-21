@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <optional>
 #include <sstream>
+#include "ClientFactory.h"
 
 class Paddle
 {
@@ -108,6 +109,11 @@ public:
     void draw(sf::RenderWindow& window) { window.draw(pauseMessage); }
 };
 
+struct ServerPackage
+{
+    
+};
+
 class Server
 {
     // Define some constants;
@@ -135,6 +141,9 @@ class Server
     float ballAngle = 0.f; // to be changed later
 
     sf::Clock clock;
+
+    std::shared_ptr<IClient> client01;
+    std::shared_ptr<IClient> client02;
 
 public:
     Server(const int gameWidht, const int gameHeight)
@@ -213,10 +222,10 @@ public:
             float deltaTime = clock.restart().asSeconds();
 
             // Move the player's paddle
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            if (client01->paddleUp())
                 leftPaddle.move(0.f, -paddleSpeed * deltaTime);
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            if (client01->paddleDown())
                 leftPaddle.move(0.f, paddleSpeed * deltaTime);
 
             // Move the computer's paddle
@@ -318,6 +327,9 @@ public:
             }
         }        
     }
+
+    void setClient01(std::shared_ptr<IClient> client) { client01 = client; }
+    void setClient02(std::shared_ptr<IClient> client) { client02 = client; }
 };
 
 class World
@@ -328,6 +340,7 @@ class World
 
     sf::RenderWindow window;
     Server server;
+    ClientFactory clientFactory;
 
 public:
     World()
@@ -337,6 +350,7 @@ public:
     {
         std::srand(static_cast<unsigned int>(std::time(NULL)));
         window.setVerticalSyncEnabled(true);
+        server.setClient01(clientFactory.createClient(ControllerType::User));
     }
 
     int mainLoop()
