@@ -10,6 +10,7 @@
 #include <optional>
 #include <sstream>
 #include "ClientFactory.h"
+#include "ServerPackage.h"
 
 class Paddle
 {
@@ -109,20 +110,6 @@ public:
     void draw(sf::RenderWindow& window) { window.draw(pauseMessage); }
 };
 
-typedef sf::Vector2f Point;
-typedef sf::Vector2f Size;
-
-struct ServerPackage
-{
-    sf::Vector2i screenSize;
-    Point leftPaddleCenter;
-    Size leftPaddleSize;
-    Point rightPaddleCenter;
-    Size rightPaddleSize;
-    Point ballCenter;
-    float ballRadius;
-};
-
 class Server
 {
     // Define some constants;
@@ -141,11 +128,7 @@ class Server
 
     bool isPlaying = false;
 
-    // Define the paddles properties
-    sf::Clock AITimer;
-    const sf::Time AITime = sf::seconds(0.1f);
     const float paddleSpeed = 400.f;
-    float rightPaddleSpeed = 0.f;
     const float ballSpeed = 400.f;
     float ballAngle = 0.f; // to be changed later
 
@@ -237,24 +220,12 @@ public:
             if (client01->paddleDown())
                 leftPaddle.move(0.f, paddleSpeed * deltaTime);
 
-            // Move the computer's paddle
-            if (((rightPaddleSpeed < 0.f) && (rightPaddle.getPosition().y - rightPaddle.getSize().y / 2 > 5.f)) ||
-                ((rightPaddleSpeed > 0.f) && (rightPaddle.getPosition().y + rightPaddle.getSize().y / 2 < gameHeight - 5.f)))
-            {
-                rightPaddle.move(0.f, rightPaddleSpeed * deltaTime);
-            }
+            // Move the player's paddle
+            if (client02->paddleUp())
+                rightPaddle.move(0.f, -paddleSpeed * deltaTime);
 
-            // Update the computer's paddle direction according to the ball position
-            if (AITimer.getElapsedTime() > AITime)
-            {
-                AITimer.restart();
-                if (ball.getPosition().y + ball.getRadius() > rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
-                    rightPaddleSpeed = paddleSpeed;
-                else if (ball.getPosition().y - ball.getRadius() < rightPaddle.getPosition().y - rightPaddle.getSize().y / 2)
-                    rightPaddleSpeed = -paddleSpeed;
-                else
-                    rightPaddleSpeed = 0.f;
-            }
+            if (client02->paddleDown())
+                rightPaddle.move(0.f, paddleSpeed * deltaTime);
 
             // Move the ball
             float factor = ballSpeed * deltaTime;
@@ -350,6 +321,8 @@ public:
         sp.rightPaddleSize = rightPaddle.getSize();
         sp.ballCenter = ball.getPosition();
         sp.ballRadius = ball.getRadius();
+        sp.paddleSpeed = paddleSpeed;
+        sp.ballSpeed = ballSpeed;
         return sp;
     }
 };
@@ -374,8 +347,10 @@ public:
     {
         std::srand(static_cast<unsigned int>(std::time(NULL)));
         window.setVerticalSyncEnabled(true);
-        client01 = clientFactory.createClient(ControllerType::User);
+        client01 = clientFactory.createClient(ClientType::User);
+        client02 = clientFactory.createClient(ClientType::Bot);
         server.setClient01(client01);
+        server.setClient02(client02);
     }
 
     int mainLoop()
@@ -403,7 +378,9 @@ public:
 
             const auto serverPackage = server.getPackage();
             client01->setServerPackage(serverPackage);
-            //client02->setServerPackage(serverPackage);
+            client01->updateState();
+            client02->setServerPackage(serverPackage);
+            client02->updateState();
             server.iterate();
 
             server.draw(window);

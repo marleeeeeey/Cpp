@@ -159,6 +159,7 @@ xcopy $(ProjectDir)\resources $(OutputPath)\resources\ /s /i /y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ClientFactory.h" />
+    <ClInclude Include="ServerPackage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

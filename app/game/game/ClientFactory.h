@@ -10,14 +10,15 @@ public:
     virtual void setServerPackage(const ServerPackage & serverPackage) {}
     virtual bool paddleUp() const = 0;
     virtual bool paddleDown() const = 0;
+    virtual void updateState() = 0;
 };
 
-enum class ControllerType { Bot, User };
+enum class ClientType { Bot, User };
 
 
 class ClientFactory
 {   
 
 public:
-    std::shared_ptr<IClient> createClient(ControllerType controllerType);
+    std::shared_ptr<IClient> createClient(ClientType controllerType);
 };
