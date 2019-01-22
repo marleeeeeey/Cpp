@@ -1,7 +1,3 @@
-
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
 #include "stdafx.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -347,8 +343,8 @@ public:
     {
         std::srand(static_cast<unsigned int>(std::time(NULL)));
         window.setVerticalSyncEnabled(true);
-        client01 = clientFactory.createClient(ClientType::User);
-        client02 = clientFactory.createClient(ClientType::Bot);
+        client01 = clientFactory.createClient(ClientType::User, "WS");
+        client02 = clientFactory.createClient(ClientType::Bot, "PL");
         server.setClient01(client01);
         server.setClient02(client02);
     }

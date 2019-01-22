@@ -4,21 +4,40 @@
 #include "ServerPackage.h"
 #include <SFML/Audio/SoundBufferRecorder.hpp>
 #include <SFML/System/Clock.hpp>
+#include <cctype>
+
+sf::Keyboard::Key getKeyFromChar(char letter)
+{
+    letter = std::toupper(letter);
+    char offset = 'A';
+    return static_cast<sf::Keyboard::Key>(letter - offset);
+}
 
 class KeyboardClient : public IClient
 {
+    sf::Keyboard::Key up;
+    sf::Keyboard::Key down;
+
 public:
+    KeyboardClient(sf::Keyboard::Key up, sf::Keyboard::Key down)
+    {
+        this->up = up;
+        this->down = down;        
+    }
+
+    // interface IClient
     bool paddleUp() const override
     {
-        return sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+        return sf::Keyboard::isKeyPressed(up);
     }
 
     bool paddleDown() const override
     {
-        return sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+        return sf::Keyboard::isKeyPressed(down);
     }
 
     void updateState() override {}
+
 };
 
 class BotClient : public IClient
@@ -63,18 +82,14 @@ public:
     }
 };
 
-std::shared_ptr<IClient> ClientFactory::createClient(ClientType controllerType)
+std::shared_ptr<IClient> ClientFactory::createClient(ClientType controllerType, std::string params)
 {
     switch (controllerType)
     {
     case ClientType::User:
-        return std::shared_ptr<IClient>(new KeyboardClient());
+        assert(!params.empty());
+        return std::shared_ptr<IClient>(new KeyboardClient(getKeyFromChar(params[0]), getKeyFromChar(params[1])));
     case ClientType::Bot:
         return std::shared_ptr<IClient>(new BotClient());
-    }
-
-    if (controllerType==ClientType::User)
-    {
-    }
-
+    }    
 }

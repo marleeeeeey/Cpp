@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 
 struct ServerPackage;
 
@@ -20,5 +21,5 @@ class ClientFactory
 {   
 
 public:
-    std::shared_ptr<IClient> createClient(ClientType controllerType);
+    std::shared_ptr<IClient> createClient(ClientType controllerType, std::string params = "");
 };
