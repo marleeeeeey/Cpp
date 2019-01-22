@@ -10,3 +10,6 @@
     - World(Server) should know anything about window or any detals of realisation.
     IMPLEMENTING_STEPS:
         - Split World(Server) from Window
+2019-01-22
+- Server and World are different entries.
+- Add class Client (it can be Bot or User with hardcode keycontrol)
