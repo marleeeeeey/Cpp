@@ -16,10 +16,8 @@ public:
 
 enum class ClientType { Bot, User };
 
-
 class ClientFactory
-{   
-
+{ 
 public:
     std::shared_ptr<IClient> createClient(ClientType controllerType, std::string params = "") const;
 };
