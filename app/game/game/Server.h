@@ -33,15 +33,18 @@ class Server
 
 public:
     Server(int gameWidht, int gameHeight);
-
     void restartGame();
-
     void draw(sf::RenderWindow& window);
-
     void iterate();
-
     void setClient01(std::shared_ptr<IClient> client);
     void setClient02(std::shared_ptr<IClient> client);
-
     ServerPackage getPackage() const;
+
+private:
+    void loadBallSoundBuffer();
+    void loadTextFont();
+    void checkPaddlesCollision();
+    void checkScreenCollision();
+    void movePaddles(float);
+    void moveBall(float);
 };

@@ -2,9 +2,7 @@
 #include "Server.h"
 #include <sstream>
 
-Server::Server(const int gameWidht, const int gameHeight)
-    : gameWidth(gameWidht)
-    , gameHeight(gameHeight)
+void Server::loadBallSoundBuffer()
 {
     // Load the sounds used in the game
     const std::string soundFileName = "resources/ball.wav";
@@ -15,10 +13,10 @@ Server::Server(const int gameWidht, const int gameHeight)
         throw std::runtime_error(ss.str());
     }
     ball.setSoundBuffer(ballSoundBuffer);
+}
 
-    leftPaddle.setFillColor(sf::Color(100, 100, 200));
-    rightPaddle.setFillColor(sf::Color(200, 100, 100));
-
+void Server::loadTextFont()
+{
     // Load the text font
     const std::string fontFileName = "resources/sansation.ttf";
     if (!font.loadFromFile(fontFileName))
@@ -27,6 +25,17 @@ Server::Server(const int gameWidht, const int gameHeight)
         ss << "can't load font from file " << fontFileName;
         throw std::runtime_error(ss.str());
     }
+}
+
+Server::Server(const int gameWidht, const int gameHeight)
+    : gameWidth(gameWidht)
+    , gameHeight(gameHeight)
+{
+    loadBallSoundBuffer();
+    loadTextFont();
+
+    leftPaddle.setFillColor(sf::Color(100, 100, 200));
+    rightPaddle.setFillColor(sf::Color(200, 100, 100));
 
     pauseMessage.setFont(font);
     pauseMessage.setString("Welcome to SFML pong!\nPress space to start the game");
@@ -72,107 +81,124 @@ void Server::draw(sf::RenderWindow& window)
     }
 }
 
+void Server::checkPaddlesCollision()
+{
+    // Check the collisions between the ball and the paddles
+    // Left Paddle
+    if (ball.getPosition().x - ball.getRadius() < leftPaddle.getPosition().x + leftPaddle.getSize().x / 2 &&
+        ball.getPosition().x - ball.getRadius() > leftPaddle.getPosition().x &&
+        ball.getPosition().y + ball.getRadius() >= leftPaddle.getPosition().y - leftPaddle.getSize().y / 2 &&
+        ball.getPosition().y - ball.getRadius() <= leftPaddle.getPosition().y + leftPaddle.getSize().y / 2)
+    {
+        if (ball.getPosition().y > leftPaddle.getPosition().y)
+            ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
+        else
+            ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
+
+        ball.playSound();
+        if (isAutoChangeColor)
+        {
+            ball.changeRandomColor();
+        }
+        ball.setPosition(leftPaddle.getPosition().x + ball.getRadius() + leftPaddle.getSize().x / 2 + 0.1f,
+                         ball.getPosition().y);
+    }
+
+    // Right Paddle
+    if (ball.getPosition().x + ball.getRadius() > rightPaddle.getPosition().x - rightPaddle.getSize().x / 2 &&
+        ball.getPosition().x + ball.getRadius() < rightPaddle.getPosition().x &&
+        ball.getPosition().y + ball.getRadius() >= rightPaddle.getPosition().y - rightPaddle.getSize().y / 2 &&
+        ball.getPosition().y - ball.getRadius() <= rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
+    {
+        if (ball.getPosition().y > rightPaddle.getPosition().y)
+            ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
+        else
+            ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
+
+        ball.playSound();
+        if (isAutoChangeColor)
+        {
+            ball.changeRandomColor();
+        }
+        ball.setPosition(rightPaddle.getPosition().x - ball.getRadius() - rightPaddle.getSize().x / 2 - 0.1f,
+                         ball.getPosition().y);
+    }
+}
+
+void Server::checkScreenCollision()
+{
+    // Check collisions between the ball and the screen
+    // LEFT
+    if (ball.getPosition().x - ball.getRadius() < 0.f)
+    {
+        isPlaying = false;
+        pauseMessage.setString("You lost!\nPress space to restart or\nescape to exit");
+    }
+    // RIGHT
+    if (ball.getPosition().x + ball.getRadius() > gameWidth)
+    {
+        isPlaying = false;
+        pauseMessage.setString("You won!\nPress space to restart or\nescape to exit");
+    }
+    // TOP
+    if (ball.getPosition().y - ball.getRadius() < 0.f)
+    {
+        ball.playSound();
+        ballAngle = -ballAngle;
+        if (isSurpriseMode)
+        {
+            ballAngle += Math::degToRad(Math::randRange(-30, 30));
+        }
+        ball.setPosition(ball.getPosition().x, ball.getRadius() + 0.1f);
+    }
+    // BOTTOM
+    if (ball.getPosition().y + ball.getRadius() > gameHeight)
+    {
+        ball.playSound();
+        ballAngle = -ballAngle;
+        if (isSurpriseMode)
+        {
+            ballAngle += Math::degToRad(Math::randRange(-30, 30));
+        }
+        ball.setPosition(ball.getPosition().x, gameHeight - ball.getRadius() - 0.1f);
+    }
+}
+
+void Server::movePaddles(const float deltaTime)
+{
+    // Move the player's paddle
+    if (client01->paddleUp())
+        leftPaddle.move(0.f, -paddleSpeed * deltaTime);
+
+    if (client01->paddleDown())
+        leftPaddle.move(0.f, paddleSpeed * deltaTime);
+
+    // Move the player's paddle
+    if (client02->paddleUp())
+        rightPaddle.move(0.f, -paddleSpeed * deltaTime);
+
+    if (client02->paddleDown())
+        rightPaddle.move(0.f, paddleSpeed * deltaTime);
+}
+
+void Server::moveBall(const float deltaTime)
+{
+    // Move the ball
+    const auto factor = ballSpeed * deltaTime;
+    ball.move(std::cos(ballAngle) * factor, std::sin(ballAngle) * factor);
+}
+
 void Server::iterate()
 {
-    if (isPlaying)
-    {
-        const auto deltaTime = clock.restart().asSeconds();
+    if (!isPlaying)
+        return;
 
-        // Move the player's paddle
-        if (client01->paddleUp())
-            leftPaddle.move(0.f, -paddleSpeed * deltaTime);
+    const auto deltaTime = clock.restart().asSeconds();
 
-        if (client01->paddleDown())
-            leftPaddle.move(0.f, paddleSpeed * deltaTime);
-
-        // Move the player's paddle
-        if (client02->paddleUp())
-            rightPaddle.move(0.f, -paddleSpeed * deltaTime);
-
-        if (client02->paddleDown())
-            rightPaddle.move(0.f, paddleSpeed * deltaTime);
-
-        // Move the ball
-        const auto factor = ballSpeed * deltaTime;
-        ball.move(std::cos(ballAngle) * factor, std::sin(ballAngle) * factor);
-
-        // Check collisions between the ball and the screen
-        // LEFT
-        if (ball.getPosition().x - ball.getRadius() < 0.f)
-        {
-            isPlaying = false;
-            pauseMessage.setString("You lost!\nPress space to restart or\nescape to exit");
-        }
-        // RIGHT
-        if (ball.getPosition().x + ball.getRadius() > gameWidth)
-        {
-            isPlaying = false;
-            pauseMessage.setString("You won!\nPress space to restart or\nescape to exit");
-        }
-        // TOP
-        if (ball.getPosition().y - ball.getRadius() < 0.f)
-        {
-            ball.playSound();
-            ballAngle = -ballAngle;
-            if (isSurpriseMode)
-            {
-                ballAngle += Math::degToRad(Math::randRange(-30, 30));
-            }
-            ball.setPosition(ball.getPosition().x, ball.getRadius() + 0.1f);
-        }
-        // BOTTOM
-        if (ball.getPosition().y + ball.getRadius() > gameHeight)
-        {
-            ball.playSound();
-            ballAngle = -ballAngle;
-            if (isSurpriseMode)
-            {
-                ballAngle += Math::degToRad(Math::randRange(-30, 30));
-            }
-            ball.setPosition(ball.getPosition().x, gameHeight - ball.getRadius() - 0.1f);
-        }
-
-        // Check the collisions between the ball and the paddles
-        // Left Paddle
-        if (ball.getPosition().x - ball.getRadius() < leftPaddle.getPosition().x + leftPaddle.getSize().x / 2 &&
-            ball.getPosition().x - ball.getRadius() > leftPaddle.getPosition().x &&
-            ball.getPosition().y + ball.getRadius() >= leftPaddle.getPosition().y - leftPaddle.getSize().y / 2 &&
-            ball.getPosition().y - ball.getRadius() <= leftPaddle.getPosition().y + leftPaddle.getSize().y / 2)
-        {
-            if (ball.getPosition().y > leftPaddle.getPosition().y)
-                ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
-            else
-                ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
-
-            ball.playSound();
-            if (isAutoChangeColor)
-            {
-                ball.changeRandomColor();
-            }
-            ball.setPosition(leftPaddle.getPosition().x + ball.getRadius() + leftPaddle.getSize().x / 2 + 0.1f,
-                             ball.getPosition().y);
-        }
-
-        // Right Paddle
-        if (ball.getPosition().x + ball.getRadius() > rightPaddle.getPosition().x - rightPaddle.getSize().x / 2 &&
-            ball.getPosition().x + ball.getRadius() < rightPaddle.getPosition().x &&
-            ball.getPosition().y + ball.getRadius() >= rightPaddle.getPosition().y - rightPaddle.getSize().y / 2 &&
-            ball.getPosition().y - ball.getRadius() <= rightPaddle.getPosition().y + rightPaddle.getSize().y / 2)
-        {
-            if (ball.getPosition().y > rightPaddle.getPosition().y)
-                ballAngle = M_PI - ballAngle + Math::degToRad(std::rand() % 50);
-            else
-                ballAngle = M_PI - ballAngle - Math::degToRad(std::rand() % 50);
-
-            ball.playSound();
-            if (isAutoChangeColor)
-            {
-                ball.changeRandomColor();
-            }
-            ball.setPosition(rightPaddle.getPosition().x - ball.getRadius() - rightPaddle.getSize().x / 2 - 0.1f,
-                             ball.getPosition().y);
-        }
-    }
+    movePaddles(deltaTime);
+    moveBall(deltaTime);
+    checkScreenCollision();
+    checkPaddlesCollision();
 }
 
 void Server::setClient01(const std::shared_ptr<IClient> client)
