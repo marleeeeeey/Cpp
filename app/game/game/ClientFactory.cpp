@@ -9,7 +9,7 @@
 sf::Keyboard::Key getKeyFromChar(char letter)
 {
     letter = std::toupper(letter);
-    char offset = 'A';
+    const auto offset = 'A';
     return static_cast<sf::Keyboard::Key>(letter - offset);
 }
 
@@ -19,7 +19,7 @@ class KeyboardClient : public IClient
     sf::Keyboard::Key down;
 
 public:
-    KeyboardClient(sf::Keyboard::Key up, sf::Keyboard::Key down)
+    KeyboardClient(const sf::Keyboard::Key up, const sf::Keyboard::Key down)
     {
         this->up = up;
         this->down = down;        
@@ -42,14 +42,14 @@ public:
 
 class BotClient : public IClient
 {
-    ServerPackage serverPackage;
+    ServerPackage serverPackage{};
     float rightPaddleSpeed = 0.f;
     enum class BotPaddleState { None, Up, Down };
     BotPaddleState state = BotPaddleState::None;
 
     // Define the paddles properties
-    sf::Clock AITimer;
-    const sf::Time AITime = sf::seconds(0.1f);
+    sf::Clock timer;
+    const sf::Time timerThreshold = sf::seconds(0.1f);
 
 public:
     void setServerPackage(const ServerPackage& package) override { serverPackage = package; }
@@ -66,12 +66,12 @@ public:
 
     void updateState() override
     {
-        ServerPackage & sp = serverPackage;
+        auto& sp = serverPackage;
 
         // Update the computer's paddle direction according to the ball position
-        if (AITimer.getElapsedTime() > AITime)
+        if (timer.getElapsedTime() > timerThreshold)
         {
-            AITimer.restart();
+            timer.restart();
             if (sp.ballCenter.y + sp.ballRadius > sp.rightPaddleCenter.y + sp.rightPaddleSize.y / 2)
                 state = BotPaddleState::Down;
             else if (sp.ballCenter.y - sp.ballRadius < sp.rightPaddleCenter.y - sp.rightPaddleSize.y / 2)
@@ -82,14 +82,17 @@ public:
     }
 };
 
-std::shared_ptr<IClient> ClientFactory::createClient(ClientType controllerType, std::string params)
+std::shared_ptr<IClient> ClientFactory::createClient(const ClientType controllerType, std::string params) const
 {
     switch (controllerType)
     {
     case ClientType::User:
         assert(!params.empty());
-        return std::shared_ptr<IClient>(new KeyboardClient(getKeyFromChar(params[0]), getKeyFromChar(params[1])));
+        return std::static_pointer_cast<IClient>(
+            std::make_shared<KeyboardClient>(getKeyFromChar(params[0]), getKeyFromChar(params[1])));
     case ClientType::Bot:
-        return std::shared_ptr<IClient>(new BotClient());
-    }    
+        return std::static_pointer_cast<IClient>(std::make_shared<BotClient>());
+    }
+
+    return {};
 }

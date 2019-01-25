@@ -5,7 +5,7 @@ World::World(): window(sf::VideoMode(gameWidth, gameHeight, 32), "SFML Pong",
                        sf::Style::Titlebar | sf::Style::Close)
                 , server(gameWidth, gameHeight)
 {
-    std::srand(static_cast<unsigned int>(std::time(NULL)));
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
     window.setVerticalSyncEnabled(true);
     client01 = clientFactory.createClient(ClientType::User, "WS");
     client02 = clientFactory.createClient(ClientType::Bot, "PL");
@@ -22,15 +22,15 @@ int World::mainLoop()
         while (window.pollEvent(event))
         {
             // Window closed or escape key pressed: exit
-            if ((event.type == sf::Event::Closed) ||
-                ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape)))
+            if (event.type == sf::Event::Closed ||
+                event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
             {
                 window.close();
                 break;
             }
 
             // Space key pressed: play
-            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space))
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
             {
                 server.restartGame();
             }

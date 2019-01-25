@@ -2,8 +2,9 @@
 #include "Server.h"
 #include <sstream>
 
-Server::Server(const int gameWidht, const int gameHeight): gameWidth(gameWidht)
-                                                           , gameHeight(gameHeight)
+Server::Server(const int gameWidht, const int gameHeight)
+    : gameWidth(gameWidht)
+    , gameHeight(gameHeight)
 {
     // Load the sounds used in the game
     const std::string soundFileName = "resources/ball.wav";
@@ -75,7 +76,7 @@ void Server::iterate()
 {
     if (isPlaying)
     {
-        float deltaTime = clock.restart().asSeconds();
+        const auto deltaTime = clock.restart().asSeconds();
 
         // Move the player's paddle
         if (client01->paddleUp())
@@ -92,7 +93,7 @@ void Server::iterate()
             rightPaddle.move(0.f, paddleSpeed * deltaTime);
 
         // Move the ball
-        float factor = ballSpeed * deltaTime;
+        const auto factor = ballSpeed * deltaTime;
         ball.move(std::cos(ballAngle) * factor, std::sin(ballAngle) * factor);
 
         // Check collisions between the ball and the screen
@@ -174,17 +175,17 @@ void Server::iterate()
     }
 }
 
-void Server::setClient01(std::shared_ptr<IClient> client)
+void Server::setClient01(const std::shared_ptr<IClient> client)
 {
     client01 = client;
 }
 
-void Server::setClient02(std::shared_ptr<IClient> client)
+void Server::setClient02(const std::shared_ptr<IClient> client)
 {
     client02 = client;
 }
 
-ServerPackage Server::getPackage()
+ServerPackage Server::getPackage() const
 {
     ServerPackage sp{};
     sp.screenSize = {gameWidth, gameHeight};

@@ -32,7 +32,7 @@ class Server
     std::shared_ptr<IClient> client02;
 
 public:
-    Server(const int gameWidht, const int gameHeight);
+    Server(int gameWidht, int gameHeight);
 
     void restartGame();
 
@@ -43,5 +43,5 @@ public:
     void setClient01(std::shared_ptr<IClient> client);
     void setClient02(std::shared_ptr<IClient> client);
 
-    ServerPackage getPackage();
+    ServerPackage getPackage() const;
 };

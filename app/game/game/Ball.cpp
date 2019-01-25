@@ -10,7 +10,7 @@ Ball::Ball()
     ballShape.setOrigin(ballRadius / 2, ballRadius / 2);
 }
 
-void Ball::setPosition(float x, float y)
+void Ball::setPosition(const float x, const float y)
 {
     ballShape.setPosition(x, y);
 }
@@ -20,7 +20,7 @@ const sf::Vector2f& Ball::getPosition() const
     return ballShape.getPosition();
 }
 
-void Ball::move(float offsetX, float offsetY)
+void Ball::move(const float offsetX, const float offsetY)
 {
     ballShape.move(offsetX, offsetY);
 }
@@ -31,7 +31,7 @@ void Ball::changeRandomColor()
     ballShape.setFillColor(newColor);
 }
 
-void Ball::draw(sf::RenderWindow& window)
+void Ball::draw(sf::RenderWindow& window) const
 {
     window.draw(ballShape);
 }

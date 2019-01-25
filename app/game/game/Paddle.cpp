@@ -1,5 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Paddle.h"
+#include <optional>
 
 Paddle::Paddle()
 {
@@ -15,7 +16,7 @@ void Paddle::setFillColor(const sf::Color& color)
     paddleShape.setFillColor(color);
 }
 
-void Paddle::setPosition(float x, float y)
+void Paddle::setPosition(const float x, const float y)
 {
     paddleShape.setPosition(x, y);
 }
@@ -31,7 +32,7 @@ void Paddle::draw(sf::RenderWindow& window)
     window.draw(paddleShape);
 }
 
-void Paddle::move(float offsetX, float offsetY)
+void Paddle::move(const float offsetX, const float offsetY)
 {
     paddleShape.move(offsetX, offsetY);
 }
@@ -43,11 +44,11 @@ const sf::Vector2f& Paddle::getSize() const
 
 void Paddle::correctPosition(sf::RenderWindow& window)
 {
-    std::pair<int, int> verticalBounds{0 + paddleSize.x / 2, window.getSize().x - paddleSize.x / 2};
-    std::pair<int, int> horizontalBounds{0 + paddleSize.y / 2, window.getSize().y - paddleSize.y / 2};
+    std::pair<float, float> verticalBounds{0 + paddleSize.x / 2, window.getSize().x - paddleSize.x / 2};
+    std::pair<float, float> horizontalBounds{0 + paddleSize.y / 2, window.getSize().y - paddleSize.y / 2};
 
-    std::optional<int> xPos;
-    std::optional<int> yPos;
+    std::optional<float> xPos;
+    std::optional<float> yPos;
 
     if (paddleShape.getPosition().x > verticalBounds.second)
         xPos = std::make_optional(verticalBounds.second);

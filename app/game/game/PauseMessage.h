@@ -9,5 +9,5 @@ public:
     PauseMessage();
     void setFont(const sf::Font& font);
     void setString(const sf::String& string);
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window) const;
 };

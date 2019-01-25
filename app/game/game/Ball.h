@@ -14,7 +14,7 @@ public:
     const sf::Vector2f& getPosition() const;
     void move(float offsetX, float offsetY);
     void changeRandomColor();
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window) const;
     float getRadius() const;
     void setSoundBuffer(const sf::SoundBuffer& ballSoundBuffer);
     void playSound();

@@ -20,7 +20,7 @@ void PauseMessage::setString(const sf::String& string)
     pauseMessage.setString(string);
 }
 
-void PauseMessage::draw(sf::RenderWindow& window)
+void PauseMessage::draw(sf::RenderWindow& window) const
 {
     window.draw(pauseMessage);
 }
