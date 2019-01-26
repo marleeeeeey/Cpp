@@ -1,17 +1,16 @@
 My features (MF)
 
-MF1. Добавить возможность сетевой игры.
-MF2. Добавить разных угол отражения от разных краев ракетки.
-MF3. Добавить стороннюю библиотеку для поддержки физики - добавить режим игры с одной рокеткой.
-MF4. Добавить отображение счета и времени на игровой экран.
-MF5. Добавить инсталлер для приложения.
-MF6. Добавить требования к ОС и msvc redisstributable 140.
-MF7. Добавить возможность настраивать управление.
-MF8. Добавить бонусы:
-	- ускорение мячика;
-	- откат времени;
-	- странное поведение при отражении от краев экрана;
-	- увеличение размеров ракетки;
-	- изменение скорости ракетки;
-	- автопилот.
-MF9. Сделать статическую линковку, чтобы не тащить dll.
+MF1. Add network game support.
+MF2. Different reflect angle for different paddle collision point.
+MF3. Add a third-party library for 2D physics.
+MF4. Show scope and time game.
+MF5. Add the game installer.
+MF6-REJECTED. OS requirements.
+MF7. Add menu to setup control.
+MF8. Game bonuses:
+    - ball accelerate;
+    - give the time back;
+    - resize Paddle;
+    - change Paddle speed;
+    - autopilot.
+MF9. static link instead dynamic.
