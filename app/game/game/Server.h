@@ -18,7 +18,7 @@ class Server
     PauseMessage pauseMessage;
 
     bool isAutoChangeColor = true;
-    bool isSurpriseMode = true;
+    bool isSurpriseMode = false;
 
     bool isPlaying = false;
 
