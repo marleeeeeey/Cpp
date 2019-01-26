@@ -1,8 +1,11 @@
+Architectural Solutions (AS)
+
 2019-01-11 
-- init game repo
+AS001. init game repo
+
 2019-01-17
-- add classes Paddle, Ball, PauseMessage and World.
-- IDEA: Add class Controller to get control action independent (from keybord, from user, from net).
+AS002. Add separate classes Paddle, Ball, PauseMessage and World.
+AS003. IDEA: Add class Controller to get control action independent (from keybord, from user, from net).
 	- Controller is a part of class World(Server).
 	- Client send to server commands like paddleUp or paddleDown.
 	- World(Server) calculate position of all objects and send it back to Client.
@@ -10,6 +13,12 @@
     - World(Server) should know anything about window or any detals of realisation.
     IMPLEMENTING_STEPS:
         - Split World(Server) from Window
+
 2019-01-22
-- Server and World are different entries.
-- Add class Client (it can be Bot or User with hardcode keycontrol)
+AS004. Server and World are different entries.
+AS005. Add class Client (it can be Bot or User with hardcode keycontrol)
+
+2019-01-26
+AS006. Ball should know themself how to determine collisions.
+	- try to add Engine Box2D.
+AS007. Add SmokeTests to check that refactoring break nothing.
