@@ -1,7 +1,0 @@
-Customer's Requirements (CR)
-
-CR001-DONE. Surprise behaviour on reflection from screen border.
-CR002-REJECT. Change color.
-CR003-MOVE. Menu to sound setup or button to disable volume.
-CR004-DONE. Change ball color by reflecting from Paddle.
-CR005. Add rang for game in one session.
