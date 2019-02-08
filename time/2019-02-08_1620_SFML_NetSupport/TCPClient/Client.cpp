@@ -1,5 +1,5 @@
-#include <SFML/Network.hpp>
 #include <iostream>
+#include "ServerInterface.h"
 
 void runTcpClient(unsigned short port)
 {
@@ -8,7 +8,8 @@ void runTcpClient(unsigned short port)
     do
     {
         std::cout << "Type the address or name of the server to connect to: ";
-        std::cin >> server;
+        //std::cin >> server;
+        server = "127.0.0.1";
     } while(server == sf::IpAddress::None);
 
     // Create a socket for communicating with the server
@@ -19,22 +20,21 @@ void runTcpClient(unsigned short port)
         return;
     std::cout << "Connected to server " << server << std::endl;
 
-    // Receive a message from the server
-    char in[128];
-    std::size_t received;
-    if(socket.receive(in, sizeof(in), received) != sf::Socket::Done)
-        return;
-    std::cout << "Message received from the server: \"" << in << "\"" << std::endl;
+    sf::Packet packet;
 
-    // Send an answer to the server
-    const char out[] = "Hi, I'm a client";
-    if(socket.send(out, sizeof(out)) != sf::Socket::Done)
-        return;
-    std::cout << "Message sent to the server: \"" << out << "\"" << std::endl;
+    std::string msgFromServer;
+    socket.receive(packet);
+    packet >> msgFromServer;
+    std::cout << "Answer received from the server: \"" << msgFromServer << "\"" << std::endl;
+
+    std::string msgToServer = "Hi, I'm the client";
+    packet << msgToServer;
+    socket.send(packet);
+    std::cout << "Message sent to the server: \"" << msgToServer << "\"" << std::endl;
 }
 
 int main()
 {
-    runTcpClient(12345);
+    runTcpClient(MagicNumbers::port());
     std::cin.get();
 }
