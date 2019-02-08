@@ -1,6 +1,6 @@
 #pragma once
-
 #include <SFML/Network.hpp>
+
 using SocketPtr = std::shared_ptr<sf::TcpSocket>;
 
 class MagicNumbers
