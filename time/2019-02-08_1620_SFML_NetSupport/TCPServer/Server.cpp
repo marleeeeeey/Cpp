@@ -6,6 +6,7 @@ class Server
 {
     std::vector<SocketPtr> clients;
     std::mutex clientsMtx;
+    int countMessage = 0;
 
     void waitClient(unsigned short port)
     {
@@ -20,7 +21,7 @@ class Server
             if(listener.accept(*socket) != sf::Socket::Done)
                 throw std::logic_error("error during connection to user");
             std::cout << "Client connected: " << socket->getRemoteAddress() << std::endl;
-            onNewClient(socket);
+            auto result(std::async(&Server::onNewClient, this, socket));
         }
     }
 
@@ -32,7 +33,37 @@ class Server
             std::cout << "count of clients is " << clients.size() << std::endl;            
         }
 
-        doInteraction(client);
+        clientLoop(client);
+    }
+
+    void clientLoop(SocketPtr client)
+    {
+        while (true)
+        {
+            static int counter = 0;
+            std::cout << "counter=" << counter++ << std::endl;
+
+            sf::Packet packet;
+            client->receive(packet);
+            ServerCmd cmd;
+            packet >> cmd;
+            countMessage++;
+            switch(cmd)
+            {
+            case ServerCmd::RequestStatus:
+            {
+                packet.clear();
+                ServerStatus ss = { clients.size(), countMessage };
+                packet << ss;
+                std::cout << ss << std::endl;
+                client->send(packet);
+            }
+            break;
+            case ServerCmd::MsgBroadcast: break;
+            case ServerCmd::MsgToClient: break;
+            default:;
+            }            
+        }
     }
 
     void doInteraction(SocketPtr client)
@@ -53,7 +84,6 @@ public:
     void runTcpServer(unsigned short port)
     {
         waitClient(port);
-        std::async(&Server::waitClient, this, port);
     }
 };
 
