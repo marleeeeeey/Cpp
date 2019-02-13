@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="minlen.cpp">
+    <ClCompile Include="isPalindrom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
