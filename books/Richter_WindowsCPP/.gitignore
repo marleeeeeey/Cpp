@@ -1,0 +1,10 @@
+**/.vs/
+**/Debug
+**/Release
+**/x64
+**.DotSettings.user
+**.sln
+**.aps
+**.htm
+**.vcproj
+**.vcxproj.user
