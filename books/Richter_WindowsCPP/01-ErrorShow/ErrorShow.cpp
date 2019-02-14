@@ -3,16 +3,8 @@
 #include <tchar.h>
 #include "Resource.h"
 
-
-///////////////////////////////////////////////////////////////////////////////
-
-
 #define ESM_POKECODEANDLOOKUP    (WM_USER + 100)
 const TCHAR g_szAppName[] = TEXT("Error Show");
-
-
-///////////////////////////////////////////////////////////////////////////////
-
 
 BOOL Dlg_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
@@ -25,10 +17,6 @@ BOOL Dlg_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
     SendMessage(hwnd, ESM_POKECODEANDLOOKUP, lParam, 0);
     return TRUE;
 }
-
-
-///////////////////////////////////////////////////////////////////////////////
-
 
 void Dlg_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
@@ -97,10 +85,6 @@ void Dlg_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
     }
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
-
-
 INT_PTR WINAPI Dlg_Proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -119,10 +103,6 @@ INT_PTR WINAPI Dlg_Proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     return FALSE;
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
-
-
 int WINAPI _tWinMain(HINSTANCE hinstExe, HINSTANCE, PTSTR pszCmdLine, int)
 {
     HWND hwnd = FindWindow(TEXT("#32770"), TEXT("Error Show"));
@@ -138,6 +118,3 @@ int WINAPI _tWinMain(HINSTANCE hinstExe, HINSTANCE, PTSTR pszCmdLine, int)
     }
     return 0;
 }
-
-
-//////////////////////////////// End of File //////////////////////////////////
