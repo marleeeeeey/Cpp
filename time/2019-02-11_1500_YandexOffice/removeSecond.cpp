@@ -24,7 +24,6 @@ std::set<T> removeSecond(std::initializer_list<T> il)
     return removeSecond(c);
 }
 
-
 int main()
 {
     assert(removeSecond<int>({ 1, 2, 3, 4, 5, 6, 7 }) == std::set<int> ({ 1, 3, 5, 7 }));
