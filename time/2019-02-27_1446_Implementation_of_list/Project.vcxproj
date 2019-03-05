@@ -116,9 +116,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TaskSumByRoot.cpp" />
+    <ClCompile Include="TreeNode.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ListNode.h" />
+    <ClInclude Include="ListNode.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
