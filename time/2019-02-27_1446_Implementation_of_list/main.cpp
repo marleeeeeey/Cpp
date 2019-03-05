@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <cassert>
 #include "ListNode.h"
+#include <functional>
 
 template<typename T>
 struct TreeNode
@@ -46,21 +47,50 @@ TreeNode<T> * insertTree(TreeNode<T> * parent, T value)
     }
 }
 
+template <typename T>
+void traverseTree(TreeNode<T> * parent, std::function<void(const T &, int)> func, int d = 0)
+{
+    if(parent == nullptr)
+        return;
+    
+    func(parent->value, d);
+
+    if(parent->left != nullptr)
+        traverseTree(parent->left, func, d+1);
+
+    if(parent->right != nullptr)
+        traverseTree(parent->right, func, d+1);
+}
+
 template<typename T>
 TreeNode<T> * generateTree(std::initializer_list<T> list)
 {
-    TreeNode * tree = new TreeNode();
+    bool isFirstValue = true;
+    TreeNode<T> * node = new TreeNode<T>();
     for(auto e : list)
     {
+        if(isFirstValue)
+        {
+            node->value = e;
+            isFirstValue = false;
+            continue;
+        }
 
+        insertTree(node, e);
     }
-    // TODO   
+
+    return node;
 }
 
 template<typename T>
 std::ostream & operator<<(std::ostream & os, TreeNode<T> * tree)
 {
+    std::function<void(const T &, int)> fun = [&os](const T & val, int d)
+    {
+        os << val << "(" << d << ")" << ", ";
+    };
 
+    traverseTree(tree, fun);
 
     return os;
 }
@@ -85,5 +115,7 @@ void mainList()
 
 int main()
 {
-    // TODO
+    TreeNode<int> * tree = generateTree({ 4, 5, 6, 7, 1, 2, 3 });
+    std::cout << tree;
+    std::cin.get();
 }
