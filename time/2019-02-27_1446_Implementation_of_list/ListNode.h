@@ -1,4 +1,5 @@
 #include <initializer_list>
+#include <ostream>
 
 template <typename T>
 struct ListNode
