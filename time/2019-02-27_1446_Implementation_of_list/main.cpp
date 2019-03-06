@@ -22,7 +22,7 @@ void mainList()
     assert(isEqual(list2, generateList<int>({ })));
 }
 
-void main()
+void main2()
 {
     TreeNode<int> * tree = generateTree({ 4, 5, 6, 7, 1, 2, 3 });
     std::cout << tree;

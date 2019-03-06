@@ -15,7 +15,7 @@ int getSum(TreeNode<int> * parent, const int h, const int d = 0)
 
     if(sums.find(h) != sums.end())
         return sums[h];
-
+    
     int sum = parent->value;
 
     if(parent->left)
@@ -29,7 +29,7 @@ int getSum(TreeNode<int> * parent, const int h, const int d = 0)
     return sum;
 }
 
-void start_main()
+void main()
 {
     // TODO add asserts
     TreeNode<int> * tree = generateTree({ 10, 5, 15, 3, 7, 12, 2 });
@@ -39,5 +39,7 @@ void start_main()
     std::cout << "sum(2)=" << getSum(tree, 2) << "\n";
     std::cout << "sum(3)=" << getSum(tree, 3) << "\n";
     std::cout << "sum(4)=" << getSum(tree, 4) << "\n";
+    std::cout << "sum(5)=" << getSum(tree, 5) << "\n";
+    std::cout << "sum(5)=" << getSum(tree, 5) << "\n";
     std::cin.get();
 }
