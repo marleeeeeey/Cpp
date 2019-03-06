@@ -115,7 +115,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="TaskSumByRoot.cpp" />
     <ClCompile Include="TreeNode.hpp" />
   </ItemGroup>

@@ -2,7 +2,6 @@
 #include <cassert>
 #include "ListNode.hpp"
 #include "TreeNode.hpp"
-#include <unordered_map>
 
 void mainList()
 {
@@ -22,7 +21,7 @@ void mainList()
     assert(isEqual(list2, generateList<int>({ })));
 }
 
-void main2()
+void main()
 {
     TreeNode<int> * tree = generateTree({ 4, 5, 6, 7, 1, 2, 3 });
     std::cout << tree;
