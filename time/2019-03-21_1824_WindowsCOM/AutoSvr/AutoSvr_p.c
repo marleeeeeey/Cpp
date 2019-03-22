@@ -48,8 +48,8 @@
 
 #include "AutoSvr_i.h"
 
-#define TYPE_FORMAT_STRING_SIZE   3                                 
-#define PROC_FORMAT_STRING_SIZE   1                                 
+#define TYPE_FORMAT_STRING_SIZE   7                                 
+#define PROC_FORMAT_STRING_SIZE   193                               
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   0            
@@ -106,6 +106,186 @@ static const AutoSvr_MIDL_PROC_FORMAT_STRING AutoSvr__MIDL_ProcFormatString =
         0,
         {
 
+	/* Procedure Add */
+
+			0x33,		/* FC_AUTO_HANDLE */
+			0x6c,		/* Old Flags:  object, Oi2 */
+/*  2 */	NdrFcLong( 0x0 ),	/* 0 */
+/*  6 */	NdrFcShort( 0x7 ),	/* 7 */
+/*  8 */	NdrFcShort( 0x14 ),	/* x86 Stack size/offset = 20 */
+/* 10 */	NdrFcShort( 0x10 ),	/* 16 */
+/* 12 */	NdrFcShort( 0x24 ),	/* 36 */
+/* 14 */	0x44,		/* Oi2 Flags:  has return, has ext, */
+			0x4,		/* 4 */
+/* 16 */	0x8,		/* 8 */
+			0x41,		/* Ext Flags:  new corr desc, has range on conformance */
+/* 18 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 20 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 22 */	NdrFcShort( 0x0 ),	/* 0 */
+
+	/* Parameter __MIDL__IMathATL0000 */
+
+/* 24 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 26 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/* 28 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter __MIDL__IMathATL0001 */
+
+/* 30 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 32 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
+/* 34 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter pResult */
+
+/* 36 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 38 */	NdrFcShort( 0xc ),	/* x86 Stack size/offset = 12 */
+/* 40 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Return value */
+
+/* 42 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 44 */	NdrFcShort( 0x10 ),	/* x86 Stack size/offset = 16 */
+/* 46 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Procedure Subtract */
+
+/* 48 */	0x33,		/* FC_AUTO_HANDLE */
+			0x6c,		/* Old Flags:  object, Oi2 */
+/* 50 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 54 */	NdrFcShort( 0x8 ),	/* 8 */
+/* 56 */	NdrFcShort( 0x14 ),	/* x86 Stack size/offset = 20 */
+/* 58 */	NdrFcShort( 0x10 ),	/* 16 */
+/* 60 */	NdrFcShort( 0x24 ),	/* 36 */
+/* 62 */	0x44,		/* Oi2 Flags:  has return, has ext, */
+			0x4,		/* 4 */
+/* 64 */	0x8,		/* 8 */
+			0x41,		/* Ext Flags:  new corr desc, has range on conformance */
+/* 66 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 68 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 70 */	NdrFcShort( 0x0 ),	/* 0 */
+
+	/* Parameter __MIDL__IMathATL0002 */
+
+/* 72 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 74 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/* 76 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter __MIDL__IMathATL0003 */
+
+/* 78 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 80 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
+/* 82 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter pResult */
+
+/* 84 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 86 */	NdrFcShort( 0xc ),	/* x86 Stack size/offset = 12 */
+/* 88 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Return value */
+
+/* 90 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 92 */	NdrFcShort( 0x10 ),	/* x86 Stack size/offset = 16 */
+/* 94 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Procedure Multiply */
+
+/* 96 */	0x33,		/* FC_AUTO_HANDLE */
+			0x6c,		/* Old Flags:  object, Oi2 */
+/* 98 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 102 */	NdrFcShort( 0x9 ),	/* 9 */
+/* 104 */	NdrFcShort( 0x14 ),	/* x86 Stack size/offset = 20 */
+/* 106 */	NdrFcShort( 0x10 ),	/* 16 */
+/* 108 */	NdrFcShort( 0x24 ),	/* 36 */
+/* 110 */	0x44,		/* Oi2 Flags:  has return, has ext, */
+			0x4,		/* 4 */
+/* 112 */	0x8,		/* 8 */
+			0x41,		/* Ext Flags:  new corr desc, has range on conformance */
+/* 114 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 116 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 118 */	NdrFcShort( 0x0 ),	/* 0 */
+
+	/* Parameter __MIDL__IMathATL0004 */
+
+/* 120 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 122 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/* 124 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter __MIDL__IMathATL0005 */
+
+/* 126 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 128 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
+/* 130 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter pResult */
+
+/* 132 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 134 */	NdrFcShort( 0xc ),	/* x86 Stack size/offset = 12 */
+/* 136 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Return value */
+
+/* 138 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 140 */	NdrFcShort( 0x10 ),	/* x86 Stack size/offset = 16 */
+/* 142 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Procedure Divide */
+
+/* 144 */	0x33,		/* FC_AUTO_HANDLE */
+			0x6c,		/* Old Flags:  object, Oi2 */
+/* 146 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 150 */	NdrFcShort( 0xa ),	/* 10 */
+/* 152 */	NdrFcShort( 0x14 ),	/* x86 Stack size/offset = 20 */
+/* 154 */	NdrFcShort( 0x10 ),	/* 16 */
+/* 156 */	NdrFcShort( 0x24 ),	/* 36 */
+/* 158 */	0x44,		/* Oi2 Flags:  has return, has ext, */
+			0x4,		/* 4 */
+/* 160 */	0x8,		/* 8 */
+			0x41,		/* Ext Flags:  new corr desc, has range on conformance */
+/* 162 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 164 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 166 */	NdrFcShort( 0x0 ),	/* 0 */
+
+	/* Parameter __MIDL__IMathATL0006 */
+
+/* 168 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 170 */	NdrFcShort( 0x4 ),	/* x86 Stack size/offset = 4 */
+/* 172 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter __MIDL__IMathATL0007 */
+
+/* 174 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 176 */	NdrFcShort( 0x8 ),	/* x86 Stack size/offset = 8 */
+/* 178 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter pResult */
+
+/* 180 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 182 */	NdrFcShort( 0xc ),	/* x86 Stack size/offset = 12 */
+/* 184 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Return value */
+
+/* 186 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 188 */	NdrFcShort( 0x10 ),	/* x86 Stack size/offset = 16 */
+/* 190 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
 			0x0
         }
     };
@@ -115,6 +295,10 @@ static const AutoSvr_MIDL_TYPE_FORMAT_STRING AutoSvr__MIDL_TypeFormatString =
         0,
         {
 			NdrFcShort( 0x0 ),	/* 0 */
+/*  2 */	
+			0x11, 0xc,	/* FC_RP [alloced_on_stack] [simple_pointer] */
+/*  4 */	0x8,		/* FC_LONG */
+			0x5c,		/* FC_PAD */
 
 			0x0
         }
@@ -139,7 +323,10 @@ static const unsigned short IMathATL_FormatStringOffsetTable[] =
     (unsigned short) -1,
     (unsigned short) -1,
     (unsigned short) -1,
-    0
+    0,
+    48,
+    96,
+    144
     };
 
 static const MIDL_STUBLESS_PROXY_INFO IMathATL_ProxyInfo =
@@ -163,9 +350,9 @@ static const MIDL_SERVER_INFO IMathATL_ServerInfo =
     0,
     0,
     0};
-CINTERFACE_PROXY_VTABLE(7) _IMathATLProxyVtbl = 
+CINTERFACE_PROXY_VTABLE(11) _IMathATLProxyVtbl = 
 {
-    0,
+    &IMathATL_ProxyInfo,
     &IID_IMathATL,
     IUnknown_QueryInterface_Proxy,
     IUnknown_AddRef_Proxy,
@@ -173,7 +360,11 @@ CINTERFACE_PROXY_VTABLE(7) _IMathATLProxyVtbl =
     0 /* IDispatch::GetTypeInfoCount */ ,
     0 /* IDispatch::GetTypeInfo */ ,
     0 /* IDispatch::GetIDsOfNames */ ,
-    0 /* IDispatch_Invoke_Proxy */
+    0 /* IDispatch_Invoke_Proxy */ ,
+    (void *) (INT_PTR) -1 /* IMathATL::Add */ ,
+    (void *) (INT_PTR) -1 /* IMathATL::Subtract */ ,
+    (void *) (INT_PTR) -1 /* IMathATL::Multiply */ ,
+    (void *) (INT_PTR) -1 /* IMathATL::Divide */
 };
 
 
@@ -182,14 +373,18 @@ static const PRPC_STUB_FUNCTION IMathATL_table[] =
     STUB_FORWARDING_FUNCTION,
     STUB_FORWARDING_FUNCTION,
     STUB_FORWARDING_FUNCTION,
-    STUB_FORWARDING_FUNCTION
+    STUB_FORWARDING_FUNCTION,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2
 };
 
 CInterfaceStubVtbl _IMathATLStubVtbl =
 {
     &IID_IMathATL,
     &IMathATL_ServerInfo,
-    7,
+    11,
     &IMathATL_table[-3],
     CStdStubBuffer_DELEGATING_METHODS
 };

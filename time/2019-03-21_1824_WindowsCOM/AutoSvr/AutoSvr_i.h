@@ -88,6 +88,26 @@ EXTERN_C const IID IID_IMathATL;
     IMathATL : public IDispatch
     {
     public:
+        virtual HRESULT STDMETHODCALLTYPE Add( 
+            /* [in] */ long __MIDL__IMathATL0000,
+            /* [in] */ long __MIDL__IMathATL0001,
+            /* [retval][out] */ long *pResult) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE Subtract( 
+            /* [in] */ long __MIDL__IMathATL0002,
+            /* [in] */ long __MIDL__IMathATL0003,
+            /* [retval][out] */ long *pResult) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE Multiply( 
+            /* [in] */ long __MIDL__IMathATL0004,
+            /* [in] */ long __MIDL__IMathATL0005,
+            /* [retval][out] */ long *pResult) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE Divide( 
+            /* [in] */ long __MIDL__IMathATL0006,
+            /* [in] */ long __MIDL__IMathATL0007,
+            /* [retval][out] */ long *pResult) = 0;
+        
     };
     
     
@@ -146,6 +166,30 @@ EXTERN_C const IID IID_IMathATL;
             /* [annotation][out] */ 
             _Out_opt_  UINT *puArgErr);
         
+        HRESULT ( STDMETHODCALLTYPE *Add )( 
+            IMathATL * This,
+            /* [in] */ long __MIDL__IMathATL0000,
+            /* [in] */ long __MIDL__IMathATL0001,
+            /* [retval][out] */ long *pResult);
+        
+        HRESULT ( STDMETHODCALLTYPE *Subtract )( 
+            IMathATL * This,
+            /* [in] */ long __MIDL__IMathATL0002,
+            /* [in] */ long __MIDL__IMathATL0003,
+            /* [retval][out] */ long *pResult);
+        
+        HRESULT ( STDMETHODCALLTYPE *Multiply )( 
+            IMathATL * This,
+            /* [in] */ long __MIDL__IMathATL0004,
+            /* [in] */ long __MIDL__IMathATL0005,
+            /* [retval][out] */ long *pResult);
+        
+        HRESULT ( STDMETHODCALLTYPE *Divide )( 
+            IMathATL * This,
+            /* [in] */ long __MIDL__IMathATL0006,
+            /* [in] */ long __MIDL__IMathATL0007,
+            /* [retval][out] */ long *pResult);
+        
         END_INTERFACE
     } IMathATLVtbl;
 
@@ -181,6 +225,18 @@ EXTERN_C const IID IID_IMathATL;
 #define IMathATL_Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr)	\
     ( (This)->lpVtbl -> Invoke(This,dispIdMember,riid,lcid,wFlags,pDispParams,pVarResult,pExcepInfo,puArgErr) ) 
 
+
+#define IMathATL_Add(This,__MIDL__IMathATL0000,__MIDL__IMathATL0001,pResult)	\
+    ( (This)->lpVtbl -> Add(This,__MIDL__IMathATL0000,__MIDL__IMathATL0001,pResult) ) 
+
+#define IMathATL_Subtract(This,__MIDL__IMathATL0002,__MIDL__IMathATL0003,pResult)	\
+    ( (This)->lpVtbl -> Subtract(This,__MIDL__IMathATL0002,__MIDL__IMathATL0003,pResult) ) 
+
+#define IMathATL_Multiply(This,__MIDL__IMathATL0004,__MIDL__IMathATL0005,pResult)	\
+    ( (This)->lpVtbl -> Multiply(This,__MIDL__IMathATL0004,__MIDL__IMathATL0005,pResult) ) 
+
+#define IMathATL_Divide(This,__MIDL__IMathATL0006,__MIDL__IMathATL0007,pResult)	\
+    ( (This)->lpVtbl -> Divide(This,__MIDL__IMathATL0006,__MIDL__IMathATL0007,pResult) ) 
 
 #endif /* COBJMACROS */
 
