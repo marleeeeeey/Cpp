@@ -1,0 +1,26 @@
+HKCR
+{
+	MathProgID.1 = s 'Math class'
+	{
+		CLSID = s '{fb3ab377-0c68-4752-94e9-603b028a8858}'
+	}
+	MathProgID = s 'Math class'
+	{		
+		CurVer = s 'MathProgID.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {fb3ab377-0c68-4752-94e9-603b028a8858} = s 'Math class'
+		{
+			ProgID = s 'MathProgID.1'
+			VersionIndependentProgID = s 'MathProgID'
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{1bbad6a5-0770-47d7-bf64-a6489bd9e8a5}'
+			Version = s '1.0'
+		}
+	}
+}
