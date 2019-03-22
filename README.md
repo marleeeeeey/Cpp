@@ -15,9 +15,9 @@ This repository contains expiremantal c++ projects.
 
 ### Windows related
 
-1. `[*]` Simple COM client server
+1. `[* problem with reg]` Simple COM client server without ATL
+2. `[*]` ATL Server - add user methods
 
 ## Backlog
 
 1. OpenPos
-2. 
