@@ -15,5 +15,7 @@ public slots:
 	void start();
 
 private:
+	void appendText(const char* msg);
+
 	Ui::QtServerClass ui;
 };
