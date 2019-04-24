@@ -1,6 +1,9 @@
 #include "Client.h"
 
-Client::Client():m_listenThread(&Client::Listen, this){}
+Client::Client()
+    : m_listenThread(&Client::Listen, this)
+    , m_connected(false)
+{}
 Client::~Client(){ m_socket.unbind(); }
 
 bool Client::Connect(){

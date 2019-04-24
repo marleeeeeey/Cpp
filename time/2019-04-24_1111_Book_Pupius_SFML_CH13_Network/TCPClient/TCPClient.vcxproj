@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\shared\Main.cpp" />
     <ClCompile Include="..\shared\PacketTypes.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Client_Main.cpp" />
