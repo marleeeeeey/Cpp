@@ -19,11 +19,10 @@ int main()
         return EXIT_FAILURE;
     }
 
-    void* itemPtr = new int;
+    ItemInterface* itemPtr = nullptr;
     int result = createModuleFunction(&itemPtr);
     std::cout << "createModuleFunction returned " << result << std::endl;
-    ItemInterface* item = reinterpret_cast<ItemInterface*>(itemPtr);
-    std::cout << "I'm " << item->toString() << std::endl;
+    std::cout << "I'm " << itemPtr->toString() << std::endl;
 
     return EXIT_SUCCESS;
 }

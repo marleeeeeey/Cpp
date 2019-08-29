@@ -10,7 +10,7 @@ public:
     }
 };
 
-int createModule(void** ptr)
+int createModule(ItemInterface** ptr)
 {
     *ptr = new Car();
     return 0;

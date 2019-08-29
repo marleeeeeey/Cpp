@@ -9,4 +9,4 @@ public:
     virtual std::string toString() = 0;
 };
 
-typedef int(__cdecl* CreateModuleFunPtr)(void**);
+typedef int(__cdecl* CreateModuleFunPtr)(ItemInterface**);
