@@ -7,10 +7,11 @@ class Game
     Matrix m_matrix;
     Object m_object;
     Object m_nextObject;
-    sf::Time m_lastTimeStamp;
-    sf::Vector2u m_specialPos;
+    sf::Time m_elapsed;
+    sf::Clock clock; // starts the clock
 
+public:
     Game(sf::Vector2u size);
-    void draw(sf::RenderWindow& window, sf::Time time);
+    void draw(sf::RenderWindow& window);
     void dispatchKey(sf::Event key);
 };

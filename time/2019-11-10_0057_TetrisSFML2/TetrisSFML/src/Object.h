@@ -10,7 +10,7 @@ class Object
 public:
     Object();
     Object(const Object& other);
-    void getMoved(int x, int y);
+    Object getMoved(int x, int y);
     void generateShape(); // TODO move to Game class
     void draw(sf::RenderWindow& window);
     void setShape(const Lines& shape);
