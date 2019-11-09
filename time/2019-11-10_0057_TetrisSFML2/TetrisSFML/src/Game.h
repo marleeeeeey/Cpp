@@ -7,7 +7,7 @@ class Game
     Matrix m_matrix;
     Object m_object;
     Object m_nextObject;
-    sf::Time m_elapsed;
+    sf::Time m_lastTimeStemp;
     sf::Clock clock; // starts the clock
 
 public:

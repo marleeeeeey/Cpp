@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
-class Cell
+struct Cell
 {
-    sf::Color color;
-    bool isVisible;
+    sf::Color color = sf::Color::Blue;
+    bool isVisible = false;
 };

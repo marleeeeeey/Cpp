@@ -10,11 +10,13 @@ class Object
 public:
     Object();
     Object(const Object& other);
-    Object getMoved(int x, int y);
+    Object getMoved(int x, int y) const;
     void generateShape(); // TODO move to Game class
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window) const;
     void setShape(const Lines& shape);
-    const Lines& getShape();
+    const Lines& getShape() const;
     void setPos(sf::Vector2u pos);
-    sf::Vector2u getPos();
+    sf::Vector2u getPos() const;
+    bool isVisible(sf::Vector2u matrixPos) const;
+    Cell getCell(sf::Vector2u matrixPos) const;
 };

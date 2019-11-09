@@ -3,4 +3,5 @@
 #include "Cell.hpp"
 #include <list>
 
-using Lines = std::list<std::list<Cell>>;
+using Line = std::vector<Cell>;
+using Lines = std::vector<Line>;
