@@ -1,5 +1,19 @@
 #include "Matrix.h"
 
+void Matrix::makeBorders()
+{
+    for (auto & line : m_cellTable)
+    {
+        line.front().setVisible(true);
+        line.back().setVisible(true);
+    }
+
+    for(auto & cell : m_cellTable.back())
+    {
+        cell.setVisible(true);
+    }
+}
+
 Matrix::Matrix(sf::Vector2u size)
 {
     // borders offset
@@ -12,16 +26,7 @@ Matrix::Matrix(sf::Vector2u size)
         line.resize(size.x);
     }
 
-    for (auto & line : m_cellTable)
-    {
-        line.front().setVisible(true);
-        line.back().setVisible(true);
-    }
-
-    for(auto & cell : m_cellTable.back())
-    {
-        cell.setVisible(true);
-    }
+    makeBorders();
 }
 
 void Matrix::add(const Object& object)
@@ -36,6 +41,8 @@ void Matrix::add(const Object& object)
                 matrixCell = object.getCell({ col, row });
         }
     }
+
+    removeFullLines();
 }
 
 bool Matrix::checkCollision(const Object& object)
@@ -69,6 +76,32 @@ void Matrix::draw(sf::RenderWindow& window)
         {
             const auto& cell = line[col];
             cell.draw(window, {col, row});
+        }
+    }
+}
+
+void Matrix::removeFullLines()
+{
+    // do not read last line - it is always full
+    for(unsigned row = 0; row < m_cellTable.size()-1; ++row)
+    {
+        bool isLineFull = true;
+        const auto& line = m_cellTable[row];
+        for(const auto & cell : line)
+        {
+            if(!cell.isVisible())
+            {
+                isLineFull = false;
+                break;
+            }
+        }
+        if(isLineFull)
+        {
+            unsigned lineSize = line.size();
+            m_cellTable.erase(m_cellTable.begin() + row);
+            Line emptyLine(lineSize);
+            m_cellTable.push_front(emptyLine);
+            makeBorders();
         }
     }
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Cell.h"
-#include <list>
+#include <deque>
 
 using Line = std::vector<Cell>;
-using Lines = std::vector<Line>;
+using Lines = std::deque<Line>;

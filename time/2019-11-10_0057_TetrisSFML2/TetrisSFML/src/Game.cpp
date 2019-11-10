@@ -15,7 +15,7 @@ void Game::draw(sf::RenderWindow& window)
     auto timeDiff = currentTime - m_lastTimeStemp;
     sf::Time period = sf::seconds(0.5);
     if(m_isAcselerate)
-        period = sf::seconds(0.05);
+        period = sf::seconds(0.05f);
     if(timeDiff > period)
     {
         auto moved = m_object.getMoved(0, +1);

@@ -12,6 +12,10 @@ public:
     void add(const Object& object);
     bool checkCollision(const Object& object);
     void draw( sf::RenderWindow& window);
+
+private:
+    void removeFullLines();
+    void makeBorders();
 };
 
 

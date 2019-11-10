@@ -133,7 +133,7 @@ Object Object::getRotateObject() const
     {        
         for(unsigned col = 0; col < boundSize.x; ++col)
         {
-            rotatedShape[col][row] = fullShape[row][col];
+            rotatedShape[boundSize.x-col-1][row] = fullShape[row][col];
         }
     }
 
