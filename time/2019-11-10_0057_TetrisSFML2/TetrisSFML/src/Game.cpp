@@ -64,4 +64,15 @@ void Game::dispatchKey(sf::Event key)
     {
         m_isAcselerate = false;
     }
+
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        auto rotateObject = m_object.getRotateObject();
+        bool isCollision = m_matrix.checkCollision(rotateObject);
+        if(!isCollision)
+        {
+            m_object = rotateObject;
+        }
+    }
 }

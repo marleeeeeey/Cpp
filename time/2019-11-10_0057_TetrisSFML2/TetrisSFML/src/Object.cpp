@@ -111,3 +111,52 @@ Cell Object::getCell(sf::Vector2u matrixPos) const
 
     return Cell();
 }
+
+Object Object::getRotateObject() const
+{
+    Lines rotatedShape;
+    Lines fullShape = m_shape;
+
+    auto boundSize = getBoundSize();
+    for(auto & line : fullShape)
+    {
+        line.resize(boundSize.x);
+    }
+
+    rotatedShape.resize(boundSize.x);
+    for (auto & line : rotatedShape)
+    {
+        line.resize(boundSize.y);
+    }
+
+    for (unsigned row = 0; row < boundSize.y; ++row)
+    {        
+        for(unsigned col = 0; col < boundSize.x; ++col)
+        {
+            rotatedShape[col][row] = fullShape[row][col];
+        }
+    }
+
+    Object object(*this);
+    object.setShape(rotatedShape);
+    return object;
+}
+
+sf::Vector2u Object::getBoundSize() const
+{
+    sf::Vector2u size {0, 0};
+    
+    if(m_shape.empty())
+        return size;
+
+    size.y = m_shape.size();
+    size.x = m_shape[0].size();
+
+    for(const auto & line : m_shape)
+    {
+        if(line.size() > size.x)
+            size.x = line.size();
+    }
+
+    return size;
+}
