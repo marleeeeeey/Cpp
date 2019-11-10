@@ -26,13 +26,32 @@ Object Object::getMoved(int x, int y) const
 
 void Object::generateShape()
 {
+    int iSecret = rand() % 3;
     m_shape.clear();
-    m_shape.resize(2);
-    m_shape[0].push_back(Cell{ sf::Color::Red, true });
-    m_shape[0].push_back(Cell{ sf::Color::Red, true });
-    m_shape[1].push_back(Cell{ sf::Color::Red, false });
-    m_shape[1].push_back(Cell{ sf::Color::Red, true });
-    m_shape[1].push_back(Cell{ sf::Color::Red, true });
+
+    switch (iSecret)
+    {
+    case 0:
+        m_shape.resize(2);
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ false });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        break;
+    case 1:
+        m_shape.resize(1);
+        m_shape[0].push_back({ true });
+        break;
+    case 2:
+        m_shape.resize(4);
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[2].push_back({ true });
+        m_shape[3].push_back({ true });
+        break;
+    }
+
 }
 
 void Object::draw(sf::RenderWindow& window) const

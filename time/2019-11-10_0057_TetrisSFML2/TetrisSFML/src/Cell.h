@@ -10,7 +10,7 @@ public:
     bool m_isVisible;
 
     Cell();
-    Cell(sf::Color color, bool isVisible);
+    Cell(bool isVisible, sf::Color color = sf::Color::Red);
 
     void draw(sf::RenderWindow& window, sf::Vector2u cellPos) const;
     sf::Color getColor() const;

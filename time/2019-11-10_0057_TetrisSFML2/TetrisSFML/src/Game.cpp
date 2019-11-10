@@ -6,13 +6,17 @@ Game::Game(sf::Vector2u size)
     m_lastTimeStemp = clock.getElapsedTime();
     m_nextObject.setPos({ 20, 0 });
     m_object.setPos({ 1, 0 });
+    m_isAcselerate = false;
 }
 
 void Game::draw(sf::RenderWindow& window)
 {
     auto currentTime = clock.getElapsedTime();
     auto timeDiff = currentTime - m_lastTimeStemp;
-    if(timeDiff > sf::seconds(1))
+    sf::Time period = sf::seconds(0.5);
+    if(m_isAcselerate)
+        period = sf::seconds(0.05);
+    if(timeDiff > period)
     {
         auto moved = m_object.getMoved(0, +1);
         bool isCollision = m_matrix.checkCollision(moved);
@@ -38,28 +42,26 @@ void Game::draw(sf::RenderWindow& window)
 
 void Game::dispatchKey(sf::Event key)
 {
-    Object moved;
-    bool isMoved = false;
-
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
-        moved = m_object.getMoved(-1, 0);
-        isMoved = true;
+        auto moved = m_object.getMoved(-1, 0);
+        if(!m_matrix.checkCollision(moved))
+            m_object = moved;
     }
-
+    
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
-        moved = m_object.getMoved(+1, 0);        
-        isMoved = true;
+        auto moved = m_object.getMoved(+1, 0);
+        if(!m_matrix.checkCollision(moved))
+            m_object = moved;
     }
-
-    if(!isMoved)
-        return;
-
-    bool isCollision = m_matrix.checkCollision(moved);
     
-    if(!isCollision)
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        m_object = moved;
+        m_isAcselerate = true;
+    }
+    else
+    {
+        m_isAcselerate = false;
     }
 }

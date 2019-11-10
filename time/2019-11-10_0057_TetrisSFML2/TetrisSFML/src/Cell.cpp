@@ -6,7 +6,7 @@ Cell::Cell()
     m_isVisible = false;
 }
 
-Cell::Cell(sf::Color color, bool isVisible)
+Cell::Cell(bool isVisible, sf::Color color)
 {
     m_color = color;
     m_isVisible = isVisible;
