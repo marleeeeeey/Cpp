@@ -26,10 +26,10 @@ Object Object::getMoved(int x, int y) const
 
 void Object::generateShape()
 {
-    int iSecret = rand() % 3;
+    int shapeNumber = rand() % 3;
     m_shape.clear();
 
-    switch (iSecret)
+    switch (shapeNumber)
     {
     case 0:
         m_shape.resize(2);
