@@ -69,10 +69,26 @@ void Game::dispatchKey(sf::Event key)
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
         auto rotateObject = m_object.getRotateObject();
+
         bool isCollision = m_matrix.checkCollision(rotateObject);
+        
         if(!isCollision)
         {
             m_object = rotateObject;
+        }
+        else
+        {
+            int maxObjectDemension = 4;
+            for(int i = 1; i < maxObjectDemension; ++i)
+            {
+                auto movedToLeft = rotateObject.getMoved(-i, 0);
+                bool isRightCollision = m_matrix.checkCollision(movedToLeft);
+                if(!isRightCollision)
+                {
+                    m_object = movedToLeft;
+                    break;
+                }                
+            }
         }
     }
 }
