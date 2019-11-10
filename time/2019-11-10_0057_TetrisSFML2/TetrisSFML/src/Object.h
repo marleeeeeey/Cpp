@@ -20,5 +20,6 @@ public:
     bool isVisible(sf::Vector2u matrixPos) const;
     Cell getCell(sf::Vector2u matrixPos) const;
     Object getRotateObject() const;
+    Object getFlipObject() const;
     sf::Vector2u getBoundSize() const;
 };

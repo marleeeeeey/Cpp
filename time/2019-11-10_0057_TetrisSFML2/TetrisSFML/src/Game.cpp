@@ -69,7 +69,6 @@ void Game::dispatchKey(sf::Event key)
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
         auto rotateObject = m_object.getRotateObject();
-
         bool isCollision = m_matrix.checkCollision(rotateObject);
         
         if(!isCollision)

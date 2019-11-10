@@ -14,19 +14,26 @@ void Matrix::makeBorders()
     }
 }
 
-Matrix::Matrix(sf::Vector2u size)
+void Matrix::clear()
 {
-    // borders offset
-    size.x += 2;
-    size.y += 1;
-
-    m_cellTable.resize(size.y);
+    m_cellTable.clear();
+    m_cellTable.resize(m_size.y);
     for (auto & line : m_cellTable)
     {
-        line.resize(size.x);
+        line.resize(m_size.x);
     }
 
     makeBorders();
+}
+
+Matrix::Matrix(sf::Vector2u size)
+{
+    // borders offset
+    m_size = size;
+    m_size.x += 2;
+    m_size.y += 1;
+
+    clear();
 }
 
 void Matrix::add(const Object& object)
@@ -47,10 +54,6 @@ void Matrix::add(const Object& object)
 
 bool Matrix::checkCollision(const Object& object)
 {
-    if(object.getPos().x < 0)
-        return true;
-
-
     for(unsigned row = 0; row < m_cellTable.size(); ++row)
     {
         const auto& line = m_cellTable[row];

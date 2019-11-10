@@ -76,6 +76,11 @@ void Object::generateShape()
         *this = getRotateObject();
     }
 
+    bool hasFlip = rand() % 2;
+    for(unsigned i = 0; i < rotationNumber; ++i)
+    {
+        *this = getFlipObject();
+    }
 }
 
 void Object::draw(sf::RenderWindow& window) const
@@ -163,6 +168,19 @@ Object Object::getRotateObject() const
 
     Object object(*this);
     object.setShape(rotatedShape);
+    return object;
+}
+
+Object Object::getFlipObject() const
+{
+    Lines flipShape = m_shape;
+    for(auto & line : flipShape)
+    {
+        std::reverse(line.begin(), line.end());
+    }
+
+    Object object(*this);
+    object.setShape(flipShape);
     return object;
 }
 

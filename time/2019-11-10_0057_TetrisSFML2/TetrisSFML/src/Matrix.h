@@ -5,6 +5,7 @@
 
 class Matrix
 {
+    sf::Vector2u m_size;
     Lines m_cellTable;
 
 public:
@@ -12,6 +13,7 @@ public:
     void add(const Object& object);
     bool checkCollision(const Object& object);
     void draw( sf::RenderWindow& window);
+    void clear();
 
 private:
     void removeFullLines();
