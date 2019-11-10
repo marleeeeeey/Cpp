@@ -3,6 +3,7 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Tetris");
+    //window.setFramerateLimit(5);
     Game game({8, 16});
     while(window.isOpen())
     {
@@ -14,6 +15,7 @@ int main()
 
             game.dispatchKey(event);
         }
+        window.clear();
         game.draw(window);
         window.display();
     }

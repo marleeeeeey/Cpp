@@ -15,4 +15,5 @@ public:
     void draw(sf::RenderWindow& window, sf::Vector2u cellPos) const;
     sf::Color getColor() const;
     bool isVisible() const;
+    void setVisible(bool b);
 };

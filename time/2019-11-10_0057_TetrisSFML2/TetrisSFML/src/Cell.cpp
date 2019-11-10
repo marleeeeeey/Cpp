@@ -3,7 +3,7 @@
 Cell::Cell()
 {
     m_color = sf::Color::Blue;
-    m_isVisible = true;
+    m_isVisible = false;
 }
 
 Cell::Cell(sf::Color color, bool isVisible)
@@ -20,6 +20,11 @@ sf::Color Cell::getColor() const
 bool Cell::isVisible() const
 {
     return m_isVisible;
+}
+
+void Cell::setVisible(bool b)
+{
+    m_isVisible = b;
 }
 
 void Cell::draw(sf::RenderWindow& window, sf::Vector2u cellPos) const

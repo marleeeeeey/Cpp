@@ -26,6 +26,7 @@ Object Object::getMoved(int x, int y) const
 
 void Object::generateShape()
 {
+    m_shape.clear();
     m_shape.resize(2);
     m_shape[0].push_back(Cell{ sf::Color::Red, true });
     m_shape[0].push_back(Cell{ sf::Color::Red, true });
