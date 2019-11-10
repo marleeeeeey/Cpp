@@ -31,7 +31,7 @@ bool Matrix::checkCollision(const Object& object)
         for(unsigned col = 0; col < line.size(); ++col)
         {
             const auto& matrixCell = line[col];
-            if(matrixCell.isVisible == object.isVisible({ col, row }))
+            if(matrixCell.isVisible() == object.isVisible({ col, row }))
                 return true;
         }
     }

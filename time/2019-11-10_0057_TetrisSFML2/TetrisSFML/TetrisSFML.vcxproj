@@ -19,13 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Martrix.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\TetrisMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Cell.hpp" />
+    <ClInclude Include="src\Cell.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Lines.hpp" />
     <ClInclude Include="src\Matrix.h" />

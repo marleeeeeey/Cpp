@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Cell.hpp"
+#include "Cell.h"
 #include <list>
 
 using Line = std::vector<Cell>;

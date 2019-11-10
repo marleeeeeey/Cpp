@@ -1,5 +1,6 @@
 #include "Object.h"
 #include <cassert>
+#include <iostream>
 
 Object::Object()
 {
@@ -26,11 +27,11 @@ Object Object::getMoved(int x, int y) const
 void Object::generateShape()
 {
     m_shape.resize(2);
-    for (auto & line : m_shape)
-    {
-        line.push_back(Cell{sf::Color::Red, true});
-        line.push_back(Cell{ sf::Color::Red, true });
-    }
+    m_shape[0].push_back(Cell{ sf::Color::Red, true });
+    m_shape[0].push_back(Cell{ sf::Color::Red, true });
+    m_shape[1].push_back(Cell{ sf::Color::Red, false });
+    m_shape[1].push_back(Cell{ sf::Color::Red, true });
+    m_shape[1].push_back(Cell{ sf::Color::Red, true });
 }
 
 void Object::draw(sf::RenderWindow& window) const
@@ -70,7 +71,7 @@ sf::Vector2u Object::getPos() const
 
 bool Object::isVisible(sf::Vector2u matrixPos) const
 {
-    return getCell(matrixPos).isVisible;
+    return getCell(matrixPos).isVisible();
 }
 
 Cell Object::getCell(sf::Vector2u matrixPos) const
