@@ -3,7 +3,7 @@
 int main()
 {
     srand(time(NULL));
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Tetris");
+    sf::RenderWindow window(sf::VideoMode(400, 450), "Tetris");
     //window.setFramerateLimit(5);
     Game game({8, 16});
     while(window.isOpen())
