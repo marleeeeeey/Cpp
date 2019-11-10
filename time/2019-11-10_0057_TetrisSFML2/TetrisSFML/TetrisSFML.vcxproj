@@ -93,15 +93,16 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\3rdparty\SFML\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SFML_STATIC ;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>..\..\..\3rdparty\SFML\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;opengl32.lib;freetype.lib;winmm.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>cd $(ProjectDir)
-copy /y ..\..\..\3rdparty\SFML\SFML-2.5.1\bin\*.dll $(OutputPath)
+      <Command>::cd $(ProjectDir)
+::copy /y ..\..\..\3rdparty\SFML\SFML-2.5.1\bin\*.dll $(OutputPath)
 ::xcopy $(ProjectDir)resources $(OutputPath)\resources\ /s /i /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
