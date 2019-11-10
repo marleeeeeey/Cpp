@@ -18,6 +18,7 @@ void Info::draw(sf::RenderWindow& window) const
     text.setFillColor(sf::Color::Red);
 
     auto curPos = m_pos;
+
     for(auto & scope : scopes)
     {
         text.setPosition(curPos.x * Cell::getSize(), curPos.y * Cell::getSize());

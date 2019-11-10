@@ -5,8 +5,8 @@
 
 class Cell
 {
-    static const unsigned s_bodySize_px = 20;
-    static const unsigned s_borderSize_px = 4;
+    static const unsigned s_bodySize_px = 26;
+    static const unsigned s_borderSize_px = 6;
     static const unsigned s_size = s_bodySize_px + s_borderSize_px;
 
 public:
