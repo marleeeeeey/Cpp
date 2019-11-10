@@ -4,7 +4,7 @@ Game::Game(sf::Vector2u size)
     : m_matrix(size)
 {
     m_lastTimeStemp = clock.getElapsedTime();
-    m_nextObject.setPos({ 20, 0 });
+    m_nextObject.setPos({ size.x + 3, 0 });
     m_object.setPos({ 1, 0 });
     m_isAcselerate = false;
 }

@@ -26,7 +26,7 @@ Object Object::getMoved(int x, int y) const
 
 void Object::generateShape()
 {
-    int shapeNumber = rand() % 3;
+    int shapeNumber = rand() % 5;
     m_shape.clear();
 
     switch (shapeNumber)
@@ -40,8 +40,12 @@ void Object::generateShape()
         m_shape[1].push_back({ true });
         break;
     case 1:
-        m_shape.resize(1);
+        m_shape.resize(2);
         m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ false });
+        m_shape[1].push_back({ true });
         break;
     case 2:
         m_shape.resize(4);
@@ -50,6 +54,26 @@ void Object::generateShape()
         m_shape[2].push_back({ true });
         m_shape[3].push_back({ true });
         break;
+    case 3:
+        m_shape.resize(2);
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        break;
+    case 4:
+        m_shape.resize(2);
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ true });
+        break;
+    }
+
+    unsigned rotationNumber = rand() % 3;
+    for (unsigned i = 0; i < rotationNumber; ++i)
+    {
+        *this = getRotateObject();
     }
 
 }
