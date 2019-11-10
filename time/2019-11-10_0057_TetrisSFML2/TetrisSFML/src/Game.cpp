@@ -6,6 +6,7 @@ Game::Game(sf::Vector2u size)
     m_lastTimeStemp = clock.getElapsedTime();
     m_nextObject.setPos({ size.x + 3, 0 });
     m_object.setPos({ 1, 0 });
+    m_info.setPos({ size.x + 3, 4 });
     m_isAcselerate = false;
 }
 
@@ -23,8 +24,14 @@ void Game::draw(sf::RenderWindow& window)
         if(isCollision)
         {
             m_matrix.add(m_object);
+            m_info.setScope(m_matrix.getRemovedLineCounter());
             m_object.setShape(m_nextObject.getShape());
             m_object.setPos({ 1, 0 });
+            bool isCollisionWithNewObject = m_matrix.checkCollision(m_object);
+            if(isCollisionWithNewObject)
+            {
+                onGameOver();
+            }
             m_nextObject.generateShape();
         }
         else
@@ -38,6 +45,7 @@ void Game::draw(sf::RenderWindow& window)
     m_matrix.draw(window);
     m_object.draw(window);
     m_nextObject.draw(window);
+    m_info.draw(window);
 }
 
 void Game::dispatchKey(sf::Event key)
@@ -90,4 +98,10 @@ void Game::dispatchKey(sf::Event key)
             }
         }
     }
+}
+
+void Game::onGameOver()
+{
+    m_info.fixScope();
+    m_matrix.clear();
 }

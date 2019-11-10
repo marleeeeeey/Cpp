@@ -1,6 +1,7 @@
 #pragma once
 #include "Matrix.h"
 #include "Object.h"
+#include "Info.h"
 
 class Game
 {
@@ -10,9 +11,11 @@ class Game
     sf::Time m_lastTimeStemp;
     sf::Clock clock; // starts the clock
     bool m_isAcselerate;
+    Info m_info;
 
 public:
     Game(sf::Vector2u size);
     void draw(sf::RenderWindow& window);
     void dispatchKey(sf::Event key);
+    void onGameOver();
 };

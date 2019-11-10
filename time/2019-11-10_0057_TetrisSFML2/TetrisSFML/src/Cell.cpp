@@ -27,17 +27,20 @@ void Cell::setVisible(bool b)
     m_isVisible = b;
 }
 
+const unsigned Cell::getSize()
+{
+    return s_size;
+}
+
 void Cell::draw(sf::RenderWindow& window, sf::Vector2u cellPos) const
 {
     if(isVisible())
     {
-        float size_px = 20;
-        float borderWidht = 4;
-        float coef = size_px + borderWidht;
-        sf::RectangleShape rect({ size_px, size_px });
-        rect.setPosition({ cellPos.x * coef, cellPos.y * coef });
+        sf::RectangleShape rect({ s_bodySize_px, s_bodySize_px });
+        rect.setPosition({static_cast<float>(cellPos.x * s_size), 
+            static_cast<float>(cellPos.y * s_size)});
         rect.setFillColor(getColor());
-        rect.setOutlineThickness(2);
+        rect.setOutlineThickness(static_cast<float>(s_borderSize_px) / 2);
         window.draw(rect);
     }
 }

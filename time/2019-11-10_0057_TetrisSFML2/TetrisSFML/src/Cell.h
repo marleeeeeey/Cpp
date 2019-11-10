@@ -5,6 +5,10 @@
 
 class Cell
 {
+    static const unsigned s_bodySize_px = 20;
+    static const unsigned s_borderSize_px = 4;
+    static const unsigned s_size = s_bodySize_px + s_borderSize_px;
+
 public:
     sf::Color m_color;
     bool m_isVisible;
@@ -16,4 +20,5 @@ public:
     sf::Color getColor() const;
     bool isVisible() const;
     void setVisible(bool b);
+    static const unsigned getSize();
 };

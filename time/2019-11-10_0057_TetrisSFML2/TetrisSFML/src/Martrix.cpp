@@ -16,6 +16,8 @@ void Matrix::makeBorders()
 
 void Matrix::clear()
 {
+    m_removedLineCounter = 0;
+
     m_cellTable.clear();
     m_cellTable.resize(m_size.y);
     for (auto & line : m_cellTable)
@@ -24,6 +26,11 @@ void Matrix::clear()
     }
 
     makeBorders();
+}
+
+unsigned Matrix::getRemovedLineCounter()
+{
+    return m_removedLineCounter;
 }
 
 Matrix::Matrix(sf::Vector2u size)
@@ -102,6 +109,7 @@ void Matrix::removeFullLines()
         {
             unsigned lineSize = line.size();
             m_cellTable.erase(m_cellTable.begin() + row);
+            m_removedLineCounter++;
             Line emptyLine(lineSize);
             m_cellTable.push_front(emptyLine);
             makeBorders();
