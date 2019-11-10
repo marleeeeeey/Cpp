@@ -10,7 +10,7 @@ class Game
     Object m_nextObject;
     sf::Time m_lastTimeStemp;
     sf::Clock clock; // starts the clock
-    bool m_isAcselerate;
+    bool m_isAccelerate;
     Info m_info;
 
 public:

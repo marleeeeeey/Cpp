@@ -26,7 +26,7 @@ Object Object::getMoved(int x, int y) const
 
 void Object::generateShape()
 {
-    int shapeNumber = rand() % 5;
+    int shapeNumber = rand() % 10;
     m_shape.clear();
 
     switch (shapeNumber)
@@ -67,6 +67,59 @@ void Object::generateShape()
         m_shape[0].push_back({ true });
         m_shape[0].push_back({ true });
         m_shape[1].push_back({ true });
+        break;
+    case 5:
+        m_shape.resize(2);
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ false });
+        m_shape[1].push_back({ true });
+        break;
+    case 6:
+        m_shape.resize(3);
+        m_shape[0].push_back({ false });
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ false });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[2].push_back({ false });
+        m_shape[2].push_back({ true });
+        m_shape[2].push_back({ false });
+        break;
+    case 7:
+        m_shape.resize(3);
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[2].push_back({ true });
+        break;
+    case 8:
+        m_shape.resize(3);
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ false });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[2].push_back({ true });
+        m_shape[2].push_back({ false });
+        m_shape[2].push_back({ true });
+        break;
+    case 9:
+        m_shape.resize(3);
+        m_shape[0].push_back({ true });
+        m_shape[0].push_back({ false });
+        m_shape[0].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[1].push_back({ true });
+        m_shape[2].push_back({ false });
+        m_shape[2].push_back({ true });
+        m_shape[2].push_back({ false });
         break;
     }
 

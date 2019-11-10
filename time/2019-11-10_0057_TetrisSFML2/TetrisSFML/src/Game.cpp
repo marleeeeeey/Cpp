@@ -7,7 +7,7 @@ Game::Game(sf::Vector2u size)
     m_nextObject.setPos({ size.x + 3, 0 });
     m_object.setPos({ 1, 0 });
     m_info.setPos({ size.x + 3, 4 });
-    m_isAcselerate = false;
+    m_isAccelerate = false;
 }
 
 void Game::draw(sf::RenderWindow& window)
@@ -15,7 +15,7 @@ void Game::draw(sf::RenderWindow& window)
     auto currentTime = clock.getElapsedTime();
     auto timeDiff = currentTime - m_lastTimeStemp;
     sf::Time period = sf::seconds(0.5);
-    if(m_isAcselerate)
+    if(m_isAccelerate)
         period = sf::seconds(0.05f);
     if(timeDiff > period)
     {
@@ -66,11 +66,11 @@ void Game::dispatchKey(sf::Event key)
     
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
-        m_isAcselerate = true;
+        m_isAccelerate = true;
     }
     else
     {
-        m_isAcselerate = false;
+        m_isAccelerate = false;
     }
 
 
