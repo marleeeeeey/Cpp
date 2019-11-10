@@ -3,9 +3,11 @@
 
 Info::Info()
 {
-    if(!font.loadFromFile("arial.ttf"))
+    std::string fontFileName = "C:\\Windows\\Fonts\\calibri.ttf";
+    if(!font.loadFromFile(fontFileName))
     {
-        throw std::exception("Can't open font file");
+        std::string msg = "Can't open font file " + fontFileName;
+        throw std::exception(msg.c_str());
     }
     scopes.push_back(0);
 }
