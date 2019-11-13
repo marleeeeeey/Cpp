@@ -12,6 +12,7 @@ class Game
     sf::Clock clock; // starts the clock
     bool m_isAccelerate;
     Info m_info;
+    bool m_isPause;
 
 public:
     Game(sf::Vector2u size);
