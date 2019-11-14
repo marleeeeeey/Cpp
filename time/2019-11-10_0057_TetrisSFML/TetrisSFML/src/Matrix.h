@@ -13,7 +13,7 @@ public:
     Matrix(sf::Vector2u size);
     void add(const Object& object);
     bool checkCollision(const Object& object);
-    void draw( sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window);
     void clear();
     unsigned getRemovedLineCounter();
 

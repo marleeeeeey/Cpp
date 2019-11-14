@@ -4,13 +4,13 @@
 
 Object::Object()
 {
-    m_pos = { 0, 0 };
+    m_pos = {0, 0};
     generateShape();
 }
 
 Object::Object(const Object& other)
 {
-    if(&other == this)
+    if (&other == this)
         return;
 
     *this = other;
@@ -33,93 +33,93 @@ void Object::generateShape()
     {
     case 0:
         m_shape.resize(2);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ false });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({false});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
         break;
     case 1:
         m_shape.resize(2);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ false });
-        m_shape[1].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({false});
+        m_shape[1].push_back({true});
         break;
     case 2:
         m_shape.resize(4);
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[2].push_back({ true });
-        m_shape[3].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[2].push_back({true});
+        m_shape[3].push_back({true});
         break;
     case 3:
         m_shape.resize(2);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
         break;
     case 4:
         m_shape.resize(2);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({true});
         break;
     case 5:
         m_shape.resize(2);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ false });
-        m_shape[1].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({false});
+        m_shape[1].push_back({true});
         break;
     case 6:
         m_shape.resize(3);
-        m_shape[0].push_back({ false });
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ false });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[2].push_back({ false });
-        m_shape[2].push_back({ true });
-        m_shape[2].push_back({ false });
+        m_shape[0].push_back({false});
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({false});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[2].push_back({false});
+        m_shape[2].push_back({true});
+        m_shape[2].push_back({false});
         break;
     case 7:
         m_shape.resize(3);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[2].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[2].push_back({true});
         break;
     case 8:
         m_shape.resize(3);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ false });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[2].push_back({ true });
-        m_shape[2].push_back({ false });
-        m_shape[2].push_back({ true });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({false});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[2].push_back({true});
+        m_shape[2].push_back({false});
+        m_shape[2].push_back({true});
         break;
     case 9:
         m_shape.resize(3);
-        m_shape[0].push_back({ true });
-        m_shape[0].push_back({ false });
-        m_shape[0].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[1].push_back({ true });
-        m_shape[2].push_back({ false });
-        m_shape[2].push_back({ true });
-        m_shape[2].push_back({ false });
+        m_shape[0].push_back({true});
+        m_shape[0].push_back({false});
+        m_shape[0].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[1].push_back({true});
+        m_shape[2].push_back({false});
+        m_shape[2].push_back({true});
+        m_shape[2].push_back({false});
         break;
     }
 
@@ -130,7 +130,7 @@ void Object::generateShape()
     }
 
     bool hasFlip = rand() % 2;
-    for(unsigned i = 0; i < rotationNumber; ++i)
+    for (unsigned i = 0; i < rotationNumber; ++i)
     {
         *this = getFlipObject();
     }
@@ -140,13 +140,13 @@ void Object::draw(sf::RenderWindow& window) const
 {
     const unsigned shiftRow = m_pos.y;
     const unsigned shiftCol = m_pos.x;
-    for(unsigned row = 0; row < m_shape.size(); ++row)
+    for (unsigned row = 0; row < m_shape.size(); ++row)
     {
         const auto& line = m_shape[row];
-        for(unsigned col = 0; col < line.size(); ++col)
+        for (unsigned col = 0; col < line.size(); ++col)
         {
             const auto& cell = line[col];
-            cell.draw(window, { shiftCol + col, shiftRow + row });
+            cell.draw(window, {shiftCol + col, shiftRow + row});
         }
     }
 }
@@ -182,10 +182,10 @@ Cell Object::getCell(sf::Vector2u matrixPos) const
     assert(shapePos.y >= 0);
     assert(shapePos.x >= 0);
 
-    if(shapePos.y < m_shape.size())
+    if (shapePos.y < m_shape.size())
     {
         const auto& line = m_shape[shapePos.y];
-        if(shapePos.x < line.size())
+        if (shapePos.x < line.size())
         {
             return line[shapePos.x];
         }
@@ -200,22 +200,22 @@ Object Object::getRotateObject() const
     Lines fullShape = m_shape;
 
     auto boundSize = getBoundSize();
-    for(auto & line : fullShape)
+    for (auto& line : fullShape)
     {
         line.resize(boundSize.x);
     }
 
     rotatedShape.resize(boundSize.x);
-    for (auto & line : rotatedShape)
+    for (auto& line : rotatedShape)
     {
         line.resize(boundSize.y);
     }
 
     for (unsigned row = 0; row < boundSize.y; ++row)
-    {        
-        for(unsigned col = 0; col < boundSize.x; ++col)
+    {
+        for (unsigned col = 0; col < boundSize.x; ++col)
         {
-            rotatedShape[boundSize.x-col-1][row] = fullShape[row][col];
+            rotatedShape[boundSize.x - col - 1][row] = fullShape[row][col];
         }
     }
 
@@ -227,7 +227,7 @@ Object Object::getRotateObject() const
 Object Object::getFlipObject() const
 {
     Lines flipShape = m_shape;
-    for(auto & line : flipShape)
+    for (auto& line : flipShape)
     {
         std::reverse(line.begin(), line.end());
     }
@@ -239,17 +239,17 @@ Object Object::getFlipObject() const
 
 sf::Vector2u Object::getBoundSize() const
 {
-    sf::Vector2u size {0, 0};
-    
-    if(m_shape.empty())
+    sf::Vector2u size{0, 0};
+
+    if (m_shape.empty())
         return size;
 
     size.y = m_shape.size();
     size.x = m_shape[0].size();
 
-    for(const auto & line : m_shape)
+    for (const auto& line : m_shape)
     {
-        if(line.size() > size.x)
+        if (line.size() > size.x)
             size.x = line.size();
     }
 

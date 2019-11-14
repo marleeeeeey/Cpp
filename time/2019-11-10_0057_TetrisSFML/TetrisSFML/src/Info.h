@@ -2,7 +2,6 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-
 class Info
 {
     sf::Vector2u m_pos;
