@@ -3,6 +3,5 @@
 **/Release
 **/x64
 **.DotSettings.user
-**.vcxproj.filters
 **.vcxproj.user
 **/GeneratedFiles
