@@ -20,6 +20,17 @@ sf::Font getDefaultFont()
     return font;
 }
 
+sf::Text createDefaultTextObject(const std::string & msg = "")
+{
+    static sf::Font defaultFont = getDefaultFont();
+
+    sf::Text text("text", defaultFont);
+    text.setFillColor(sf::Color::White);
+    text.setPosition(10, 10);
+    text.setString(msg);
+    return text;
+}
+
 std::ostream & operator<<(std::ostream& os, const sf::FloatRect& rect)
 {
     os
@@ -31,64 +42,67 @@ std::ostream & operator<<(std::ostream& os, const sf::FloatRect& rect)
     return os;
 }
 
+sf::RectangleShape createRectangleShape(sf::Vector2f size, sf::Vector2f pos)
+{
+    sf::RectangleShape rect(size);
+    rect.setPosition(pos);
+    rect.setFillColor(sf::Color::Transparent);
+    rect.setOutlineColor(sf::Color::White);
+    rect.setOutlineThickness(2);
+    return  rect;
+}
+
+void doMove(sf::Shape& moveObject, sf::Event event)
+{
+    if(isKeyPressed(event, sf::Keyboard::Key::Up))
+    {
+        moveObject.move({ 0, -1 });
+    }
+    if(isKeyPressed(event, sf::Keyboard::Key::Down))
+    {
+        moveObject.move({ 0, +1 });
+    }
+    if(isKeyPressed(event, sf::Keyboard::Key::Left))
+    {
+        moveObject.move({ -1, 0 });
+    }
+    if(isKeyPressed(event, sf::Keyboard::Key::Right))
+    {
+        moveObject.move({ +1, 0 });
+    }
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFMLCollisionTest");
+    auto text1 = createDefaultTextObject();
+    auto rectangleShape1 = createRectangleShape({ 100, 100 }, { 400, 300 });
+    auto rectangleShape2 = createRectangleShape({ 100, 100 }, { 510, 300 });
     
-    sf::RectangleShape r1({ 100, 100 });
-    sf::RectangleShape r2({ 100, 100 });
-    r1.setPosition(400, 300);
-    r1.setFillColor(sf::Color::Transparent);
-    r1.setOutlineColor(sf::Color::White);
-    r1.setOutlineThickness(2);
-    r2.setPosition(510, 300);
-    r2.setFillColor(sf::Color::Transparent);
-    r2.setOutlineColor(sf::Color::White);
-    r2.setOutlineThickness(2);
-
-    auto font = getDefaultFont();
-    sf::Text t1("text", font);
-    t1.setFillColor(sf::Color::White);
-    t1.setPosition(10, 10);
-
     while(window.isOpen())
     {
         sf::Event event;
         while(window.pollEvent(event))
         {
-            if(event.type == sf::Event::Closed)
+            if(event.type == sf::Event::Closed ||
+               isKeyPressed(event, sf::Keyboard::Key::Escape))
             {
                 window.close();
             }
             
-            if(isKeyPressed(event, sf::Keyboard::Key::Up))
-            {
-                r1.move({ 0, -1 });
-            }
-            if(isKeyPressed(event, sf::Keyboard::Key::Down))
-            {
-                r1.move({ 0, +1 });
-            }
-            if(isKeyPressed(event, sf::Keyboard::Key::Left))
-            {
-                r1.move({ -1, 0 });
-            }
-            if(isKeyPressed(event, sf::Keyboard::Key::Right))
-            {
-                r1.move({ +1, 0 });
-            }
+            doMove(rectangleShape1, event);
         }
 
 
-        const auto& rect1 = r1.getGlobalBounds();
-        const auto& rect2 = r2.getGlobalBounds();
+        const auto& rect1 = rectangleShape1.getGlobalBounds();
+        const auto& rect2 = rectangleShape2.getGlobalBounds();
         
         window.clear();
 
-        t1.setString(std::to_string(rect1.intersects(rect2)));
-        window.draw(t1);
-        window.draw(r1);
-        window.draw(r2);
+        text1.setString(std::to_string(rect1.intersects(rect2)));
+        window.draw(text1);
+        window.draw(rectangleShape1);
+        window.draw(rectangleShape2);
 
         window.display();
     }
