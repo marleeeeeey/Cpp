@@ -5,7 +5,11 @@
 void setOriginPointInCenter(sf::Shape& shape)
 {
     auto localBound = shape.getLocalBounds();
-    shape.setOrigin({ localBound.width / 2, localBound.height / 2 });
+    auto thickness = shape.getOutlineThickness();
+    shape.setOrigin({
+        localBound.width / 2 - thickness,
+        localBound.height / 2 - thickness
+    });
 }
 
 bool isKeyPressed(sf::Event event, sf::Keyboard::Key key)
@@ -41,22 +45,29 @@ sf::Text createDefaultTextObject(const std::string& msg = "")
 std::ostream& operator<<(std::ostream& os, const sf::FloatRect& rect)
 {
     os
-        << rect.left << ", "
-        << rect.top << ", "
-        << rect.width << ", "
-        << rect.height;
+        << "pos:(" << rect.left << ", " << rect.top << "), "
+        << "size:(" << rect.width << ", " << rect.height << ")";
     return os;
 }
 
-sf::RectangleShape createRectangleShape(sf::Vector2f size, sf::Vector2f pos)
+sf::RectangleShape createRectangleShape(sf::Vector2f size, sf::Vector2f pos, bool isCenter = true)
 {
     sf::RectangleShape shape(size);
     shape.setPosition(pos);
     shape.setFillColor(sf::Color::Transparent);
     shape.setOutlineColor(sf::Color::White);
     shape.setOutlineThickness(2);
+    if (!isCenter)
+    {
+        shape.move({size.x / 2, size.y / 2});
+    }
     setOriginPointInCenter(shape);
     return shape;
+}
+
+sf::RectangleShape createRectangleShape(const sf::FloatRect& rect)
+{
+    return createRectangleShape({rect.width, rect.height}, {rect.left, rect.top}, false);
 }
 
 sf::CircleShape createCircleShape(const float radius, const sf::Vector2f pos)
@@ -90,7 +101,7 @@ void doMove(sf::Shape& moveObject, sf::Event event)
     }
 }
 
-sf::RectangleShape extractInsideRectShape(const sf::CircleShape & circleShape)
+sf::RectangleShape extractInsideRectShape(const sf::CircleShape& circleShape)
 {
     float insideRectSize = cos(45) * circleShape.getRadius() * 2;
     sf::RectangleShape rectShape = createRectangleShape(
@@ -99,11 +110,44 @@ sf::RectangleShape extractInsideRectShape(const sf::CircleShape & circleShape)
     return rectShape;
 }
 
-bool isIntersect(const sf::Shape & movedShape, const sf::Shape & statShape)
+std::optional<sf::FloatRect> getIntersectRect(const sf::Shape& shape1, const sf::Shape& shape2)
 {
-    const auto& insideRect = movedShape.getGlobalBounds();
-    const auto& rect = statShape.getGlobalBounds();
-    return insideRect.intersects(rect);
+    const auto& insideRect = shape1.getGlobalBounds();
+    const auto& rect = shape2.getGlobalBounds();
+    sf::FloatRect outFloatRect;
+    auto isIntersect = insideRect.intersects(rect, outFloatRect);
+    if (isIntersect)
+        return outFloatRect;
+
+    return {};
+}
+
+std::optional<sf::RectangleShape> getIntersectRectShape(const sf::Shape& shape1, const sf::Shape& shape2)
+{
+    auto instersectRect = getIntersectRect(shape1, shape2);
+
+    if (instersectRect)
+    {
+        auto rectShape = createRectangleShape(instersectRect.value());
+        rectShape.setOutlineThickness(0);
+        rectShape.setFillColor(sf::Color(100, 100, 100, 200));
+        return rectShape;
+    }
+
+    return {};
+}
+
+bool isIntersect(const sf::Shape& shape1, const sf::Shape& shape2)
+{
+    return getIntersectRect(shape1, shape2).has_value();
+}
+
+std::ostream& operator<<(std::ostream& os, const sf::RectangleShape& shape)
+{
+    os
+        << "pos:(" << shape.getPosition().x << ", " << shape.getPosition().y << "), "
+        << "size:(" << shape.getSize().x << ", " << shape.getSize().y << ")";
+    return os;
 }
 
 int main()
@@ -129,17 +173,22 @@ int main()
             doMove(insideRectShape, event);
         }
 
-
+        auto intersectRectShape = getIntersectRectShape(insideRectShape, rectangleShape);
         std::ostringstream ss;
-        ss << "intersect=" << isIntersect(insideRectShape, rectangleShape) << std::endl;
+        ss << "intersect=" << intersectRectShape.has_value() << std::endl;
 
         window.clear();
 
-        text.setString(ss.str());
-        window.draw(text);
         window.draw(insideRectShape);
         window.draw(rectangleShape);
         window.draw(circleShape);
+        if (intersectRectShape)
+        {
+            ss << intersectRectShape.value() << std::endl;
+            window.draw(intersectRectShape.value());
+        }
+        text.setString(ss.str());
+        window.draw(text);
 
         window.display();
     }
