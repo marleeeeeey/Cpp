@@ -4,7 +4,7 @@
 Info::Info()
 {
     std::string fontFileName = "C:\\Windows\\Fonts\\calibri.ttf";
-    if(!font.loadFromFile(fontFileName))
+    if (!font.loadFromFile(fontFileName))
     {
         std::string msg = "Can't open font file " + fontFileName;
         throw std::exception(msg.c_str());
@@ -21,7 +21,7 @@ void Info::draw(sf::RenderWindow& window) const
 
     auto curPos = m_pos;
 
-    for(auto & scope : scopes)
+    for (auto& scope : scopes)
     {
         text.setPosition(curPos.x * Cell::getSize(), curPos.y * Cell::getSize());
         text.setString(std::to_string(scope));
