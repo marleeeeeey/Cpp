@@ -1,5 +1,12 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
+#include <sstream>
+#include <optional>
+
+void setOriginPointInCenter(sf::Shape& shape)
+{
+    auto localBound = shape.getLocalBounds();
+    shape.setOrigin({ localBound.width / 2, localBound.height / 2 });
+}
 
 bool isKeyPressed(sf::Event event, sf::Keyboard::Key key)
 {
@@ -43,12 +50,24 @@ std::ostream& operator<<(std::ostream& os, const sf::FloatRect& rect)
 
 sf::RectangleShape createRectangleShape(sf::Vector2f size, sf::Vector2f pos)
 {
-    sf::RectangleShape rect(size);
-    rect.setPosition(pos);
-    rect.setFillColor(sf::Color::Transparent);
-    rect.setOutlineColor(sf::Color::White);
-    rect.setOutlineThickness(2);
-    return rect;
+    sf::RectangleShape shape(size);
+    shape.setPosition(pos);
+    shape.setFillColor(sf::Color::Transparent);
+    shape.setOutlineColor(sf::Color::White);
+    shape.setOutlineThickness(2);
+    setOriginPointInCenter(shape);
+    return shape;
+}
+
+sf::CircleShape createCircleShape(const float radius, const sf::Vector2f pos)
+{
+    sf::CircleShape shape(radius);
+    shape.setPosition(pos);
+    shape.setFillColor(sf::Color::Transparent);
+    shape.setOutlineColor(sf::Color::White);
+    shape.setOutlineThickness(2);
+    setOriginPointInCenter(shape);
+    return shape;
 }
 
 void doMove(sf::Shape& moveObject, sf::Event event)
@@ -71,12 +90,29 @@ void doMove(sf::Shape& moveObject, sf::Event event)
     }
 }
 
+sf::RectangleShape extractInsideRectShape(const sf::CircleShape & circleShape)
+{
+    float insideRectSize = cos(45) * circleShape.getRadius() * 2;
+    sf::RectangleShape rectShape = createRectangleShape(
+        {insideRectSize, insideRectSize}, circleShape.getPosition());
+    setOriginPointInCenter(rectShape);
+    return rectShape;
+}
+
+bool isIntersect(const sf::Shape & movedShape, const sf::Shape & statShape)
+{
+    const auto& insideRect = movedShape.getGlobalBounds();
+    const auto& rect = statShape.getGlobalBounds();
+    return insideRect.intersects(rect);
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFMLCollisionTest");
-    auto text1 = createDefaultTextObject();
-    auto rectangleShape1 = createRectangleShape({100, 100}, {400, 300});
-    auto rectangleShape2 = createRectangleShape({100, 100}, {510, 300});
+    auto text = createDefaultTextObject();
+    auto rectangleShape = createRectangleShape({100, 100}, {510, 300});
+    auto circleShape = createCircleShape(20, {510, 300});
+    sf::RectangleShape insideRectShape = extractInsideRectShape(circleShape);
 
     while (window.isOpen())
     {
@@ -89,18 +125,21 @@ int main()
                 window.close();
             }
 
-            doMove(rectangleShape1, event);
+            doMove(circleShape, event);
+            doMove(insideRectShape, event);
         }
 
-        const auto& rect1 = rectangleShape1.getGlobalBounds();
-        const auto& rect2 = rectangleShape2.getGlobalBounds();
+
+        std::ostringstream ss;
+        ss << "intersect=" << isIntersect(insideRectShape, rectangleShape) << std::endl;
 
         window.clear();
 
-        text1.setString(std::to_string(rect1.intersects(rect2)));
-        window.draw(text1);
-        window.draw(rectangleShape1);
-        window.draw(rectangleShape2);
+        text.setString(ss.str());
+        window.draw(text);
+        window.draw(insideRectShape);
+        window.draw(rectangleShape);
+        window.draw(circleShape);
 
         window.display();
     }
