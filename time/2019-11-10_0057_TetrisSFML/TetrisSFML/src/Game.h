@@ -3,6 +3,8 @@
 #include "Object.h"
 #include "Info.h"
 
+bool isKeyPressed(sf::Event event, sf::Keyboard::Key key);
+
 class Game
 {
     Matrix m_matrix;

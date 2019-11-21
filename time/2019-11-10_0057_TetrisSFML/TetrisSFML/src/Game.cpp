@@ -67,21 +67,21 @@ void Game::dispatchKey(sf::Event event)
         return;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (isKeyPressed(event,sf::Keyboard::Left))
     {
         auto moved = m_object.getMoved(-1, 0);
         if (!m_matrix.checkCollision(moved))
             m_object = moved;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (isKeyPressed(event, sf::Keyboard::Right))
     {
         auto moved = m_object.getMoved(+1, 0);
         if (!m_matrix.checkCollision(moved))
             m_object = moved;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if (isKeyPressed(event, sf::Keyboard::Down))
     {
         m_isAccelerate = true;
     }
@@ -90,7 +90,7 @@ void Game::dispatchKey(sf::Event event)
         m_isAccelerate = false;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (isKeyPressed(event, sf::Keyboard::Up))
     {
         auto rotateObject = m_object.getRotateObject();
         bool isCollision = m_matrix.checkCollision(rotateObject);
