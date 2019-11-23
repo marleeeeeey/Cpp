@@ -90,6 +90,8 @@ std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
             collisions.push_back({ secondaryObject, collision.value()});
         }
     }
+
+    return collisions;
 }
 
 void World::updateState(sf::Event event, sf::Time timeStep)
