@@ -57,6 +57,7 @@ void World::generate()
     sf::Vector2f ballPos = { m_worldSize.x * 0.5f, m_worldSize.y * 0.9f };
     auto ball = of->createObject(ObjectType::Ball);
     ball->state().setPos(ballPos);
+    ball->state().setSize({ 10,10 });
     m_balls.push_back(ball);
 
     sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};

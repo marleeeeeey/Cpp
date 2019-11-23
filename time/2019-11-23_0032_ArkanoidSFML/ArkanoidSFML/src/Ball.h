@@ -4,7 +4,6 @@
 class Ball : public DefaultObject
 {
     sf::Vector2f m_speed;
-    float m_radius;
 
 public:
     Ball();
