@@ -4,14 +4,45 @@
 
 Ball::Ball()
 {
-    m_speed = {100, -200};
+    m_speed = {100, -85};
+}
+
+float getArea(const sf::Vector2f& size)
+{
+    return size.x * size.y;
+}
+
+Collision getBiggestCollision(std::vector<Collision>& collisions)
+{
+    std::sort(collisions.begin(), collisions.end(), [](Collision& lhs, Collision& rhs)
+    {
+        auto areaLhs = getArea(lhs.getCollisionRect().getSize());
+        auto areaRhs = getArea(rhs.getCollisionRect().getSize());
+        return areaLhs < areaRhs;
+    });
+
+    return collisions.back();
 }
 
 void Ball::onBumping(std::vector<Collision>& collisions)
 {
     if (!collisions.empty())
     {
-        m_speed = - m_speed;
+        auto biggestCollision = getBiggestCollision(collisions);
+        auto cs = biggestCollision.getCollisionRect().getSize();
+
+        if (cs.x == cs.y)
+        {
+            m_speed = -m_speed;
+        }
+        else if (cs.x > cs.y) // vertical flip
+        {
+            m_speed.y = -m_speed.y;
+        }
+        else // horizontal flip
+        {
+            m_speed.x = -m_speed.x;
+        };
     }
 
     for (auto collision : collisions)
@@ -22,37 +53,8 @@ void Ball::onBumping(std::vector<Collision>& collisions)
     }
 }
 
-void Ball::debugFunControlBall(std::optional<sf::Event> event)
-{
-    if (event)
-    {
-        if (hf::isKeyPressed(event.value(), sf::Keyboard::Up))
-        {
-            m_speed = {0, -1000};
-        }
-        if (hf::isKeyPressed(event.value(), sf::Keyboard::Down))
-        {
-            m_speed = {0, 1000};
-        }
-        if (hf::isKeyPressed(event.value(), sf::Keyboard::Left))
-        {
-            m_speed = {-1000, 0};
-        }
-        if (hf::isKeyPressed(event.value(), sf::Keyboard::Right))
-        {
-            m_speed = {1000, 0};
-        }
-    }
-    else
-    {
-        m_speed = {0, 0};
-    }
-}
-
 void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
-    //debugFunControlBall(event);
-
     auto pos = state().getPos();
     sf::Vector2f offset = {elapsedTime.asSeconds() * m_speed.x, elapsedTime.asSeconds() * m_speed.y};
     state().setPos(pos + offset);
