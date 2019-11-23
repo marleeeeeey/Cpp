@@ -15,5 +15,4 @@ void Brick::onBumping(std::vector<Collision>& collisions)
 
 void Brick::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
-
 }

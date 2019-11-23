@@ -16,7 +16,7 @@ std::shared_ptr<IObject> ObjectFactory::createObject(ObjectType objectType)
     case ObjectType::Ball:
         return std::make_shared<Ball>();
     case ObjectType::Bonus: break;
-    case ObjectType::Wall: 
+    case ObjectType::Wall:
         return std::make_shared<Wall>();
     default: ;
     }

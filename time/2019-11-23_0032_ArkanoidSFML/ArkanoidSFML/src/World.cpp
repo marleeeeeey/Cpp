@@ -96,10 +96,10 @@ void World::generate()
 
     float plateKoefThinkness = 0.04;
     auto plate = of->createObject(ObjectType::Plate);
-    plate->state().setSize({ m_worldSize.x * 0.2f, m_worldSize.y * plateKoefThinkness });
-    plate->state().setPos({ m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness) });
+    plate->state().setSize({m_worldSize.x * 0.2f, m_worldSize.y * plateKoefThinkness});
+    plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
     m_plates.push_back(plate);
-    
+
     std::cout << "count of objects is " << getAllObjects().size() << std::endl;
 }
 
