@@ -49,7 +49,32 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSi
 
 void World::generate()
 {
-    // TODO
+    auto& of = m_objectFactory;
+    sf::Vector2f screenCenter = {m_worldSize.x, m_worldSize.y};
+    auto ball = of->createObject(ObjectType::Ball);
+    ball->state().setPos(screenCenter);
+    m_balls.push_back(ball);
+
+    sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
+    sf::Vector2f brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.1f};
+    sf::Vector2i resolutionInBricks = { 10, 5 };
+    sf::Vector2f brickSize = { brickZoneSize.x / resolutionInBricks.x, brickZoneSize.y / resolutionInBricks.y };
+    for (auto brickCol = 0; brickCol < resolutionInBricks.x; ++brickCol)
+    {
+        for (auto brickRow = 0; brickRow < resolutionInBricks.y; ++brickRow)
+        {
+            auto brick = of->createObject(ObjectType::Brick);
+            sf::Vector2f brickPos = {
+                brickSize.x / 2 + brickCol * brickSize.x + brickZoneLeftTopPos.x,
+                brickSize.y / 2 + brickRow * brickSize.y + brickZoneLeftTopPos.y
+            };
+            brick->state().setPos(brickPos);
+            brick->state().setSize(brickSize);
+            m_matrix.push_back(brick);
+        }
+    }
+
+    // TODO generate walls, plate, ...
 }
 
 bool World::isGameOver()
@@ -78,16 +103,16 @@ void World::removeAllDestroyedObjects()
 }
 
 std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
-    std::vector<std::shared_ptr<IObject>> secondaryObjects)
+                                            std::vector<std::shared_ptr<IObject>> secondaryObjects)
 {
     std::vector<Collision> collisions;
-    for(auto secondaryObject : secondaryObjects)
+    for (auto secondaryObject : secondaryObjects)
     {
         auto collision = hf::getIntersectRectShape(object->state().getCollisionRect(),
-            secondaryObject->state().getCollisionRect());
-        if(collision)
+                                                   secondaryObject->state().getCollisionRect());
+        if (collision)
         {
-            collisions.push_back({ secondaryObject, collision.value()});
+            collisions.push_back({secondaryObject, collision.value()});
         }
     }
 
