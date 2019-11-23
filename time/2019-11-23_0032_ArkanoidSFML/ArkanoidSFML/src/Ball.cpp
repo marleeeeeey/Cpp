@@ -4,24 +4,18 @@
 
 Ball::Ball()
 {
-    m_speed = {0, -200};
+    m_speed = {100, -200};
 }
 
 void Ball::onBumping(std::vector<Collision>& collisions)
 {
-    //    if(!collisions.empty())
-    //    {
-    //        m_speed = { 0, 0 };
-    //        std::cout << "ball has a collision" << std::endl;
-    //    }
-
-    // for (auto collision : collisions)
-    // {
-    //     collision.getObject()->state().setDestroyFlag(true);
-    // }
+    if (!collisions.empty())
+    {
+        m_speed = - m_speed;
+    }
 
     for (auto collision : collisions)
-    {        
+    {
         std::vector<Collision> responseCollisions;
         responseCollisions.emplace_back(shared_from_this(), collision.getCollisionRect());
         collision.getObject()->onBumping(responseCollisions);
