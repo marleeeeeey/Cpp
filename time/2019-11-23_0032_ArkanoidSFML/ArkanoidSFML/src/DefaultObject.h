@@ -3,12 +3,11 @@
 
 class DefaultObject : public IObject
 {
-protected:
     State m_state;
 
 public:
     void onBumping(std::vector<Collision>& collisions) override;
-    void calcState(sf::Event event, sf::Time elapsedTime) override;
+    void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) override;
     void draw(sf::RenderWindow& window) override;
     State& state() override;
 };

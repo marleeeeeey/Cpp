@@ -27,21 +27,24 @@ int main()
     auto previousTimeStamp = clock.getElapsedTime();
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
+        std::optional<sf::Event> optEvent;
+        sf::Event tempEvent;
+        if (window.pollEvent(tempEvent))
         {
-            if (event.type == sf::Event::Closed
-                || hf::isKeyPressed(event, sf::Keyboard::Escape))
+            if (tempEvent.type == sf::Event::Closed
+                || hf::isKeyPressed(tempEvent, sf::Keyboard::Escape))
             {
                 window.close();
             }
+
+            optEvent = tempEvent;
         }
 
         auto currentTime = clock.getElapsedTime();
         auto timeDiff = currentTime - previousTimeStamp;
         assert(timeDiff.asSeconds() >= 0);
         previousTimeStamp = currentTime;
-        gameEngine.setEvent(event, timeDiff);
+        gameEngine.setEvent(optEvent, timeDiff);
         window.clear();
         gameEngine.draw(window);
         window.display();

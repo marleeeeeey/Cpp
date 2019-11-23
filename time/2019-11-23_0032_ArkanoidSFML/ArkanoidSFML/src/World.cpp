@@ -23,7 +23,7 @@ std::vector<std::shared_ptr<IObject>> World::getPrimaryObjects()
 std::vector<std::shared_ptr<IObject>> World::getSecondaryObjects()
 {
     std::vector<std::shared_ptr<IObject>> objects;
-    objects.insert(objects.end(), m_matrix.begin(), m_matrix.end());
+    objects.insert(objects.end(), m_bricks.begin(), m_bricks.end());
     objects.insert(objects.end(), m_walls.begin(), m_walls.end());
     objects.insert(objects.end(), m_bonuses.begin(), m_bonuses.end());
     return objects;
@@ -74,18 +74,18 @@ void World::generate()
             };
             brick->state().setPos(brickPos);
             brick->state().setSize(brickSize);
-            m_matrix.push_back(brick);
+            m_bricks.push_back(brick);
         }
     }
 
-    std::cout << "count of generated objects is " << getAllObjects().size() << std::endl;
-
     // TODO generate walls, plate, ...
+
+    std::cout << "count of objects is " << getAllObjects().size() << std::endl;
 }
 
 bool World::isGameOver()
 {
-    return m_matrix.empty() || m_balls.empty();
+    return m_bricks.empty() || m_balls.empty();
 }
 
 void World::removeObjectsIfDestroyed(std::vector<std::shared_ptr<IObject>>& objects)
@@ -103,7 +103,7 @@ void World::removeAllDestroyedObjects()
 {
     removeObjectsIfDestroyed(m_balls);
     removeObjectsIfDestroyed(m_plates);
-    removeObjectsIfDestroyed(m_matrix);
+    removeObjectsIfDestroyed(m_bricks);
     removeObjectsIfDestroyed(m_walls);
     removeObjectsIfDestroyed(m_bonuses);
 }
@@ -112,7 +112,7 @@ void World::removeAllObjects()
 {
     m_balls.clear();
     m_plates.clear();
-    m_matrix.clear();
+    m_bricks.clear();
     m_walls.clear();
     m_bonuses.clear();
 }
@@ -134,7 +134,7 @@ std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
     return collisions;
 }
 
-void World::updateState(sf::Event event, sf::Time timeStep)
+void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
 {
     auto allObjects = getAllObjects();
     for (auto object : allObjects)
@@ -147,9 +147,11 @@ void World::updateState(sf::Event event, sf::Time timeStep)
     }
     removeAllDestroyedObjects();
 
+    auto secondaryObjects = getSecondaryObjects();
+
     for (auto primaryObject : getPrimaryObjects())
     {
-        auto collisions = getCollisions(primaryObject, getSecondaryObjects());
+        auto collisions = getCollisions(primaryObject, secondaryObjects);
         primaryObject->onBumping(collisions);
     }
 

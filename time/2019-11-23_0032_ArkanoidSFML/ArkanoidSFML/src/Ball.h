@@ -5,12 +5,11 @@ class Ball : public DefaultObject
 {
     sf::Vector2f m_speed;
     float m_radius;
-    sf::RectangleShape m_collisionRect;
-    sf::CircleShape m_drawShape;
 
 public:
     Ball();
     void onBumping(std::vector<Collision>& collisions) override;
-    void calcState(sf::Event event, sf::Time elapsedTime) override;
+    void debugFunControlBall(std::optional<sf::Event> event);
+    void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) override;
     void draw(sf::RenderWindow& window) override;
 };
