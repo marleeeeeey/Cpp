@@ -18,6 +18,7 @@ class World : public IWorld
     bool isObjectOutOfBorder(std::shared_ptr<IObject> object);
     void removeObjectsIfDestroyed(std::vector<std::shared_ptr<IObject>>& objects);
     void removeAllDestroyedObjects();
+    std::vector<Collision> getCollisions(std::shared_ptr<IObject> object, std::vector< std::shared_ptr<IObject>> secondaryObjects);
 
 public:
     World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);

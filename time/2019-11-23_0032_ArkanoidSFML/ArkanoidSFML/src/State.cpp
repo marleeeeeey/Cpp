@@ -30,14 +30,14 @@ sf::Vector2f State::getSize() const
     return m_collisionRect.getSize();
 }
 
-void State::setIsDestroyed(bool isDestroyed)
+void State::setDestroyFlag(bool isDestroyed)
 {
-    m_isDestroyed = isDestroyed;
+    m_destroyFlag = isDestroyed;
 }
 
-bool State::getIsDestroyed() const
+bool State::getDestroyFlag() const
 {
-    return m_isDestroyed;
+    return m_destroyFlag;
 }
 
 void State::settimeStep(const sf::Time& timeStep)
