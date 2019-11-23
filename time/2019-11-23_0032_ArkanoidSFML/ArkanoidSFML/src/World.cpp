@@ -16,7 +16,6 @@ std::vector<std::shared_ptr<IObject>> World::getPrimaryObjects()
 {
     std::vector<std::shared_ptr<IObject>> objects;
     objects.insert(objects.end(), m_balls.begin(), m_balls.end());
-    objects.insert(objects.end(), m_plates.begin(), m_plates.end());
     return objects;
 }
 
@@ -26,6 +25,7 @@ std::vector<std::shared_ptr<IObject>> World::getSecondaryObjects()
     objects.insert(objects.end(), m_bricks.begin(), m_bricks.end());
     objects.insert(objects.end(), m_walls.begin(), m_walls.end());
     objects.insert(objects.end(), m_bonuses.begin(), m_bonuses.end());
+    objects.insert(objects.end(), m_plates.begin(), m_plates.end());
     return objects;
 }
 
@@ -57,7 +57,7 @@ void World::generate()
     sf::Vector2f ballPos = {m_worldSize.x * 0.5f, m_worldSize.y * 0.9f};
     auto ball = of->createObject(ObjectType::Ball);
     ball->state().setPos(ballPos);
-    ball->state().setSize({10, 10});
+    ball->state().setSize({20, 20});
     m_balls.push_back(ball);
 
     sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
@@ -94,8 +94,12 @@ void World::generate()
     m_walls.push_back(rightWall);
     m_walls.push_back(topWall);
 
-    // TODO generate walls, plate, ...
-
+    float plateKoefThinkness = 0.04;
+    auto plate = of->createObject(ObjectType::Plate);
+    plate->state().setSize({ m_worldSize.x * 0.2f, m_worldSize.y * plateKoefThinkness });
+    plate->state().setPos({ m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness) });
+    m_plates.push_back(plate);
+    
     std::cout << "count of objects is " << getAllObjects().size() << std::endl;
 }
 

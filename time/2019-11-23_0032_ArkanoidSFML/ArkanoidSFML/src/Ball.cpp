@@ -4,7 +4,7 @@
 
 Ball::Ball()
 {
-    m_speed = {100, -85};
+    m_speed = {100*3, -85*3};
 }
 
 float getArea(const sf::Vector2f& size)
@@ -28,8 +28,8 @@ void Ball::onBumping(std::vector<Collision>& collisions)
 {
     if (!collisions.empty())
     {
-        auto biggestCollision = getBiggestCollision(collisions);
-        auto cs = biggestCollision.getCollisionRect().getSize();
+        m_biggestCollision = getBiggestCollision(collisions);
+        auto cs = m_biggestCollision.value().getCollisionRect().getSize();
 
         if (cs.x == cs.y)
         {
@@ -43,6 +43,13 @@ void Ball::onBumping(std::vector<Collision>& collisions)
         {
             m_speed.x = -m_speed.x;
         };
+
+        if(m_lastNonCollisionState)
+            state() = m_lastNonCollisionState.value();
+    }
+    else
+    {
+        m_lastNonCollisionState = state();
     }
 
     for (auto collision : collisions)
@@ -62,5 +69,15 @@ void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 
 void Ball::draw(sf::RenderWindow& window)
 {
-    window.draw(state().getCollisionRect());
+    if(m_biggestCollision)
+    {
+        auto collisionShape = m_biggestCollision.value().getCollisionRect();
+        collisionShape.setFillColor(sf::Color::Green);
+        window.draw(collisionShape);        
+    }
+    float rectSide = state().getCollisionRect().getSize().x;
+    float radius = rectSide / sqrt(2);
+    auto circleShape = hf::createCircleShape(radius, state().getPos());
+    circleShape.setFillColor(sf::Color::Blue);
+    window.draw(circleShape);
 }

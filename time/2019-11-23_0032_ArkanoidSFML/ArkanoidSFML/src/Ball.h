@@ -4,6 +4,8 @@
 class Ball : public DefaultObject
 {
     sf::Vector2f m_speed;
+    std::optional<Collision> m_biggestCollision;
+    std::optional<State> m_lastNonCollisionState;
 
 public:
     Ball();
