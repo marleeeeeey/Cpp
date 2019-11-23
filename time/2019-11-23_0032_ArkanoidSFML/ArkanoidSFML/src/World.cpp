@@ -1,5 +1,6 @@
 #include "World.h"
 #include "HelperFunctions.h"
+#include <iostream>
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
@@ -49,6 +50,9 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSi
 
 void World::generate()
 {
+    std::cout << "World::generate()" << std::endl;
+    removeAllObjects();
+
     auto& of = m_objectFactory;
     sf::Vector2f ballPos = { m_worldSize.x * 0.5f, m_worldSize.y * 0.9f };
     auto ball = of->createObject(ObjectType::Ball);
@@ -73,6 +77,8 @@ void World::generate()
             m_matrix.push_back(brick);
         }
     }
+
+    std::cout << "count of generated objects is " << getAllObjects().size() << std::endl;
 
     // TODO generate walls, plate, ...
 }
@@ -100,6 +106,15 @@ void World::removeAllDestroyedObjects()
     removeObjectsIfDestroyed(m_matrix);
     removeObjectsIfDestroyed(m_walls);
     removeObjectsIfDestroyed(m_bonuses);
+}
+
+void World::removeAllObjects()
+{
+    m_balls.clear();
+    m_plates.clear();
+    m_matrix.clear();
+    m_walls.clear();
+    m_bonuses.clear();
 }
 
 std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,

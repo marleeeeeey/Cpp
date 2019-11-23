@@ -13,7 +13,10 @@ Ball::Ball()
 void Ball::onBumping(std::vector<Collision>& collisions)
 {
     if(!collisions.empty())
+    {
         m_speed = { 0, 0 };
+        std::cout << "ball has a collision" << std::endl;
+    }
 }
 
 void Ball::calcState(sf::Event event, sf::Time elapsedTime)
