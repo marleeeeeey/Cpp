@@ -4,7 +4,7 @@
 #include "Collision.h"
 #include <optional>
 
-class IObject
+class IObject : public std::enable_shared_from_this<IObject>
 {
 public:
     virtual ~IObject() = default;

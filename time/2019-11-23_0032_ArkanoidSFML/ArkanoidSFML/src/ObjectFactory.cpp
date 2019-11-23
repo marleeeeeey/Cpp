@@ -1,6 +1,7 @@
 #include "ObjectFactory.h"
 #include "Brick.h"
 #include "Ball.h"
+#include "Wall.h"
 
 std::shared_ptr<IObject> ObjectFactory::createObject(ObjectType objectType)
 {
@@ -13,7 +14,8 @@ std::shared_ptr<IObject> ObjectFactory::createObject(ObjectType objectType)
     case ObjectType::Ball:
         return std::make_shared<Ball>();
     case ObjectType::Bonus: break;
-    case ObjectType::Wall: break;
+    case ObjectType::Wall: 
+        return std::make_shared<Wall>();
     default: ;
     }
 }

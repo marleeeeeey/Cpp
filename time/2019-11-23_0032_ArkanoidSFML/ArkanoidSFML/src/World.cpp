@@ -54,16 +54,16 @@ void World::generate()
     removeAllObjects();
 
     auto& of = m_objectFactory;
-    sf::Vector2f ballPos = { m_worldSize.x * 0.5f, m_worldSize.y * 0.9f };
+    sf::Vector2f ballPos = {m_worldSize.x * 0.5f, m_worldSize.y * 0.9f};
     auto ball = of->createObject(ObjectType::Ball);
     ball->state().setPos(ballPos);
-    ball->state().setSize({ 10,10 });
+    ball->state().setSize({10, 10});
     m_balls.push_back(ball);
 
     sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
     sf::Vector2f brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.1f};
-    sf::Vector2i resolutionInBricks = { 10, 5 };
-    sf::Vector2f brickSize = { brickZoneSize.x / resolutionInBricks.x, brickZoneSize.y / resolutionInBricks.y };
+    sf::Vector2i resolutionInBricks = {10, 5};
+    sf::Vector2f brickSize = {brickZoneSize.x / resolutionInBricks.x, brickZoneSize.y / resolutionInBricks.y};
     for (auto brickCol = 0; brickCol < resolutionInBricks.x; ++brickCol)
     {
         for (auto brickRow = 0; brickRow < resolutionInBricks.y; ++brickRow)
@@ -78,6 +78,21 @@ void World::generate()
             m_bricks.push_back(brick);
         }
     }
+
+    float wallKoefThinkness = 0.02;
+    sf::Vector2f verticalWallSize = {m_worldSize.x * wallKoefThinkness, m_worldSize.y};
+    auto leftWall = of->createObject(ObjectType::Wall);
+    leftWall->state().setCollisionRect(verticalWallSize, {m_worldSize.x * wallKoefThinkness / 2, m_worldSize.y / 2});
+    auto rightWall = of->createObject(ObjectType::Wall);
+    rightWall->state().setCollisionRect(verticalWallSize,
+                                        {m_worldSize.x * (1 - wallKoefThinkness / 2), m_worldSize.y / 2});
+    sf::Vector2f horizontalWallSize = {m_worldSize.x, m_worldSize.y * wallKoefThinkness};
+    auto topWall = of->createObject(ObjectType::Wall);
+    topWall->state().setCollisionRect(horizontalWallSize, {m_worldSize.x / 2, m_worldSize.y * wallKoefThinkness / 2});
+
+    m_walls.push_back(leftWall);
+    m_walls.push_back(rightWall);
+    m_walls.push_back(topWall);
 
     // TODO generate walls, plate, ...
 

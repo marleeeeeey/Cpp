@@ -15,9 +15,16 @@ void Ball::onBumping(std::vector<Collision>& collisions)
     //        std::cout << "ball has a collision" << std::endl;
     //    }
 
+    // for (auto collision : collisions)
+    // {
+    //     collision.getObject()->state().setDestroyFlag(true);
+    // }
+
     for (auto collision : collisions)
-    {
-        collision.getObject()->state().setDestroyFlag(true);
+    {        
+        std::vector<Collision> responseCollisions;
+        responseCollisions.emplace_back(shared_from_this(), collision.getCollisionRect());
+        collision.getObject()->onBumping(responseCollisions);
     }
 }
 
