@@ -103,3 +103,25 @@ bool HelperFunctions::isIntersect(const sf::Shape& shape1, const sf::Shape& shap
 {
     return getIntersectRect(shape1, shape2).has_value();
 }
+
+std::ostream& operator<<(std::ostream& os, const sf::Vector2f& vec)
+{
+    os << "(" << vec.x << ", " << vec.y << ")";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const sf::FloatRect& rect)
+{
+    os
+        << "pos:(" << rect.left << ", " << rect.top << "), "
+        << "size:(" << rect.width << ", " << rect.height << ")";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const sf::RectangleShape& shape)
+{
+    os
+        << "pos:(" << shape.getPosition().x << ", " << shape.getPosition().y << "), "
+        << "size:(" << shape.getSize().x << ", " << shape.getSize().y << ")";
+    return os;
+}

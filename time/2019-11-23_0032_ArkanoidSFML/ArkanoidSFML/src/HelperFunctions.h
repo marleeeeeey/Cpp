@@ -19,3 +19,9 @@ namespace HelperFunctions
 }
 
 namespace hf = HelperFunctions;
+
+std::ostream& operator<<(std::ostream& os, const sf::Vector2f& vec);
+
+std::ostream& operator<<(std::ostream& os, const sf::FloatRect& rect);
+
+std::ostream& operator<<(std::ostream& os, const sf::RectangleShape& shape);

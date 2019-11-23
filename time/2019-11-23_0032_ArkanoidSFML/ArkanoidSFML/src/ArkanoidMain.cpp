@@ -5,6 +5,8 @@
 #include "GameEngine.h"
 #include "World.h"
 #include "HelperFunctions.h"
+#include <cassert>
+#include <iostream>
 
 int main()
 {
@@ -33,12 +35,13 @@ int main()
             {
                 window.close();
             }
-
-            auto currentTime = clock.getElapsedTime();
-            auto timeDiff = currentTime - previousTimeStamp;
-            previousTimeStamp = currentTime;
-            gameEngine.setEvent(event, timeDiff);
         }
+
+        auto currentTime = clock.getElapsedTime();
+        auto timeDiff = currentTime - previousTimeStamp;
+        assert(timeDiff.asSeconds() >= 0);
+        previousTimeStamp = currentTime;
+        gameEngine.setEvent(event, timeDiff);
         window.clear();
         gameEngine.draw(window);
         window.display();
