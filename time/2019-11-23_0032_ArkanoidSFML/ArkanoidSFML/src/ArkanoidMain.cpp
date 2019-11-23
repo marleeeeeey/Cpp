@@ -15,7 +15,7 @@ int main()
 
     srand(time(NULL));
 
-    auto objectFactory = std::make_shared<IObjectFactory>();
+    auto objectFactory = std::make_shared<ObjectFactory>();
     sf::Vector2f windowSize = {800, 600};
     auto world = std::make_shared<World>(objectFactory, windowSize);
     GameEngine gameEngine(world);
@@ -28,7 +28,7 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed
-                || HelperFunctions::isKeyPressed(event, sf::Keyboard::Escape))
+                || hf::isKeyPressed(event, sf::Keyboard::Escape))
             {
                 window.close();
             }

@@ -8,7 +8,7 @@ GameEngine::GameEngine(std::shared_ptr<IWorld> world)
 void GameEngine::setEvent(sf::Event event, sf::Time timeStep)
 {
     m_world->updateState(event, timeStep);
-    if(m_world->isGameOver())
+    if (m_world->isGameOver())
     {
         m_world->generate();
     }

@@ -10,6 +10,5 @@ public:
     void onBumping(std::vector<Collision>& collisions) override;
     void calcState(sf::Event event, sf::Time elapsedTime) override;
     void draw(sf::RenderWindow& window) override;
-    State getState() override;
-    void setState(const State& state) override;
+    State& state() override;
 };

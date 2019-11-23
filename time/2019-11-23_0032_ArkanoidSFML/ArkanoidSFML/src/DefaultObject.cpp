@@ -10,12 +10,7 @@ void DefaultObject::calcState(sf::Event event, sf::Time elapsedTime)
     // do nothing
 }
 
-State DefaultObject::getState()
+State& DefaultObject::state()
 {
     return m_state;
-}
-
-void DefaultObject::setState(const State& state)
-{
-    m_state = state;
 }

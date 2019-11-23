@@ -37,7 +37,7 @@ sf::Text createDefaultTextObject(const std::string& msg = "")
 
     sf::Text text("text", defaultFont);
     text.setFillColor(sf::Color::White);
-    text.setPosition(10, 10);
+    text.setPosition(0, 0);
     text.setString(msg);
     return text;
 }
