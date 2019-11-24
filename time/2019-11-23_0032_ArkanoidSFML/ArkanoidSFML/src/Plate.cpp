@@ -63,20 +63,20 @@ void Plate::onBumping(std::vector<Collision>& collisions)
         }
 
         auto bonus = std::dynamic_pointer_cast<Bonus>(obj);
-        if(bonus)
+        if (bonus)
         {
             bonusCollisions.push_back(collision);
             bonus->state().setDestroyFlag(true);
-        }        
+        }
     }
 
-    if(!isSpeedUpdated)
+    if (!isSpeedUpdated)
     {
-        m_lastNonCollisionState = state();        
+        m_lastNonCollisionState = state();
     }
-    if(!bonusCollisions.empty())
+    if (!bonusCollisions.empty())
     {
-        m_onBumpingCallBack(bonusCollisions);        
+        m_onBumpingCallBack(bonusCollisions);
     }
 }
 

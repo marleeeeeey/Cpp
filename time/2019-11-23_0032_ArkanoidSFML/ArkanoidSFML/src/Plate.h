@@ -5,7 +5,7 @@ class Plate : public DefaultObject
 {
     float m_speed;
     std::optional<State> m_lastNonCollisionState;
-    std::function<void(std::vector<Collision> & collisions)> m_onBumpingCallBack;
+    std::function<void(std::vector<Collision>& collisions)> m_onBumpingCallBack;
 
 public:
     Plate(std::shared_ptr<IObjectFactory> objectFactory);

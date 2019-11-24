@@ -1,7 +1,6 @@
 #pragma once
 #include "IObject.h"
 
-
 enum class ObjectType
 {
     Brick,

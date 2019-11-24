@@ -3,7 +3,6 @@
 #include <iostream>
 #include <sstream>
 
-
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
     std::vector<std::shared_ptr<IObject>> allObjects;
@@ -95,7 +94,10 @@ void World::generate()
                                        {m_worldSize.x * wallKoefThinkness / 2, m_worldSize.y * (0.5f + wallTopOffset)});
     auto rightWall = of->createObject(ObjectType::Wall);
     rightWall->state().setCollisionRect(verticalWallSize,
-                                        {m_worldSize.x * (1 - wallKoefThinkness / 2), m_worldSize.y * (0.5f + wallTopOffset) });
+                                        {
+                                            m_worldSize.x * (1 - wallKoefThinkness / 2),
+                                            m_worldSize.y * (0.5f + wallTopOffset)
+                                        });
     sf::Vector2f horizontalWallSize = {m_worldSize.x, m_worldSize.y * wallKoefThinkness};
     auto topWall = of->createObject(ObjectType::Wall);
     topWall->state().setCollisionRect(horizontalWallSize,

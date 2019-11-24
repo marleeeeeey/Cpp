@@ -19,9 +19,9 @@ void Brick::onBumping(std::vector<Collision>& collisions)
     state().setDestroyFlag(true);
     auto objectFacory = getObjectFactory();
     auto bonus = objectFacory->createObject(ObjectType::Bonus);
-    bonus->state().setSize({ 5, 5 });
+    bonus->state().setSize({5, 5});
     bonus->state().setPos(state().getPos());
-    if(!m_children)
+    if (!m_children)
         m_children = std::vector<std::shared_ptr<IObject>>();
     m_children.value().push_back(bonus);
 }
