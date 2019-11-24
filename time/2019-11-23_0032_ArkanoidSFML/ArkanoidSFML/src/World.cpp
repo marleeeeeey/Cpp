@@ -149,7 +149,7 @@ std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
     std::vector<Collision> collisions;
     for (auto secondaryObject : secondaryObjects)
     {
-        if(object == secondaryObject)
+        if (object == secondaryObject)
             continue;
 
         auto collision = hf::getIntersectRectShape(object->state().getCollisionRect(),

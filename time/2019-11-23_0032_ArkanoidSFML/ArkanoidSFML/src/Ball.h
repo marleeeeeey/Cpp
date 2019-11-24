@@ -8,7 +8,7 @@ class Ball : public DefaultObject
     std::optional<State> m_lastNonCollisionState;
 
 public:
-    Ball();
+    Ball(std::shared_ptr<IObjectFactory> objectFactory);
     void onBumping(std::vector<Collision>& collisions) override;
     void debugFunControlBall(std::optional<sf::Event> event);
     void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) override;

@@ -7,7 +7,7 @@ class Plate : public DefaultObject
     std::optional<State> m_lastNonCollisionState;
 
 public:
-    Plate();
+    Plate(std::shared_ptr<IObjectFactory> objectFactory);
     void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) override;
     void draw(sf::RenderWindow& window) override;
     void onBumping(std::vector<Collision>& collisions) override;

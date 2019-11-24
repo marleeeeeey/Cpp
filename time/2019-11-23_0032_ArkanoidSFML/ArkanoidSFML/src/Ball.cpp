@@ -2,7 +2,8 @@
 #include <iostream>
 #include "HelperFunctions.h"
 
-Ball::Ball()
+Ball::Ball(std::shared_ptr<IObjectFactory> objectFactory)
+    : DefaultObject(objectFactory)
 {
     m_speed = {100 * 3, -85 * 3};
 }

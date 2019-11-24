@@ -2,7 +2,8 @@
 #include "HelperFunctions.h"
 #include "Wall.h"
 
-Plate::Plate()
+Plate::Plate(std::shared_ptr<IObjectFactory> objectFactory)
+    : DefaultObject(objectFactory)
 {
     m_speed = 0;
 }
@@ -48,9 +49,9 @@ void Plate::onBumping(std::vector<Collision>& collisions)
     {
         auto obj = collision.getObject();
         auto wall = std::dynamic_pointer_cast<Wall>(obj);
-        if(wall)
+        if (wall)
         {
-            if(m_lastNonCollisionState)
+            if (m_lastNonCollisionState)
                 state() = m_lastNonCollisionState.value();
 
             m_speed = 0;
