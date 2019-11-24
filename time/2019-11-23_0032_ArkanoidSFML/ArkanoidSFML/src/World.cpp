@@ -5,10 +5,10 @@
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
     std::vector<std::shared_ptr<IObject>> allObjects;
-    auto mainObjects = getPrimaryObjects();
-    auto noMainObjects = getSecondaryObjects();
-    allObjects.insert(allObjects.end(), mainObjects.begin(), mainObjects.end());
-    allObjects.insert(allObjects.end(), noMainObjects.begin(), noMainObjects.end());
+    auto primaryObjects = getPrimaryObjects();
+    auto secondaryObjects = getSecondaryObjects();
+    allObjects.insert(allObjects.end(), primaryObjects.begin(), primaryObjects.end());
+    allObjects.insert(allObjects.end(), secondaryObjects.begin(), secondaryObjects.end());
     return allObjects;
 }
 
@@ -16,6 +16,7 @@ std::vector<std::shared_ptr<IObject>> World::getPrimaryObjects()
 {
     std::vector<std::shared_ptr<IObject>> objects;
     objects.insert(objects.end(), m_balls.begin(), m_balls.end());
+    objects.insert(objects.end(), m_plates.begin(), m_plates.end());
     return objects;
 }
 
@@ -65,7 +66,7 @@ void World::generate()
     sf::Vector2i resolutionInBricks = {10, 5};
     float brickGap = 8;
     sf::Vector2f brickSize = {
-        brickZoneSize.x / resolutionInBricks.x, 
+        brickZoneSize.x / resolutionInBricks.x,
         brickZoneSize.y / resolutionInBricks.y
     };
     for (auto brickCol = 0; brickCol < resolutionInBricks.x; ++brickCol)
@@ -78,7 +79,7 @@ void World::generate()
                 brickSize.y / 2 + brickRow * brickSize.y + brickZoneLeftTopPos.y
             };
             brick->state().setPos(brickPos);
-            brick->state().setSize({ brickSize.x - brickGap, brickSize.y - brickGap });
+            brick->state().setSize({brickSize.x - brickGap, brickSize.y - brickGap});
             m_bricks.push_back(brick);
         }
     }
@@ -148,6 +149,9 @@ std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
     std::vector<Collision> collisions;
     for (auto secondaryObject : secondaryObjects)
     {
+        if(object == secondaryObject)
+            continue;
+
         auto collision = hf::getIntersectRectShape(object->state().getCollisionRect(),
                                                    secondaryObject->state().getCollisionRect());
         if (collision)

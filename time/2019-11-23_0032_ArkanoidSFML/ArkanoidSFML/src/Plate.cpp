@@ -1,5 +1,6 @@
 #include "Plate.h"
 #include "HelperFunctions.h"
+#include "Wall.h"
 
 Plate::Plate()
 {
@@ -39,4 +40,23 @@ void Plate::draw(sf::RenderWindow& window)
     auto shape = state().getCollisionRect();
     shape.setFillColor(sf::Color::Cyan);
     window.draw(shape);
+}
+
+void Plate::onBumping(std::vector<Collision>& collisions)
+{
+    for (auto collision : collisions)
+    {
+        auto obj = collision.getObject();
+        auto wall = std::dynamic_pointer_cast<Wall>(obj);
+        if(wall)
+        {
+            if(m_lastNonCollisionState)
+                state() = m_lastNonCollisionState.value();
+
+            m_speed = 0;
+            return;
+        }
+    }
+
+    m_lastNonCollisionState = state();
 }
