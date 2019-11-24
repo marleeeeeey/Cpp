@@ -17,6 +17,7 @@ std::vector<std::shared_ptr<IObject>> World::getPrimaryObjects()
     std::vector<std::shared_ptr<IObject>> objects;
     objects.insert(objects.end(), m_balls.begin(), m_balls.end());
     objects.insert(objects.end(), m_plates.begin(), m_plates.end());
+    objects.insert(objects.end(), m_temporaryObjects.begin(), m_temporaryObjects.end());
     return objects;
 }
 
@@ -51,7 +52,6 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSi
 
 void World::generate()
 {
-    std::cout << "World::generate()" << std::endl;
     removeAllObjects();
 
     auto& of = m_objectFactory;
@@ -105,8 +105,6 @@ void World::generate()
     plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
     plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
     m_plates.push_back(plate);
-
-    std::cout << "count of objects is " << getAllObjects().size() << std::endl;
 }
 
 bool World::isGameOver()
@@ -132,6 +130,7 @@ void World::removeAllDestroyedObjects()
     removeObjectsIfDestroyed(m_bricks);
     removeObjectsIfDestroyed(m_walls);
     removeObjectsIfDestroyed(m_bonuses);
+    removeObjectsIfDestroyed(m_temporaryObjects);
 }
 
 void World::removeAllObjects()
@@ -141,6 +140,7 @@ void World::removeAllObjects()
     m_bricks.clear();
     m_walls.clear();
     m_bonuses.clear();
+    m_temporaryObjects.clear();
 }
 
 std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
@@ -165,6 +165,17 @@ std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
 
 void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
 {
+    for (auto object : getAllObjects())
+    {
+        auto optChildren = object->stealChildren();
+        if (optChildren)
+        {
+            auto children = optChildren.value();
+            m_temporaryObjects.insert(m_temporaryObjects.end(), children.begin(), children.end());
+        }
+    }
+    removeAllDestroyedObjects();
+
     auto allObjects = getAllObjects();
     for (auto object : allObjects)
     {
@@ -177,14 +188,11 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
     removeAllDestroyedObjects();
 
     auto secondaryObjects = getSecondaryObjects();
-
     for (auto primaryObject : getPrimaryObjects())
     {
         auto collisions = getCollisions(primaryObject, secondaryObjects);
         primaryObject->onBumping(collisions);
     }
-
-    removeAllDestroyedObjects();
 }
 
 void World::draw(sf::RenderWindow& window)

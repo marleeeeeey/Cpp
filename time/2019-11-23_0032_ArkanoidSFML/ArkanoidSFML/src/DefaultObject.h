@@ -12,6 +12,6 @@ public:
     void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) override;
     void draw(sf::RenderWindow& window) override;
     State& state() override;
-    std::optional<std::vector<IObject>> getChildren() override;
+    std::optional<std::vector<std::shared_ptr<IObject>>> stealChildren() override;
     std::shared_ptr<IObjectFactory> getObjectFactory() override;
 };

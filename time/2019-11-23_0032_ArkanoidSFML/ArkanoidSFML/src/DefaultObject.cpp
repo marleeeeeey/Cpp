@@ -24,7 +24,7 @@ State& DefaultObject::state()
     return m_state;
 }
 
-std::optional<std::vector<IObject>> DefaultObject::getChildren()
+std::optional<std::vector<std::shared_ptr<IObject>>> DefaultObject::stealChildren()
 {
     return {};
 }

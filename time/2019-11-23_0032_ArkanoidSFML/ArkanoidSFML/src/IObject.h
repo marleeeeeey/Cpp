@@ -13,7 +13,7 @@ public:
     virtual void onBumping(std::vector<Collision>& collisions) = 0;
     virtual void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
-    virtual std::optional<std::vector<IObject>> getChildren() = 0;
+    virtual std::optional<std::vector<std::shared_ptr<IObject>>> stealChildren() = 0;
     virtual State& state() = 0;
     virtual std::shared_ptr<IObjectFactory> getObjectFactory() = 0;
 };

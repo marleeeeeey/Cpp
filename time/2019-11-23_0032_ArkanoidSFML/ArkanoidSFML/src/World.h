@@ -11,6 +11,7 @@ class World : public IWorld
     std::vector<std::shared_ptr<IObject>> m_bricks;
     std::vector<std::shared_ptr<IObject>> m_walls;
     std::vector<std::shared_ptr<IObject>> m_bonuses;
+    std::vector<std::shared_ptr<IObject>> m_temporaryObjects;
 
     std::vector<std::shared_ptr<IObject>> getAllObjects();
     std::vector<std::shared_ptr<IObject>> getPrimaryObjects();
