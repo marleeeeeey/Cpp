@@ -14,4 +14,5 @@ public:
     State& state() override;
     std::optional<std::vector<std::shared_ptr<IObject>>> stealChildren() override;
     std::shared_ptr<IObjectFactory> getObjectFactory() override;
+    void setOnBumpingCallBack(std::function<void(std::vector<Collision>& collisions)> cb) override;
 };

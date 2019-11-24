@@ -1,6 +1,8 @@
 #include "World.h"
 #include "HelperFunctions.h"
 #include <iostream>
+#include <sstream>
+
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
@@ -17,7 +19,6 @@ std::vector<std::shared_ptr<IObject>> World::getPrimaryObjects()
     std::vector<std::shared_ptr<IObject>> objects;
     objects.insert(objects.end(), m_balls.begin(), m_balls.end());
     objects.insert(objects.end(), m_plates.begin(), m_plates.end());
-    objects.insert(objects.end(), m_temporaryObjects.begin(), m_temporaryObjects.end());
     return objects;
 }
 
@@ -26,8 +27,8 @@ std::vector<std::shared_ptr<IObject>> World::getSecondaryObjects()
     std::vector<std::shared_ptr<IObject>> objects;
     objects.insert(objects.end(), m_bricks.begin(), m_bricks.end());
     objects.insert(objects.end(), m_walls.begin(), m_walls.end());
-    objects.insert(objects.end(), m_bonuses.begin(), m_bonuses.end());
     objects.insert(objects.end(), m_plates.begin(), m_plates.end());
+    objects.insert(objects.end(), m_temporaryObjects.begin(), m_temporaryObjects.end());
     return objects;
 }
 
@@ -48,10 +49,12 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSi
 {
     m_worldSize = worldSize;
     m_objectFactory = objectFactory;
+    m_font = hf::getDefaultFont();
 }
 
 void World::generate()
 {
+    m_scopes = 0;
     removeAllObjects();
 
     auto& of = m_objectFactory;
@@ -62,7 +65,7 @@ void World::generate()
     m_balls.push_back(ball);
 
     sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
-    sf::Vector2f brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.1f};
+    sf::Vector2f brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.2f};
     sf::Vector2i resolutionInBricks = {10, 5};
     float brickGap = 8;
     sf::Vector2f brickSize = {
@@ -85,15 +88,18 @@ void World::generate()
     }
 
     float wallKoefThinkness = 0.02;
-    sf::Vector2f verticalWallSize = {m_worldSize.x * wallKoefThinkness, m_worldSize.y};
+    float wallTopOffset = 0.05;
+    sf::Vector2f verticalWallSize = {m_worldSize.x * wallKoefThinkness, m_worldSize.y * (1 - wallTopOffset)};
     auto leftWall = of->createObject(ObjectType::Wall);
-    leftWall->state().setCollisionRect(verticalWallSize, {m_worldSize.x * wallKoefThinkness / 2, m_worldSize.y / 2});
+    leftWall->state().setCollisionRect(verticalWallSize,
+                                       {m_worldSize.x * wallKoefThinkness / 2, m_worldSize.y * (0.5f + wallTopOffset)});
     auto rightWall = of->createObject(ObjectType::Wall);
     rightWall->state().setCollisionRect(verticalWallSize,
-                                        {m_worldSize.x * (1 - wallKoefThinkness / 2), m_worldSize.y / 2});
+                                        {m_worldSize.x * (1 - wallKoefThinkness / 2), m_worldSize.y * (0.5f + wallTopOffset) });
     sf::Vector2f horizontalWallSize = {m_worldSize.x, m_worldSize.y * wallKoefThinkness};
     auto topWall = of->createObject(ObjectType::Wall);
-    topWall->state().setCollisionRect(horizontalWallSize, {m_worldSize.x / 2, m_worldSize.y * wallKoefThinkness / 2});
+    topWall->state().setCollisionRect(horizontalWallSize,
+                                      {m_worldSize.x / 2, m_worldSize.y * (wallKoefThinkness / 2 + wallTopOffset)});
 
     m_walls.push_back(leftWall);
     m_walls.push_back(rightWall);
@@ -104,6 +110,10 @@ void World::generate()
     auto plate = of->createObject(ObjectType::Plate);
     plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
     plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
+    plate->setOnBumpingCallBack([&](std::vector<Collision>& collisions)
+    {
+        m_scopes += collisions.size();
+    });
     m_plates.push_back(plate);
 }
 
@@ -129,7 +139,6 @@ void World::removeAllDestroyedObjects()
     removeObjectsIfDestroyed(m_plates);
     removeObjectsIfDestroyed(m_bricks);
     removeObjectsIfDestroyed(m_walls);
-    removeObjectsIfDestroyed(m_bonuses);
     removeObjectsIfDestroyed(m_temporaryObjects);
 }
 
@@ -139,7 +148,6 @@ void World::removeAllObjects()
     m_plates.clear();
     m_bricks.clear();
     m_walls.clear();
-    m_bonuses.clear();
     m_temporaryObjects.clear();
 }
 
@@ -201,4 +209,12 @@ void World::draw(sf::RenderWindow& window)
     {
         object->draw(window);
     }
+
+    sf::Text text;
+    text.setFont(m_font);
+    text.setScale(0.7, 0.7);
+    std::ostringstream ss;
+    ss << "Scopes: " << m_scopes << std::endl;
+    text.setString(ss.str());
+    window.draw(text);
 }

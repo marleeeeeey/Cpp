@@ -33,3 +33,8 @@ std::shared_ptr<IObjectFactory> DefaultObject::getObjectFactory()
 {
     return m_objectFactory;
 }
+
+void DefaultObject::setOnBumpingCallBack(std::function<void(std::vector<Collision>& collisions)> cb)
+{
+    // do nothing
+}

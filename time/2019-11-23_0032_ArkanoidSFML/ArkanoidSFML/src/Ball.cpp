@@ -70,12 +70,6 @@ void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 
 void Ball::draw(sf::RenderWindow& window)
 {
-    if (m_biggestCollision)
-    {
-        auto collisionShape = m_biggestCollision.value().getCollisionRect();
-        collisionShape.setFillColor(sf::Color::Green);
-        window.draw(collisionShape);
-    }
     float rectSide = state().getCollisionRect().getSize().x;
     float radius = rectSide / sqrt(2);
     auto circleShape = hf::createCircleShape(radius, state().getPos());

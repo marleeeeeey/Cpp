@@ -1,6 +1,7 @@
 #include "Plate.h"
 #include "HelperFunctions.h"
 #include "Wall.h"
+#include "Bonus.h"
 
 Plate::Plate(std::shared_ptr<IObjectFactory> objectFactory)
     : DefaultObject(objectFactory)
@@ -45,19 +46,41 @@ void Plate::draw(sf::RenderWindow& window)
 
 void Plate::onBumping(std::vector<Collision>& collisions)
 {
+    std::vector<Collision> bonusCollisions;
+    bool isSpeedUpdated = false;
+
     for (auto collision : collisions)
     {
         auto obj = collision.getObject();
         auto wall = std::dynamic_pointer_cast<Wall>(obj);
-        if (wall)
+        if (wall && !isSpeedUpdated)
         {
             if (m_lastNonCollisionState)
                 state() = m_lastNonCollisionState.value();
 
             m_speed = 0;
-            return;
+            isSpeedUpdated = true;
         }
+
+        auto bonus = std::dynamic_pointer_cast<Bonus>(obj);
+        if(bonus)
+        {
+            bonusCollisions.push_back(collision);
+            bonus->state().setDestroyFlag(true);
+        }        
     }
 
-    m_lastNonCollisionState = state();
+    if(!isSpeedUpdated)
+    {
+        m_lastNonCollisionState = state();        
+    }
+    if(!bonusCollisions.empty())
+    {
+        m_onBumpingCallBack(bonusCollisions);        
+    }
+}
+
+void Plate::setOnBumpingCallBack(std::function<void(std::vector<Collision>& collisions)> cb)
+{
+    m_onBumpingCallBack = cb;
 }

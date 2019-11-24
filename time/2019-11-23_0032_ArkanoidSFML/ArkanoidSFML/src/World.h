@@ -10,8 +10,9 @@ class World : public IWorld
     std::vector<std::shared_ptr<IObject>> m_plates;
     std::vector<std::shared_ptr<IObject>> m_bricks;
     std::vector<std::shared_ptr<IObject>> m_walls;
-    std::vector<std::shared_ptr<IObject>> m_bonuses;
     std::vector<std::shared_ptr<IObject>> m_temporaryObjects;
+    sf::Font m_font;
+    unsigned m_scopes;
 
     std::vector<std::shared_ptr<IObject>> getAllObjects();
     std::vector<std::shared_ptr<IObject>> getPrimaryObjects();
