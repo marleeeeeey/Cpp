@@ -4,7 +4,7 @@
 
 Ball::Ball()
 {
-    m_speed = {100*3, -85*3};
+    m_speed = {100 * 3, -85 * 3};
 }
 
 float getArea(const sf::Vector2f& size)
@@ -44,7 +44,7 @@ void Ball::onBumping(std::vector<Collision>& collisions)
             m_speed.x = -m_speed.x;
         };
 
-        if(m_lastNonCollisionState)
+        if (m_lastNonCollisionState)
             state() = m_lastNonCollisionState.value();
     }
     else
@@ -69,11 +69,11 @@ void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 
 void Ball::draw(sf::RenderWindow& window)
 {
-    if(m_biggestCollision)
+    if (m_biggestCollision)
     {
         auto collisionShape = m_biggestCollision.value().getCollisionRect();
         collisionShape.setFillColor(sf::Color::Green);
-        window.draw(collisionShape);        
+        window.draw(collisionShape);
     }
     float rectSide = state().getCollisionRect().getSize().x;
     float radius = rectSide / sqrt(2);

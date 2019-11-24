@@ -63,7 +63,11 @@ void World::generate()
     sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
     sf::Vector2f brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.1f};
     sf::Vector2i resolutionInBricks = {10, 5};
-    sf::Vector2f brickSize = {brickZoneSize.x / resolutionInBricks.x, brickZoneSize.y / resolutionInBricks.y};
+    float brickGap = 8;
+    sf::Vector2f brickSize = {
+        brickZoneSize.x / resolutionInBricks.x, 
+        brickZoneSize.y / resolutionInBricks.y
+    };
     for (auto brickCol = 0; brickCol < resolutionInBricks.x; ++brickCol)
     {
         for (auto brickRow = 0; brickRow < resolutionInBricks.y; ++brickRow)
@@ -74,7 +78,7 @@ void World::generate()
                 brickSize.y / 2 + brickRow * brickSize.y + brickZoneLeftTopPos.y
             };
             brick->state().setPos(brickPos);
-            brick->state().setSize(brickSize);
+            brick->state().setSize({ brickSize.x - brickGap, brickSize.y - brickGap });
             m_bricks.push_back(brick);
         }
     }
@@ -95,8 +99,9 @@ void World::generate()
     m_walls.push_back(topWall);
 
     float plateKoefThinkness = 0.04;
+    float plateKoefSize = 0.3;
     auto plate = of->createObject(ObjectType::Plate);
-    plate->state().setSize({m_worldSize.x * 0.2f, m_worldSize.y * plateKoefThinkness});
+    plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
     plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
     m_plates.push_back(plate);
 

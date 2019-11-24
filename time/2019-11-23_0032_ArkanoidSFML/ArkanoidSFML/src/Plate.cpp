@@ -1,23 +1,34 @@
 #include "Plate.h"
 #include "HelperFunctions.h"
 
+Plate::Plate()
+{
+    m_speed = 0;
+}
+
 void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
-    float xSpeed = 0;
+    float koef = 10;
 
     if (event)
     {
         if (hf::isKeyPressed(event.value(), sf::Keyboard::Left))
         {
-            xSpeed = -2000;
+            m_speed = -koef;
         }
-        if (hf::isKeyPressed(event.value(), sf::Keyboard::Right))
+        else if (hf::isKeyPressed(event.value(), sf::Keyboard::Right))
         {
-            xSpeed = 2000;
+            m_speed = koef;
         }
     }
+    else
+    {
+        m_speed *= 0.9;
+        if (abs(m_speed) < koef / 10)
+            m_speed = 0;
+    }
 
-    float offset = xSpeed * elapsedTime.asSeconds();
+    float offset = m_speed;
     auto pos = state().getPos();
     pos.x += offset;
     state().setPos(pos);
@@ -25,5 +36,7 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 
 void Plate::draw(sf::RenderWindow& window)
 {
-    window.draw(state().getCollisionRect());
+    auto shape = state().getCollisionRect();
+    shape.setFillColor(sf::Color::Cyan);
+    window.draw(shape);
 }

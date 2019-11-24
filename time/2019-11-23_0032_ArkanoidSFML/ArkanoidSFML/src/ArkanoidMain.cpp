@@ -42,7 +42,6 @@ int main()
 
         auto currentTime = clock.getElapsedTime();
         auto timeDiff = currentTime - previousTimeStamp;
-        assert(timeDiff.asSeconds() >= 0);
         previousTimeStamp = currentTime;
         gameEngine.setEvent(optEvent, timeDiff);
         window.clear();
