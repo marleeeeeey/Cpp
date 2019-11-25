@@ -8,7 +8,7 @@ class Plate : public DefaultObject
     std::function<void(std::vector<Collision>& collisions)> m_onBumpingCallBack;
 
 public:
-    Plate(std::shared_ptr<IObjectFactory> objectFactory);
+    Plate();
     void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) override;
     void draw(sf::RenderWindow& window) override;
     void onBumping(std::vector<Collision>& collisions) override;

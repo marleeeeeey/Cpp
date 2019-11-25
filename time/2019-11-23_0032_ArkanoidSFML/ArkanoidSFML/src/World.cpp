@@ -101,11 +101,22 @@ void World::generate()
     });
     m_plates.push_back(plate);
 
-    m_collisionProcessors.push_back({ m_balls, m_plates, {} });
-    m_collisionProcessors.push_back({ m_balls, m_bricks, {} });
-    m_collisionProcessors.push_back({ m_balls, m_walls, {} });
-    m_collisionProcessors.push_back({ m_balls, m_temporaryObjects, {} });
-    m_collisionProcessors.push_back({ m_plates, m_walls, {} });
+    m_collisionProcessors.push_back({m_balls, m_plates, {}});
+    m_collisionProcessors.push_back({
+        m_balls, m_bricks, [&](std::vector<Collision>& collisions)
+        {
+            if(!collisions.empty())
+            {
+                auto bonus = m_objectFactory->createObject(ObjectType::Bonus);
+                bonus->state().setSize({ 5, 5 });
+                bonus->state().setPos({ 100, 100 });
+                m_temporaryObjects.push_back(bonus);                
+            }
+        }
+    });
+    m_collisionProcessors.push_back({m_balls, m_walls, {}});
+    m_collisionProcessors.push_back({m_balls, m_temporaryObjects, {}});
+    m_collisionProcessors.push_back({m_plates, m_walls, {}});
 }
 
 bool World::isGameOver()
@@ -144,14 +155,9 @@ void World::removeAllObjects()
 
 void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
 {
-    for (auto object : getAllObjects())
+    for(auto& collisionProcessor : m_collisionProcessors)
     {
-        auto optChildren = object->stealChildren();
-        if (optChildren)
-        {
-            auto children = optChildren.value();
-            m_temporaryObjects.insert(m_temporaryObjects.end(), children.begin(), children.end());
-        }
+        collisionProcessor.process();
     }
     removeAllDestroyedObjects();
 
@@ -165,11 +171,6 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
         }
     }
     removeAllDestroyedObjects();
-
-    for (auto & collisionProcessor : m_collisionProcessors)
-    {
-        collisionProcessor.process();
-    }
 }
 
 void World::draw(sf::RenderWindow& window)

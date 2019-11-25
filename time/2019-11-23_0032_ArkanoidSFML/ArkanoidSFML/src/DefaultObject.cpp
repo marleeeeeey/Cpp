@@ -21,12 +21,6 @@ std::vector<Collision> getCollisions(std::shared_ptr<IObject> object,
     return collisions;
 }
 
-
-DefaultObject::DefaultObject(std::shared_ptr<IObjectFactory> objectFactory)
-{
-    m_objectFactory = objectFactory;
-}
-
 void DefaultObject::onBumping(std::vector<Collision>& collisions)
 {
     // do nothing
@@ -46,16 +40,6 @@ State& DefaultObject::state()
     return m_state;
 }
 
-std::optional<std::vector<std::shared_ptr<IObject>>> DefaultObject::stealChildren()
-{
-    return {};
-}
-
-std::shared_ptr<IObjectFactory> DefaultObject::getObjectFactory()
-{
-    return m_objectFactory;
-}
-
 void DefaultObject::setOnBumpingCallBack(std::function<void(std::vector<Collision>& collisions)> cb)
 {
     m_onBumpingCallback = cb;
@@ -67,4 +51,5 @@ void DefaultObject::checkBumping(std::vector<std::shared_ptr<IObject>> & objects
     if(m_onBumpingCallback)
         m_onBumpingCallback(collisions);
     onBumping(collisions);
+    m_onBumpingCallback = {};
 }

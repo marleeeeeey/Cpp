@@ -3,8 +3,7 @@
 #include "Wall.h"
 #include "Bonus.h"
 
-Plate::Plate(std::shared_ptr<IObjectFactory> objectFactory)
-    : DefaultObject(objectFactory)
+Plate::Plate()
 {
     m_speed = 0;
 }

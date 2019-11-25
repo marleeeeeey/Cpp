@@ -1,10 +1,6 @@
 #include "Bonus.h"
 #include <iostream>
 
-Bonus::Bonus(std::shared_ptr<IObjectFactory> objectFactory)
-    : DefaultObject(objectFactory)
-{
-}
 
 void Bonus::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
