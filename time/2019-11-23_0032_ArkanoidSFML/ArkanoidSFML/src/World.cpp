@@ -95,7 +95,7 @@ void World::generate()
     auto plate = of->createObject(ObjectType::Plate);
     plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
     plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
-    plate->setOnBumpingCallBack([&](auto , std::vector<Collision>& collisions)
+    plate->setOnBumpingCallBack([&](auto, std::vector<Collision>& collisions)
     {
         m_scopes += collisions.size();
     });
@@ -105,17 +105,28 @@ void World::generate()
     m_collisionProcessors.push_back({
         m_balls, m_bricks, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
         {
-            if(!collisions.empty())
+            if (!collisions.empty())
             {
                 auto bonus = m_objectFactory->createObject(ObjectType::Bonus);
-                bonus->state().setSize({ 5, 5 });
+                bonus->state().setSize({5, 5});
                 bonus->state().setPos(thisObject->state().getPos());
-                m_bonuses.push_back(bonus);                
+                m_bonuses.push_back(bonus);
             }
         }
     });
     m_collisionProcessors.push_back({m_balls, m_walls, {}});
     m_collisionProcessors.push_back({m_plates, m_walls, {}});
+    m_collisionProcessors.push_back({
+        m_plates, m_bonuses, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
+        {
+            for (auto& collision : collisions)
+            {
+                auto obj = collision.getObject();
+                obj->state().setDestroyFlag(true);
+                m_scopes++;
+            }
+        }
+    });
 }
 
 bool World::isGameOver()
@@ -154,7 +165,7 @@ void World::removeAllObjects()
 
 void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
 {
-    for(auto& collisionProcessor : m_collisionProcessors)
+    for (auto& collisionProcessor : m_collisionProcessors)
     {
         collisionProcessor.process();
     }

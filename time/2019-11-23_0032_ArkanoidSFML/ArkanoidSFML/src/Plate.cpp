@@ -45,36 +45,19 @@ void Plate::draw(sf::RenderWindow& window)
 
 void Plate::onBumping(std::vector<Collision>& collisions)
 {
-    bool isSpeedUpdated = false;
-
     for (auto collision : collisions)
     {
         auto obj = collision.getObject();
         auto wall = std::dynamic_pointer_cast<Wall>(obj);
-        if (wall && !isSpeedUpdated)
+        if (wall)
         {
             if (m_lastNonCollisionState)
                 state() = m_lastNonCollisionState.value();
 
             m_speed = 0;
-            isSpeedUpdated = true;
-        }
-
-        // TODO
-        auto bonus = std::dynamic_pointer_cast<Bonus>(obj);
-        if (bonus)
-        {
-            bonus->state().setDestroyFlag(true);
+            return;
         }
     }
 
-    if (!isSpeedUpdated)
-    {
-        m_lastNonCollisionState = state();
-    }
-}
-
-void Plate::setOnBumpingCallBack(std::function<void(std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)> cb)
-{
-    m_onBumpingCallBack = cb;
+    m_lastNonCollisionState = state();
 }
