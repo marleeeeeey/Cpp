@@ -5,28 +5,11 @@
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
-    std::vector<std::shared_ptr<IObject>> allObjects;
-    auto primaryObjects = getPrimaryObjects();
-    auto secondaryObjects = getSecondaryObjects();
-    allObjects.insert(allObjects.end(), primaryObjects.begin(), primaryObjects.end());
-    allObjects.insert(allObjects.end(), secondaryObjects.begin(), secondaryObjects.end());
-    return allObjects;
-}
-
-std::vector<std::shared_ptr<IObject>> World::getPrimaryObjects()
-{
     std::vector<std::shared_ptr<IObject>> objects;
     objects.insert(objects.end(), m_balls.begin(), m_balls.end());
     objects.insert(objects.end(), m_plates.begin(), m_plates.end());
-    return objects;
-}
-
-std::vector<std::shared_ptr<IObject>> World::getSecondaryObjects()
-{
-    std::vector<std::shared_ptr<IObject>> objects;
     objects.insert(objects.end(), m_bricks.begin(), m_bricks.end());
     objects.insert(objects.end(), m_walls.begin(), m_walls.end());
-    objects.insert(objects.end(), m_plates.begin(), m_plates.end());
     objects.insert(objects.end(), m_temporaryObjects.begin(), m_temporaryObjects.end());
     return objects;
 }
@@ -117,6 +100,12 @@ void World::generate()
         m_scopes += collisions.size();
     });
     m_plates.push_back(plate);
+
+    m_collisionProcessors.push_back({ m_balls, m_plates, {} });
+    m_collisionProcessors.push_back({ m_balls, m_bricks, {} });
+    m_collisionProcessors.push_back({ m_balls, m_walls, {} });
+    m_collisionProcessors.push_back({ m_balls, m_temporaryObjects, {} });
+    m_collisionProcessors.push_back({ m_plates, m_walls, {} });
 }
 
 bool World::isGameOver()
@@ -153,26 +142,6 @@ void World::removeAllObjects()
     m_temporaryObjects.clear();
 }
 
-std::vector<Collision> World::getCollisions(std::shared_ptr<IObject> object,
-                                            std::vector<std::shared_ptr<IObject>> secondaryObjects)
-{
-    std::vector<Collision> collisions;
-    for (auto secondaryObject : secondaryObjects)
-    {
-        if (object == secondaryObject)
-            continue;
-
-        auto collision = hf::getIntersectRectShape(object->state().getCollisionRect(),
-                                                   secondaryObject->state().getCollisionRect());
-        if (collision)
-        {
-            collisions.push_back({secondaryObject, collision.value()});
-        }
-    }
-
-    return collisions;
-}
-
 void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
 {
     for (auto object : getAllObjects())
@@ -197,11 +166,9 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
     }
     removeAllDestroyedObjects();
 
-    auto secondaryObjects = getSecondaryObjects();
-    for (auto primaryObject : getPrimaryObjects())
+    for (auto & collisionProcessor : m_collisionProcessors)
     {
-        auto collisions = getCollisions(primaryObject, secondaryObjects);
-        primaryObject->onBumping(collisions);
+        collisionProcessor.process();
     }
 }
 

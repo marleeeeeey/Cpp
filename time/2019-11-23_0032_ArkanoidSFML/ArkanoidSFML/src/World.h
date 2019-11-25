@@ -1,6 +1,7 @@
 #pragma once
 #include "IObjectFactory.h"
 #include "IWorld.h"
+#include "CollisionProcessor.h"
 
 class World : public IWorld
 {
@@ -11,18 +12,15 @@ class World : public IWorld
     std::vector<std::shared_ptr<IObject>> m_bricks;
     std::vector<std::shared_ptr<IObject>> m_walls;
     std::vector<std::shared_ptr<IObject>> m_temporaryObjects;
+    std::vector<CollisionProcessor> m_collisionProcessors;
     sf::Font m_font;
     unsigned m_scopes;
 
     std::vector<std::shared_ptr<IObject>> getAllObjects();
-    std::vector<std::shared_ptr<IObject>> getPrimaryObjects();
-    std::vector<std::shared_ptr<IObject>> getSecondaryObjects();
     bool isObjectOutOfBorder(std::shared_ptr<IObject> object);
     void removeObjectsIfDestroyed(std::vector<std::shared_ptr<IObject>>& objects);
     void removeAllDestroyedObjects();
     void removeAllObjects();
-    std::vector<Collision> getCollisions(std::shared_ptr<IObject> object,
-                                         std::vector<std::shared_ptr<IObject>> secondaryObjects);
 
 public:
     World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);

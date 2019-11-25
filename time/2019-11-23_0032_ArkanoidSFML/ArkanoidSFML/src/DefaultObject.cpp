@@ -1,4 +1,26 @@
 #include "DefaultObject.h"
+#include "HelperFunctions.h"
+
+std::vector<Collision> getCollisions(std::shared_ptr<IObject> object,
+    std::vector<std::shared_ptr<IObject>> secondaryObjects)
+{
+    std::vector<Collision> collisions;
+    for(auto secondaryObject : secondaryObjects)
+    {
+        if(object == secondaryObject)
+            continue;
+
+        auto collision = hf::getIntersectRectShape(object->state().getCollisionRect(),
+            secondaryObject->state().getCollisionRect());
+        if(collision)
+        {
+            collisions.push_back({ secondaryObject, collision.value() });
+        }
+    }
+
+    return collisions;
+}
+
 
 DefaultObject::DefaultObject(std::shared_ptr<IObjectFactory> objectFactory)
 {
@@ -36,5 +58,13 @@ std::shared_ptr<IObjectFactory> DefaultObject::getObjectFactory()
 
 void DefaultObject::setOnBumpingCallBack(std::function<void(std::vector<Collision>& collisions)> cb)
 {
-    // do nothing
+    m_onBumpingCallback = cb;
+}
+
+void DefaultObject::checkBumping(std::vector<std::shared_ptr<IObject>> & objects)
+{
+    auto collisions = getCollisions(shared_from_this(), objects);
+    if(m_onBumpingCallback)
+        m_onBumpingCallback(collisions);
+    onBumping(collisions);
 }
