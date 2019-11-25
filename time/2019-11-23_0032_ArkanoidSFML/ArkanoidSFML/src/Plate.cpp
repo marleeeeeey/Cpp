@@ -45,7 +45,6 @@ void Plate::draw(sf::RenderWindow& window)
 
 void Plate::onBumping(std::vector<Collision>& collisions)
 {
-    std::vector<Collision> bonusCollisions;
     bool isSpeedUpdated = false;
 
     for (auto collision : collisions)
@@ -61,10 +60,10 @@ void Plate::onBumping(std::vector<Collision>& collisions)
             isSpeedUpdated = true;
         }
 
+        // TODO
         auto bonus = std::dynamic_pointer_cast<Bonus>(obj);
         if (bonus)
         {
-            bonusCollisions.push_back(collision);
             bonus->state().setDestroyFlag(true);
         }
     }
@@ -73,13 +72,9 @@ void Plate::onBumping(std::vector<Collision>& collisions)
     {
         m_lastNonCollisionState = state();
     }
-    if (!bonusCollisions.empty())
-    {
-        m_onBumpingCallBack(bonusCollisions);
-    }
 }
 
-void Plate::setOnBumpingCallBack(std::function<void(std::vector<Collision>& collisions)> cb)
+void Plate::setOnBumpingCallBack(std::function<void(std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)> cb)
 {
     m_onBumpingCallBack = cb;
 }

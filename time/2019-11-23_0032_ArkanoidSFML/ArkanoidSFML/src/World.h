@@ -11,7 +11,7 @@ class World : public IWorld
     std::vector<std::shared_ptr<IObject>> m_plates;
     std::vector<std::shared_ptr<IObject>> m_bricks;
     std::vector<std::shared_ptr<IObject>> m_walls;
-    std::vector<std::shared_ptr<IObject>> m_temporaryObjects;
+    std::vector<std::shared_ptr<IObject>> m_bonuses;
     std::vector<CollisionProcessor> m_collisionProcessors;
     sf::Font m_font;
     unsigned m_scopes;

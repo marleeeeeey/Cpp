@@ -10,7 +10,7 @@ std::vector<std::shared_ptr<IObject>> World::getAllObjects()
     objects.insert(objects.end(), m_plates.begin(), m_plates.end());
     objects.insert(objects.end(), m_bricks.begin(), m_bricks.end());
     objects.insert(objects.end(), m_walls.begin(), m_walls.end());
-    objects.insert(objects.end(), m_temporaryObjects.begin(), m_temporaryObjects.end());
+    objects.insert(objects.end(), m_bonuses.begin(), m_bonuses.end());
     return objects;
 }
 
@@ -95,7 +95,7 @@ void World::generate()
     auto plate = of->createObject(ObjectType::Plate);
     plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
     plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
-    plate->setOnBumpingCallBack([&](std::vector<Collision>& collisions)
+    plate->setOnBumpingCallBack([&](auto , std::vector<Collision>& collisions)
     {
         m_scopes += collisions.size();
     });
@@ -103,19 +103,18 @@ void World::generate()
 
     m_collisionProcessors.push_back({m_balls, m_plates, {}});
     m_collisionProcessors.push_back({
-        m_balls, m_bricks, [&](std::vector<Collision>& collisions)
+        m_balls, m_bricks, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
         {
             if(!collisions.empty())
             {
                 auto bonus = m_objectFactory->createObject(ObjectType::Bonus);
                 bonus->state().setSize({ 5, 5 });
-                bonus->state().setPos({ 100, 100 });
-                m_temporaryObjects.push_back(bonus);                
+                bonus->state().setPos(thisObject->state().getPos());
+                m_bonuses.push_back(bonus);                
             }
         }
     });
     m_collisionProcessors.push_back({m_balls, m_walls, {}});
-    m_collisionProcessors.push_back({m_balls, m_temporaryObjects, {}});
     m_collisionProcessors.push_back({m_plates, m_walls, {}});
 }
 
@@ -141,7 +140,7 @@ void World::removeAllDestroyedObjects()
     removeObjectsIfDestroyed(m_plates);
     removeObjectsIfDestroyed(m_bricks);
     removeObjectsIfDestroyed(m_walls);
-    removeObjectsIfDestroyed(m_temporaryObjects);
+    removeObjectsIfDestroyed(m_bonuses);
 }
 
 void World::removeAllObjects()
@@ -150,7 +149,7 @@ void World::removeAllObjects()
     m_plates.clear();
     m_bricks.clear();
     m_walls.clear();
-    m_temporaryObjects.clear();
+    m_bonuses.clear();
 }
 
 void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)

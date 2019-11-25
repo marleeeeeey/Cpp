@@ -40,16 +40,17 @@ State& DefaultObject::state()
     return m_state;
 }
 
-void DefaultObject::setOnBumpingCallBack(std::function<void(std::vector<Collision>& collisions)> cb)
+void DefaultObject::setOnBumpingCallBack(std::function<void(std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)> cb)
 {
     m_onBumpingCallback = cb;
 }
 
 void DefaultObject::checkBumping(std::vector<std::shared_ptr<IObject>> & objects)
 {
-    auto collisions = getCollisions(shared_from_this(), objects);
+    auto thisObject = shared_from_this();
+    auto collisions = getCollisions(thisObject, objects);
     if(m_onBumpingCallback)
-        m_onBumpingCallback(collisions);
+        m_onBumpingCallback(thisObject,collisions);
     onBumping(collisions);
     m_onBumpingCallback = {};
 }
