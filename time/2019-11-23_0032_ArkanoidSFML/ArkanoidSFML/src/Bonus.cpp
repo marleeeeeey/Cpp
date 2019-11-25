@@ -1,7 +1,6 @@
 #include "Bonus.h"
 #include <iostream>
 
-
 void Bonus::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
     sf::Vector2f speed = {0, 100};
