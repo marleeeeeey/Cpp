@@ -32,11 +32,13 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSi
     m_worldSize = worldSize;
     m_objectFactory = objectFactory;
     m_font = hf::getDefaultFont();
+    m_isGameOver = true;
+    m_scopes = 0;
 }
 
 void World::generate()
 {
-    m_scopes = 0;
+    m_isGameOver = false;
     removeAllObjects();
 
     auto& of = m_objectFactory;
@@ -101,6 +103,7 @@ void World::generate()
     });
     m_plates.push_back(plate);
 
+    m_collisionProcessors.push_back({m_balls, m_walls, {}});
     m_collisionProcessors.push_back({m_balls, m_plates, {}});
     m_collisionProcessors.push_back({
         m_balls, m_bricks, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
@@ -114,7 +117,6 @@ void World::generate()
             }
         }
     });
-    m_collisionProcessors.push_back({m_balls, m_walls, {}});
     m_collisionProcessors.push_back({m_plates, m_walls, {}});
     m_collisionProcessors.push_back({
         m_plates, m_bonuses, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
@@ -131,7 +133,7 @@ void World::generate()
 
 bool World::isGameOver()
 {
-    return m_bricks.empty() || m_balls.empty();
+    return m_isGameOver;
 }
 
 void World::removeObjectsIfDestroyed(std::vector<std::shared_ptr<IObject>>& objects)
@@ -161,10 +163,16 @@ void World::removeAllObjects()
     m_bricks.clear();
     m_walls.clear();
     m_bonuses.clear();
+    m_collisionProcessors.clear();
 }
 
 void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
 {
+    if (m_isGameOver)
+    {
+        generate();
+    }
+
     for (auto& collisionProcessor : m_collisionProcessors)
     {
         collisionProcessor.process();
@@ -181,6 +189,21 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
         }
     }
     removeAllDestroyedObjects();
+
+    bool isAllBallsOutOfBorder = std::none_of(m_balls.begin(), m_balls.end(), [&](auto ball)
+    {
+        return !isObjectOutOfBorder(ball);
+    });
+
+    if(isAllBallsOutOfBorder)
+    {
+        m_scopes = 0;
+        m_isGameOver = true;
+    }
+    else if (m_bricks.empty())
+    {
+        m_isGameOver = true;
+    }
 }
 
 void World::draw(sf::RenderWindow& window)

@@ -15,6 +15,7 @@ class World : public IWorld
     std::vector<CollisionProcessor> m_collisionProcessors;
     sf::Font m_font;
     unsigned m_scopes;
+    bool m_isGameOver;
 
     std::vector<std::shared_ptr<IObject>> getAllObjects();
     bool isObjectOutOfBorder(std::shared_ptr<IObject> object);
