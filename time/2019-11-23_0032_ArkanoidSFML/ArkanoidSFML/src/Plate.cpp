@@ -1,38 +1,64 @@
 #include "Plate.h"
 #include "HelperFunctions.h"
 #include "Wall.h"
-#include "Bonus.h"
 
 Plate::Plate()
 {
-    m_speed = 0;
+    m_offset = 0;
+    m_plateState = PlateState::Stop;
 }
 
 void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
-    float koef = 10;
-
-    if (event)
+    if (event && event.value().type == sf::Event::EventType::KeyPressed
+        && event.value().key.code == sf::Keyboard::Key::Left
+        && m_plateState != PlateState::MoveLeft)
     {
-        if (hf::isKeyPressed(event.value(), sf::Keyboard::Left))
-        {
-            m_speed = -koef;
-        }
-        else if (hf::isKeyPressed(event.value(), sf::Keyboard::Right))
-        {
-            m_speed = koef;
-        }
+        m_plateState = PlateState::MoveLeft;
     }
-    else
+    else if (event && event.value().type == sf::Event::EventType::KeyReleased
+        && event.value().key.code == sf::Keyboard::Key::Left
+        && m_plateState == PlateState::MoveLeft)
     {
-        m_speed *= 0.9;
-        if (abs(m_speed) < koef / 10)
-            m_speed = 0;
+        m_plateState = PlateState::Stop;
+    }
+    else if (event && event.value().type == sf::Event::EventType::KeyPressed
+        && event.value().key.code == sf::Keyboard::Key::Right
+        && m_plateState != PlateState::MoveRight)
+    {
+        m_plateState = PlateState::MoveRight;
+    }
+    else if (event && event.value().type == sf::Event::EventType::KeyReleased
+        && event.value().key.code == sf::Keyboard::Key::Right
+        && m_plateState == PlateState::MoveRight)
+    {
+        m_plateState = PlateState::Stop;
     }
 
-    float offset = m_speed;
+    float speed_pxps = 600;
+    float absOffset = speed_pxps * elapsedTime.asSeconds();
+    float absDampingOffset = absOffset * 0.03;
+    
+    switch (m_plateState)
+    {
+    case PlateState::Stop:
+        if(m_offset > 0)
+            m_offset -= absDampingOffset;
+        else if (m_offset < 0)
+            m_offset += absDampingOffset;
+        if (m_offset != 0 && abs(m_offset) < absDampingOffset)
+            m_offset = 0;
+        break;
+    case PlateState::MoveLeft:
+        m_offset = -absOffset;
+        break;
+    case PlateState::MoveRight:
+        m_offset = absOffset;
+        break;
+    }
+
     auto pos = state().getPos();
-    pos.x += offset;
+    pos.x += m_offset;
     state().setPos(pos);
 }
 
@@ -54,7 +80,7 @@ void Plate::onBumping(std::vector<Collision>& collisions)
             if (m_lastNonCollisionState)
                 state() = m_lastNonCollisionState.value();
 
-            m_speed = 0;
+            m_offset = 0;
             return;
         }
     }

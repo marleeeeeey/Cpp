@@ -1,10 +1,16 @@
 #pragma once
 #include "DefaultObject.h"
 
+enum class PlateState
+{
+    Stop, MoveLeft, MoveRight,
+};
+
 class Plate : public DefaultObject
 {
-    float m_speed;
+    float m_offset;
     std::optional<State> m_lastNonCollisionState;
+    PlateState m_plateState;
 
 public:
     Plate();

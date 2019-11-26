@@ -93,7 +93,7 @@ void World::generate()
     m_walls.push_back(topWall);
 
     float plateKoefThinkness = 0.04;
-    float plateKoefSize = 0.3;
+    float plateKoefSize = 0.2;
     auto plate = of->createObject(ObjectType::Plate);
     plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
     plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
