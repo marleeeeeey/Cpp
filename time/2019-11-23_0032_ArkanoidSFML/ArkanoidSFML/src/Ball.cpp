@@ -1,5 +1,4 @@
 #include "Ball.h"
-#include <iostream>
 #include "HelperFunctions.h"
 
 Ball::Ball()

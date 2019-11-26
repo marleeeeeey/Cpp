@@ -35,14 +35,14 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
         m_plateState = PlateState::Stop;
     }
 
-    float speed_pxps = 600;
+    int speed_pxps = 600;
     float absOffset = speed_pxps * elapsedTime.asSeconds();
-    float absDampingOffset = absOffset * 0.03;
-    
+    float absDampingOffset = absOffset * 0.03f;
+
     switch (m_plateState)
     {
     case PlateState::Stop:
-        if(m_offset > 0)
+        if (m_offset > 0)
             m_offset -= absDampingOffset;
         else if (m_offset < 0)
             m_offset += absDampingOffset;

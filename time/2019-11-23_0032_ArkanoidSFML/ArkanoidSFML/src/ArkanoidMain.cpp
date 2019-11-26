@@ -5,18 +5,16 @@
 #include "GameEngine.h"
 #include "World.h"
 #include "HelperFunctions.h"
-#include <cassert>
-#include <iostream>
 
 int main()
 {
-    if (false) // set true to hide console
+    if constexpr (false) // set true to hide console
     {
-        HWND hwnd = GetConsoleWindow();
+        auto hwnd = GetConsoleWindow();
         ShowWindow(hwnd, SW_HIDE);
     }
 
-    srand(time(NULL));
+    srand(time(nullptr));
 
     auto objectFactory = std::make_shared<ObjectFactory>();
     sf::Vector2f windowSize = {800, 600};

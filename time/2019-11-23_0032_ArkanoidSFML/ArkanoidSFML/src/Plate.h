@@ -3,7 +3,9 @@
 
 enum class PlateState
 {
-    Stop, MoveLeft, MoveRight,
+    Stop,
+    MoveLeft,
+    MoveRight,
 };
 
 class Plate : public DefaultObject

@@ -105,7 +105,7 @@ void World::generate()
 
     m_collisionProcessors.push_back({m_balls, m_walls, {}});
     m_collisionProcessors.push_back({m_balls, m_plates, {}});
-    m_collisionProcessors.push_back({
+    m_collisionProcessors.emplace_back(
         m_balls, m_bricks, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
         {
             if (!collisions.empty())
@@ -116,9 +116,9 @@ void World::generate()
                 m_bonuses.push_back(bonus);
             }
         }
-    });
+    );
     m_collisionProcessors.push_back({m_plates, m_walls, {}});
-    m_collisionProcessors.push_back({
+    m_collisionProcessors.emplace_back(
         m_plates, m_bonuses, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
         {
             for (auto& collision : collisions)
@@ -128,7 +128,7 @@ void World::generate()
                 m_scopes++;
             }
         }
-    });
+    );
 }
 
 bool World::isGameOver()
@@ -190,12 +190,12 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
     }
     removeAllDestroyedObjects();
 
-    bool isAllBallsOutOfBorder = std::none_of(m_balls.begin(), m_balls.end(), [&](auto ball)
+    auto isAllBallsOutOfBorder = std::none_of(m_balls.begin(), m_balls.end(), [&](auto ball)
     {
         return !isObjectOutOfBorder(ball);
     });
 
-    if(isAllBallsOutOfBorder)
+    if (isAllBallsOutOfBorder)
     {
         m_scopes = 0;
         m_isGameOver = true;

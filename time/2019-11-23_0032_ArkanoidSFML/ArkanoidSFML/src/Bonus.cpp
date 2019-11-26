@@ -1,5 +1,4 @@
 #include "Bonus.h"
-#include <iostream>
 
 void Bonus::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {

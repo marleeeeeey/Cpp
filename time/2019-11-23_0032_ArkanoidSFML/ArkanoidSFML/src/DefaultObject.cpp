@@ -14,7 +14,7 @@ std::vector<Collision> getCollisions(std::shared_ptr<IObject> object,
                                                    secondaryObject->state().getCollisionRect());
         if (collision)
         {
-            collisions.push_back({secondaryObject, collision.value()});
+            collisions.emplace_back(secondaryObject, collision.value());
         }
     }
 

@@ -14,17 +14,17 @@ void setOriginPointInCenter(sf::Shape& shape)
 
 bool HelperFunctions::isKeyPressed(sf::Event event, sf::Keyboard::Key key)
 {
-    return (event.type == sf::Event::EventType::KeyPressed
-        && event.key.code == key);
+    return event.type == sf::Event::EventType::KeyPressed
+        && event.key.code == key;
 }
 
 sf::Font HelperFunctions::getDefaultFont()
 {
     sf::Font font;
-    std::string fontFileName = "C:\\Windows\\Fonts\\calibri.ttf";
+    std::string fontFileName = R"(C:\Windows\Fonts\calibri.ttf)";
     if (!font.loadFromFile(fontFileName))
     {
-        std::string msg = "Can't open font file " + fontFileName;
+        auto msg = "Can't open font file " + fontFileName;
         throw std::exception(msg.c_str());
     }
 

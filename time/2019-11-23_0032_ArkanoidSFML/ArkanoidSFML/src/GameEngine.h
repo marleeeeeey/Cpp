@@ -8,7 +8,7 @@ class GameEngine
     std::shared_ptr<IWorld> m_world;
 
 public:
-    GameEngine(std::shared_ptr<IWorld> world);
+    explicit GameEngine(std::shared_ptr<IWorld> world);
     void setEvent(std::optional<sf::Event> event, sf::Time timeStep);
     void draw(sf::RenderWindow& window);
 };
