@@ -195,14 +195,20 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
         return !isObjectOutOfBorder(ball);
     });
 
-    if (isAllBallsOutOfBorder)
+    if (isAllBallsOutOfBorder && !m_bricks.empty())
     {
         m_scopes = 0;
         m_isGameOver = true;
     }
     else if (m_bricks.empty())
     {
-        m_isGameOver = true;
+        std::for_each(m_balls.begin(), m_balls.end(), [](std::shared_ptr<IObject> ballObject)
+        {
+            ballObject->state().setDestroyFlag(true);
+        });
+
+        if (m_bonuses.empty())
+            m_isGameOver = true;
     }
 }
 
