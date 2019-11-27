@@ -33,6 +33,7 @@ void DefaultObject::calcState(std::optional<sf::Event> event, sf::Time elapsedTi
 
 void DefaultObject::draw(sf::RenderWindow& window)
 {
+    // do nothing
 }
 
 State& DefaultObject::state()

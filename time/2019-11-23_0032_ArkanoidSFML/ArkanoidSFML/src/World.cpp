@@ -36,73 +36,8 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSi
     m_scopes = 0;
 }
 
-void World::generate()
+void World::initCollisionProcessors()
 {
-    m_isGameOver = false;
-    removeAllObjects();
-
-    auto& of = m_objectFactory;
-    sf::Vector2f ballPos = {m_worldSize.x * 0.5f, m_worldSize.y * 0.9f};
-    auto ball = of->createObject(ObjectType::Ball);
-    ball->state().setPos(ballPos);
-    ball->state().setSize({20, 20});
-    m_balls.push_back(ball);
-
-    sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
-    sf::Vector2f brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.2f};
-    sf::Vector2i resolutionInBricks = {10, 5};
-    float brickGap = 8;
-    sf::Vector2f brickSize = {
-        brickZoneSize.x / resolutionInBricks.x,
-        brickZoneSize.y / resolutionInBricks.y
-    };
-    for (auto brickCol = 0; brickCol < resolutionInBricks.x; ++brickCol)
-    {
-        for (auto brickRow = 0; brickRow < resolutionInBricks.y; ++brickRow)
-        {
-            auto brick = of->createObject(ObjectType::Brick);
-            sf::Vector2f brickPos = {
-                brickSize.x / 2 + brickCol * brickSize.x + brickZoneLeftTopPos.x,
-                brickSize.y / 2 + brickRow * brickSize.y + brickZoneLeftTopPos.y
-            };
-            brick->state().setPos(brickPos);
-            brick->state().setSize({brickSize.x - brickGap, brickSize.y - brickGap});
-            m_bricks.push_back(brick);
-        }
-    }
-
-    float wallKoefThinkness = 0.02;
-    float wallTopOffset = 0.05;
-    sf::Vector2f verticalWallSize = {m_worldSize.x * wallKoefThinkness, m_worldSize.y * (1 - wallTopOffset)};
-    auto leftWall = of->createObject(ObjectType::Wall);
-    leftWall->state().setCollisionRect(verticalWallSize,
-                                       {m_worldSize.x * wallKoefThinkness / 2, m_worldSize.y * (0.5f + wallTopOffset)});
-    auto rightWall = of->createObject(ObjectType::Wall);
-    rightWall->state().setCollisionRect(verticalWallSize,
-                                        {
-                                            m_worldSize.x * (1 - wallKoefThinkness / 2),
-                                            m_worldSize.y * (0.5f + wallTopOffset)
-                                        });
-    sf::Vector2f horizontalWallSize = {m_worldSize.x, m_worldSize.y * wallKoefThinkness};
-    auto topWall = of->createObject(ObjectType::Wall);
-    topWall->state().setCollisionRect(horizontalWallSize,
-                                      {m_worldSize.x / 2, m_worldSize.y * (wallKoefThinkness / 2 + wallTopOffset)});
-
-    m_walls.push_back(leftWall);
-    m_walls.push_back(rightWall);
-    m_walls.push_back(topWall);
-
-    float plateKoefThinkness = 0.04;
-    float plateKoefSize = 0.2;
-    auto plate = of->createObject(ObjectType::Plate);
-    plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
-    plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
-    plate->setOnBumpingCallBack([&](auto, std::vector<Collision>& collisions)
-    {
-        m_scopes += collisions.size();
-    });
-    m_plates.push_back(plate);
-
     m_collisionProcessors.push_back({m_balls, m_walls, {}});
     m_collisionProcessors.push_back({m_balls, m_plates, {}});
     m_collisionProcessors.emplace_back(
@@ -129,6 +64,91 @@ void World::generate()
             }
         }
     );
+}
+
+void World::initPlates()
+{
+    float plateKoefThinkness = 0.04;
+    float plateKoefSize = 0.2;
+    auto plate = m_objectFactory->createObject(ObjectType::Plate);
+    plate->state().setSize({m_worldSize.x * plateKoefSize, m_worldSize.y * plateKoefThinkness});
+    plate->state().setPos({m_worldSize.x / 2, m_worldSize.y * (1 - plateKoefThinkness)});
+    plate->setOnBumpingCallBack([&](auto, std::vector<Collision>& collisions)
+    {
+        m_scopes += collisions.size();
+    });
+    m_plates.push_back(plate);
+}
+
+void World::initWalls()
+{
+    float wallKoefThinkness = 0.02;
+    float wallTopOffset = 0.05;
+    sf::Vector2f verticalWallSize = {m_worldSize.x * wallKoefThinkness, m_worldSize.y * (1 - wallTopOffset)};
+    auto leftWall = m_objectFactory->createObject(ObjectType::Wall);
+    leftWall->state().setCollisionRect(verticalWallSize,
+                                       {m_worldSize.x * wallKoefThinkness / 2, m_worldSize.y * (0.5f + wallTopOffset)});
+    auto rightWall = m_objectFactory->createObject(ObjectType::Wall);
+    rightWall->state().setCollisionRect(verticalWallSize,
+                                        {
+                                            m_worldSize.x * (1 - wallKoefThinkness / 2),
+                                            m_worldSize.y * (0.5f + wallTopOffset)
+                                        });
+    sf::Vector2f horizontalWallSize = {m_worldSize.x, m_worldSize.y * wallKoefThinkness};
+    auto topWall = m_objectFactory->createObject(ObjectType::Wall);
+    topWall->state().setCollisionRect(horizontalWallSize,
+                                      {m_worldSize.x / 2, m_worldSize.y * (wallKoefThinkness / 2 + wallTopOffset)});
+    m_walls.push_back(leftWall);
+    m_walls.push_back(rightWall);
+    m_walls.push_back(topWall);
+}
+
+void World::initBricks()
+{
+    sf::Vector2f brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
+    sf::Vector2f brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.2f};
+    sf::Vector2i resolutionInBricks = {10, 5};
+    float brickGap = 8;
+    sf::Vector2f brickSize = {
+        brickZoneSize.x / resolutionInBricks.x,
+        brickZoneSize.y / resolutionInBricks.y
+    };
+    for (auto brickCol = 0; brickCol < resolutionInBricks.x; ++brickCol)
+    {
+        for (auto brickRow = 0; brickRow < resolutionInBricks.y; ++brickRow)
+        {
+            auto brick = m_objectFactory->createObject(ObjectType::Brick);
+            sf::Vector2f brickPos = {
+                brickSize.x / 2 + brickCol * brickSize.x + brickZoneLeftTopPos.x,
+                brickSize.y / 2 + brickRow * brickSize.y + brickZoneLeftTopPos.y
+            };
+            brick->state().setPos(brickPos);
+            brick->state().setSize({brickSize.x - brickGap, brickSize.y - brickGap});
+            m_bricks.push_back(brick);
+        }
+    }
+}
+
+void World::initBalls()
+{
+    sf::Vector2f ballPos = {m_worldSize.x * 0.5f, m_worldSize.y * 0.9f};
+    auto ball = m_objectFactory->createObject(ObjectType::Ball);
+    ball->state().setPos(ballPos);
+    ball->state().setSize({20, 20});
+    m_balls.push_back(ball);
+}
+
+void World::generate()
+{
+    m_isGameOver = false;
+    removeAllObjects();
+    m_collisionProcessors.clear();
+
+    initBalls();
+    initBricks();
+    initWalls();
+    initPlates();
+    initCollisionProcessors();
 }
 
 bool World::isGameOver()
@@ -163,33 +183,10 @@ void World::removeAllObjects()
     m_bricks.clear();
     m_walls.clear();
     m_bonuses.clear();
-    m_collisionProcessors.clear();
 }
 
-void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
+void World::updateGameOverStatus()
 {
-    if (m_isGameOver)
-    {
-        generate();
-    }
-
-    for (auto& collisionProcessor : m_collisionProcessors)
-    {
-        collisionProcessor.process();
-    }
-    removeAllDestroyedObjects();
-
-    auto allObjects = getAllObjects();
-    for (auto object : allObjects)
-    {
-        object->calcState(event, timeStep);
-        if (isObjectOutOfBorder(object))
-        {
-            object->state().setDestroyFlag(true);
-        }
-    }
-    removeAllDestroyedObjects();
-
     auto isAllBallsOutOfBorder = std::none_of(m_balls.begin(), m_balls.end(), [&](auto ball)
     {
         return !isObjectOutOfBorder(ball);
@@ -210,6 +207,32 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
         if (m_bonuses.empty())
             m_isGameOver = true;
     }
+}
+
+void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
+{
+    if (m_isGameOver)
+    {
+        generate();
+    }
+
+    for (auto& collisionProcessor : m_collisionProcessors)
+    {
+        collisionProcessor.process();
+    }
+    removeAllDestroyedObjects();
+
+    for (auto object : getAllObjects())
+    {
+        object->calcState(event, timeStep);
+        if (isObjectOutOfBorder(object))
+        {
+            object->state().setDestroyFlag(true);
+        }
+    }
+    removeAllDestroyedObjects();
+
+    updateGameOverStatus();
 }
 
 void World::draw(sf::RenderWindow& window)

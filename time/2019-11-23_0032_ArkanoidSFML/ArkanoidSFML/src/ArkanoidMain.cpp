@@ -34,7 +34,6 @@ int main()
             {
                 window.close();
             }
-
             optEvent = tempEvent;
         }
 

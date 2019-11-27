@@ -21,4 +21,5 @@ std::shared_ptr<IObject> ObjectFactory::createObject(ObjectType objectType)
         return std::make_shared<Wall>();
     default: ;
     }
+    return {};
 }
