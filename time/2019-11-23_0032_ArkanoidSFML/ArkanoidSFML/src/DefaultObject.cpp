@@ -41,7 +41,7 @@ State& DefaultObject::state()
 }
 
 void DefaultObject::setOnBumpingCallBack(
-    std::function<void(std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)> cb)
+    OnBumpingCallback cb)
 {
     m_onBumpingCallback = cb;
 }

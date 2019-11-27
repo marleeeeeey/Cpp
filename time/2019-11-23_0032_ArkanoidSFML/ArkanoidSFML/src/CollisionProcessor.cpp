@@ -3,13 +3,12 @@
 
 CollisionProcessor::CollisionProcessor(std::vector<std::shared_ptr<IObject>>& primaryObjects,
                                        std::vector<std::shared_ptr<IObject>>& secondaryObjects,
-                                       std::function<void(std::shared_ptr<IObject> thisObject,
-                                                          std::vector<Collision>& collisions)> cb)
+                                       OnBumpingCallback cb)
     : m_primaryObjects(primaryObjects), m_secondaryObjects(secondaryObjects), m_onBumpingCallback(cb)
 {
 }
 
-void CollisionProcessor::process()
+void CollisionProcessor::process() const
 {
     for (auto primaryObject : m_primaryObjects)
     {
