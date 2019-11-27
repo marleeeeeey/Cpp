@@ -151,11 +151,6 @@ void World::generate()
     initCollisionProcessors();
 }
 
-bool World::isGameOver()
-{
-    return m_isGameOver;
-}
-
 void World::removeObjectsIfDestroyed(std::vector<std::shared_ptr<IObject>>& objects)
 {
     auto removeIt = std::remove_if(objects.begin(), objects.end(),

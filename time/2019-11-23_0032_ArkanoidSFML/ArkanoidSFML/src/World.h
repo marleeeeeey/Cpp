@@ -22,17 +22,16 @@ class World : public IWorld
     void removeObjectsIfDestroyed(std::vector<std::shared_ptr<IObject>>& objects);
     void removeAllDestroyedObjects();
     void removeAllObjects();
+    void generate();
     void updateGameOverStatus();
-
-public:
-    World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);
     void initCollisionProcessors();
     void initPlates();
     void initWalls();
     void initBricks();
     void initBalls();
-    void generate() override;
-    bool isGameOver() override;
+
+public:
+    World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);
     void updateState(std::optional<sf::Event> event, sf::Time timeStep) override;
     void draw(sf::RenderWindow& window) override;
 };
