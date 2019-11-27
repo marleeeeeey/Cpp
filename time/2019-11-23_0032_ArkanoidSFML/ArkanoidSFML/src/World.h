@@ -1,7 +1,7 @@
 #pragma once
 #include "IObjectFactory.h"
 #include "IWorld.h"
-#include "CollisionProcessor.h"
+#include "CollisionBucket.h"
 
 class World : public IWorld
 {
@@ -12,7 +12,7 @@ class World : public IWorld
     std::vector<std::shared_ptr<IObject>> m_bricks;
     std::vector<std::shared_ptr<IObject>> m_walls;
     std::vector<std::shared_ptr<IObject>> m_bonuses;
-    std::vector<CollisionProcessor> m_collisionProcessors;
+    std::vector<CollisionBucket> m_collisionBuckets;
     sf::Font m_font;
     unsigned m_scopes;
     bool m_isGameOver;

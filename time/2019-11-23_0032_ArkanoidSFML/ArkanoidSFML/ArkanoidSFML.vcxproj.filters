@@ -51,7 +51,7 @@
     <ClCompile Include="src\Ball.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CollisionProcessor.cpp">
+    <ClCompile Include="src\CollisionBucket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,7 +98,7 @@
     <ClInclude Include="src\Ball.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CollisionProcessor.h">
+    <ClInclude Include="src\CollisionBucket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

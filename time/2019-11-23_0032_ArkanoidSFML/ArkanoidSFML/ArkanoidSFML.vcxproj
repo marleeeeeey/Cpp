@@ -24,7 +24,7 @@
     <ClCompile Include="src\Bonus.cpp" />
     <ClCompile Include="src\Brick.cpp" />
     <ClCompile Include="src\Collision.cpp" />
-    <ClCompile Include="src\CollisionProcessor.cpp" />
+    <ClCompile Include="src\CollisionBucket.cpp" />
     <ClCompile Include="src\DefaultObject.cpp" />
     <ClCompile Include="src\HelperFunctions.cpp" />
     <ClCompile Include="src\ObjectFactory.cpp" />
@@ -38,7 +38,7 @@
     <ClInclude Include="src\Bonus.h" />
     <ClInclude Include="src\Brick.h" />
     <ClInclude Include="src\Collision.h" />
-    <ClInclude Include="src\CollisionProcessor.h" />
+    <ClInclude Include="src\CollisionBucket.h" />
     <ClInclude Include="src\DefaultObject.h" />
     <ClInclude Include="src\HelperFunctions.h" />
     <ClInclude Include="src\IObject.h" />

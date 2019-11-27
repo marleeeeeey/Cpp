@@ -38,9 +38,9 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSi
 
 void World::initCollisionProcessors()
 {
-    m_collisionProcessors.push_back({m_balls, m_walls, {}});
-    m_collisionProcessors.push_back({m_balls, m_plates, {}});
-    m_collisionProcessors.emplace_back(
+    m_collisionBuckets.push_back({m_balls, m_walls, {}});
+    m_collisionBuckets.push_back({m_balls, m_plates, {}});
+    m_collisionBuckets.emplace_back(
         m_balls, m_bricks, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
         {
             if (!collisions.empty())
@@ -52,8 +52,8 @@ void World::initCollisionProcessors()
             }
         }
     );
-    m_collisionProcessors.push_back({m_plates, m_walls, {}});
-    m_collisionProcessors.emplace_back(
+    m_collisionBuckets.push_back({m_plates, m_walls, {}});
+    m_collisionBuckets.emplace_back(
         m_plates, m_bonuses, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
         {
             for (auto& collision : collisions)
@@ -142,7 +142,7 @@ void World::generate()
 {
     m_isGameOver = false;
     removeAllObjects();
-    m_collisionProcessors.clear();
+    m_collisionBuckets.clear();
 
     initBalls();
     initBricks();
@@ -211,7 +211,7 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
         generate();
     }
 
-    for (auto& collisionProcessor : m_collisionProcessors)
+    for (auto& collisionProcessor : m_collisionBuckets)
     {
         collisionProcessor.process();
     }

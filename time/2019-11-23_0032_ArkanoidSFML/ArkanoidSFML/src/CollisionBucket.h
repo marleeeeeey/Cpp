@@ -3,14 +3,14 @@
 #include <functional>
 #include "IObject.h"
 
-class CollisionProcessor
+class CollisionBucket
 {
     std::vector<std::shared_ptr<IObject>>& m_primaryObjects;
     std::vector<std::shared_ptr<IObject>>& m_secondaryObjects;
     OnBumpingCallback m_onBumpingCallback;
 
 public:
-    CollisionProcessor(std::vector<std::shared_ptr<IObject>>& primaryObjects,
+    CollisionBucket(std::vector<std::shared_ptr<IObject>>& primaryObjects,
                        std::vector<std::shared_ptr<IObject>>& secondaryObjects,
                        OnBumpingCallback cb);
     void process() const;
