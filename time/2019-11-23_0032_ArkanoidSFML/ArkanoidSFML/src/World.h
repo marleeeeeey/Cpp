@@ -24,11 +24,11 @@ class World : public IWorld
     void removeAllObjects();
     void generate();
     void updateGameOverStatus();
-    void initCollisionProcessors();
     void initPlates();
     void initWalls();
     void initBricks();
     void initBalls();
+    void initCollisionProcessors();
 
 public:
     World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);

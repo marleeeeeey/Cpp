@@ -26,7 +26,6 @@
     <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\CollisionProcessor.cpp" />
     <ClCompile Include="src\DefaultObject.cpp" />
-    <ClCompile Include="src\GameEngine.cpp" />
     <ClCompile Include="src\HelperFunctions.cpp" />
     <ClCompile Include="src\ObjectFactory.cpp" />
     <ClCompile Include="src\Plate.cpp" />
@@ -41,7 +40,6 @@
     <ClInclude Include="src\Collision.h" />
     <ClInclude Include="src\CollisionProcessor.h" />
     <ClInclude Include="src\DefaultObject.h" />
-    <ClInclude Include="src\GameEngine.h" />
     <ClInclude Include="src\HelperFunctions.h" />
     <ClInclude Include="src\IObject.h" />
     <ClInclude Include="src\IObjectFactory.h" />

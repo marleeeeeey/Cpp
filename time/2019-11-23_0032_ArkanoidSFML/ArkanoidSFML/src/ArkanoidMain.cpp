@@ -1,8 +1,7 @@
 #define NOMINMAX
-#include "Windows.h"
 #include <ctime>
+#include "Windows.h"
 #include "ObjectFactory.h"
-#include "GameEngine.h"
 #include "World.h"
 #include "HelperFunctions.h"
 
@@ -19,7 +18,6 @@ int main()
     auto objectFactory = std::make_shared<ObjectFactory>();
     sf::Vector2f windowSize = {800, 600};
     auto world = std::make_shared<World>(objectFactory, windowSize);
-    GameEngine gameEngine(world);
     sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "Arkanoid");
     sf::Clock clock;
     auto previousTimeStamp = clock.getElapsedTime();
@@ -40,9 +38,9 @@ int main()
         auto currentTime = clock.getElapsedTime();
         auto timeDiff = currentTime - previousTimeStamp;
         previousTimeStamp = currentTime;
-        gameEngine.setEvent(optEvent, timeDiff);
+        world->updateState(optEvent, timeDiff);
         window.clear();
-        gameEngine.draw(window);
+        world->draw(window);
         window.display();
     }
 
