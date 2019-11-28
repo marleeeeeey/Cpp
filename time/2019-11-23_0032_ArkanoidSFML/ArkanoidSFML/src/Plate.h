@@ -9,7 +9,7 @@ enum class PlateState
     MoveRight,
 };
 
-class Plate : public DefaultObject, IBonusOwner
+class Plate : public DefaultObject, public IBonusOwner
 {
     float m_offset;
     std::optional<State> m_lastNonCollisionState;

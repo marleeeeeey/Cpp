@@ -2,7 +2,7 @@
 #include "DefaultObject.h"
 #include "IBonusOwner.h"
 
-class Bonus : public DefaultObject, IBonusOwner
+class Bonus : public DefaultObject, public IBonusOwner
 {
     std::optional<BonusType> m_bonusType;
 

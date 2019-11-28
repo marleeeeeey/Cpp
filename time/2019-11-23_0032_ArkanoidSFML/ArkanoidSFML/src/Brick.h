@@ -3,7 +3,7 @@
 #include "IBrick.h"
 #include "IBonusOwner.h"
 
-class Brick : public DefaultObject, IBrick, IBonusOwner
+class Brick : public DefaultObject, public IBrick, public IBonusOwner
 {
     int m_lives;
     int m_appearanceNumber;

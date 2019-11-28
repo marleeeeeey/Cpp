@@ -1,4 +1,5 @@
 #include "LevelGenerator.h"
+#include "IBrick.h"
 
 LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize)
 {
@@ -21,14 +22,16 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getNextLevelBricks()
     {
         for(auto brickRow = 0; brickRow < m_resolutionInBricks.y; ++brickRow)
         {
-            auto brick = m_objectFactory->createObject(ObjectType::Brick);
+            auto obj = m_objectFactory->createObject(ObjectType::Brick);
             sf::Vector2f brickPos = {
                 brickSize.x / 2 + brickCol * brickSize.x + m_brickZoneLeftTopPos.x,
                 brickSize.y / 2 + brickRow * brickSize.y + m_brickZoneLeftTopPos.y
             };
-            brick->state().setPos(brickPos);
-            brick->state().setSize({ brickSize.x - m_brickGap, brickSize.y - m_brickGap });
-            bricks.push_back(brick);
+            obj->state().setPos(brickPos);
+            obj->state().setSize({ brickSize.x - m_brickGap, brickSize.y - m_brickGap });
+            auto brick = std::dynamic_pointer_cast<IBrick>(obj);
+            brick->setAppearance(brickRow);
+            bricks.push_back(obj);
         }
     }
 

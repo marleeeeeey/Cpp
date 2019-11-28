@@ -11,7 +11,14 @@ Brick::Brick()
 void Brick::draw(sf::RenderWindow& window)
 {
     auto shape = state().getCollisionRect();
-    shape.setFillColor(sf::Color::Red);
+    const std::vector<sf::Color> colors
+    {
+        sf::Color::Red,
+        sf::Color::Blue,
+        sf::Color::Yellow,
+    };
+    auto colorIndex = m_appearanceNumber % colors.size();
+    shape.setFillColor(colors[colorIndex]);
     window.draw(shape);
 }
 
