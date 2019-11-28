@@ -18,6 +18,6 @@ class IBonusOwner
 {
 public:
     virtual ~IBonusOwner() = default;
-    virtual void setBonusType(BonusType bonusType) = 0;
-    virtual BonusType getBonusType() = 0;
+    virtual void setBonusType(std::optional<BonusType> bonusType) = 0;
+    virtual std::optional<BonusType> getBonusType() = 0;
 };
