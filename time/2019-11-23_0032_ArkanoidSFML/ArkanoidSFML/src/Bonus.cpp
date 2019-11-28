@@ -1,5 +1,11 @@
 #include "Bonus.h"
+#include "HelperFunctions.h"
+#include <sstream>
 
+Bonus::Bonus()
+{
+    m_font = hf::getDefaultFont();
+}
 
 void Bonus::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
@@ -13,16 +19,49 @@ void Bonus::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 void Bonus::draw(sf::RenderWindow& window)
 {
     auto shape = state().getCollisionRect();
-    shape.setFillColor(sf::Color::Yellow);
-    window.draw(shape);
+    shape.setFillColor(hf::getAlphaColor(sf::Color::Yellow, 0x80));
+
+    if (m_bonusType)
+    {
+        sf::Text text;
+        text.setFont(m_font);
+        text.setFillColor(sf::Color::Black);
+        std::map<BonusType, std::string> bonusMap
+        {
+            {BonusType::RenewableBalls, "R"},
+            {BonusType::MultiBalls, "M"},
+            {BonusType::AddPlateLive, "A"},
+            {BonusType::LongPlate, "L"},
+            {BonusType::MagnetPaddle, "M"},
+            {BonusType::DisableBonuses, "D"},
+            {BonusType::AroundWall, "W"},
+            {BonusType::NextLevel, "N"},
+            {BonusType::DecreaseBallSpeed, "S"},
+            {BonusType::FireBall, "F"},
+        };
+        text.setString(bonusMap[m_bonusType.value()]);
+        hf::setText—enterTo(text, state().getPos());
+
+        window.draw(shape);
+        window.draw(text);
+    }
+    else
+    {
+        window.draw(shape);
+    }
 }
 
 void Bonus::setBonusType(std::optional<BonusType> bonusType)
 {
     m_bonusType = bonusType;
+    if(m_bonusType)
+    {
+        auto oldSize = state().getSize();
+        state().setSize({ oldSize.x * 4, oldSize.y * 4 });
+    }
 }
 
 std::optional<BonusType> Bonus::getBonusType()
 {
-    return  m_bonusType;
+    return m_bonusType;
 }

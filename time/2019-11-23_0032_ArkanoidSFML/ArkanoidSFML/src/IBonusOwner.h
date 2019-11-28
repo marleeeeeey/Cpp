@@ -1,7 +1,7 @@
 #pragma once
 
 enum class BonusType
-{
+{    
     RenewableBalls,
     MultiBalls,
     AddPlateLive,
@@ -13,6 +13,13 @@ enum class BonusType
     DecreaseBallSpeed,
     FireBall,
 };
+
+inline BonusType getBonusTypeFromInt(int number)
+{
+    int size = static_cast<int>(BonusType::FireBall) + 1;
+    int bonusNum = number % size;
+    return static_cast<BonusType>(bonusNum);
+}    
 
 class IBonusOwner
 {

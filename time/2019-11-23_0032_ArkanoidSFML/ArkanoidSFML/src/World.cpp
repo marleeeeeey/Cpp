@@ -2,6 +2,7 @@
 #include "HelperFunctions.h"
 #include <iostream>
 #include <sstream>
+#include "IBonusOwner.h"
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
@@ -46,10 +47,13 @@ void World::initCollisionProcessors()
         {
             if (!collisions.empty())
             {
-                auto bonus = m_objectFactory->createObject(ObjectType::Bonus);
-                bonus->state().setSize({5, 5});
-                bonus->state().setPos(thisObject->state().getPos());
-                m_bonuses.push_back(bonus);
+                auto brick = std::dynamic_pointer_cast<IBonusOwner>(collisions.front().getObject());
+                auto object = m_objectFactory->createObject(ObjectType::Bonus);
+                object->state().setSize({5, 5});
+                object->state().setPos(thisObject->state().getPos());
+                auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
+                bonus->setBonusType(brick->getBonusType());
+                m_bonuses.push_back(object);
             }
         }
     );

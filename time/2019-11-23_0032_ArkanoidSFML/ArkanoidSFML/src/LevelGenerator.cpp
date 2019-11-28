@@ -1,5 +1,6 @@
 #include "LevelGenerator.h"
 #include "IBrick.h"
+#include "IBonusOwner.h"
 
 LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize)
 {
@@ -31,6 +32,8 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getNextLevelBricks()
             obj->state().setSize({ brickSize.x - m_brickGap, brickSize.y - m_brickGap });
             auto brick = std::dynamic_pointer_cast<IBrick>(obj);
             brick->setAppearance(brickRow);
+            auto bonus = std::dynamic_pointer_cast<IBonusOwner>(obj);
+            bonus->setBonusType(getBonusTypeFromInt(brickCol));
             bricks.push_back(obj);
         }
     }

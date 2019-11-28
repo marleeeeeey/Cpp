@@ -104,6 +104,22 @@ bool HelperFunctions::isIntersect(const sf::Shape& shape1, const sf::Shape& shap
     return getIntersectRect(shape1, shape2).has_value();
 }
 
+sf::Color HelperFunctions::getAlphaColor(sf::Color color, sf::Uint8 alpha)
+{
+    color.a = alpha;
+    return color;
+}
+
+void HelperFunctions::setText—enterTo(sf::Text& text, sf::Vector2f centerPos)
+{
+    text.setPosition(centerPos);
+    auto textRect = hf::createRectangleShape(text.getGlobalBounds());
+    auto t = textRect.getPosition();
+    auto c = centerPos;
+    sf::Vector2f diff = { t.x - c.x, t.y - c.y };;
+    text.move(-diff);
+}
+
 std::ostream& operator<<(std::ostream& os, const sf::Vector2f& vec)
 {
     os << "(" << vec.x << ", " << vec.y << ")";
