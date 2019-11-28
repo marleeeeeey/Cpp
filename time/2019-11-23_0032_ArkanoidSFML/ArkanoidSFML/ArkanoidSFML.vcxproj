@@ -42,6 +42,8 @@
     <ClInclude Include="src\CollisionBucket.h" />
     <ClInclude Include="src\DefaultObject.h" />
     <ClInclude Include="src\HelperFunctions.h" />
+    <ClInclude Include="src\IBonusOwner.h" />
+    <ClInclude Include="src\IBrick.h" />
     <ClInclude Include="src\ILevelGenerator.h" />
     <ClInclude Include="src\IObject.h" />
     <ClInclude Include="src\IObjectFactory.h" />
