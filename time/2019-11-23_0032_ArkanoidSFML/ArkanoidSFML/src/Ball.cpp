@@ -4,6 +4,7 @@
 Ball::Ball()
 {
     m_speed = {100 * 3, -85 * 3};
+    state().setSize({ 20, 20 });
 }
 
 float getArea(const sf::Vector2f& size)

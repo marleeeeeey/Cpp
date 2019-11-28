@@ -129,7 +129,6 @@ void World::initBalls()
     sf::Vector2f ballPos = {m_windowSize.x * 0.5f, m_windowSize.y * 0.9f};
     auto ball = m_objectFactory->createObject(ObjectType::Ball);
     ball->state().setPos(ballPos);
-    ball->state().setSize({20, 20});
     m_balls.push_back(ball);
 }
 
