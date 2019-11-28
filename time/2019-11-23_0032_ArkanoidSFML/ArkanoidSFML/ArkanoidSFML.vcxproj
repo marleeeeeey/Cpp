@@ -22,6 +22,7 @@
     <ClCompile Include="src\ArkanoidMain.cpp" />
     <ClCompile Include="src\Ball.cpp" />
     <ClCompile Include="src\Bonus.cpp" />
+    <ClCompile Include="src\BonusType.cpp" />
     <ClCompile Include="src\Brick.cpp" />
     <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\CollisionBucket.cpp" />
@@ -37,6 +38,7 @@
   <ItemGroup>
     <ClInclude Include="src\Ball.h" />
     <ClInclude Include="src\Bonus.h" />
+    <ClInclude Include="src\BonusType.h" />
     <ClInclude Include="src\Brick.h" />
     <ClInclude Include="src\Collision.h" />
     <ClInclude Include="src\CollisionBucket.h" />

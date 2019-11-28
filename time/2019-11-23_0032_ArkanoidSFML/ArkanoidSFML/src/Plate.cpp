@@ -1,6 +1,7 @@
 #include "Plate.h"
 #include "HelperFunctions.h"
 #include "Wall.h"
+#include <iostream>
 
 Plate::Plate()
 {
@@ -67,6 +68,17 @@ void Plate::draw(sf::RenderWindow& window)
     auto shape = state().getCollisionRect();
     shape.setFillColor(sf::Color::Cyan);
     window.draw(shape);
+
+    if(m_bonusType)
+    {
+        sf::Text text;
+        sf::Font font = hf::getDefaultFont();
+        text.setFont(font);
+        text.setString(hf::to_string(m_bonusType.value()));
+        text.setFillColor(sf::Color::Blue);
+        hf::setText—enterTo(text, state().getPos());
+        window.draw(text);
+    }
 }
 
 void Plate::onBumping(std::vector<Collision>& collisions)

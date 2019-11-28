@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <optional>
+#include <sstream>
 
 namespace HelperFunctions
 {
@@ -19,6 +20,14 @@ namespace HelperFunctions
     bool isIntersect(const sf::Shape& shape1, const sf::Shape& shape2);
 
     sf::Color getAlphaColor(sf::Color color, sf::Uint8 alpha);
+
+    template<typename T>
+    std::string to_string(const T& value)
+    {
+        std::ostringstream ss;
+        ss << value;
+        return  ss.str();
+    }
 }
 
 namespace hf = HelperFunctions;

@@ -1,25 +1,6 @@
 #pragma once
-
-enum class BonusType
-{    
-    RenewableBalls,
-    MultiBalls,
-    AddPlateLive,
-    LongPlate,
-    MagnetPaddle,
-    DisableBonuses,
-    AroundWall,
-    NextLevel,
-    DecreaseBallSpeed,
-    FireBall,
-};
-
-inline BonusType getBonusTypeFromInt(int number)
-{
-    int size = static_cast<int>(BonusType::FireBall) + 1;
-    int bonusNum = number % size;
-    return static_cast<BonusType>(bonusNum);
-}    
+#include "HelperFunctions.h"
+#include "BonusType.h"
 
 class IBonusOwner
 {

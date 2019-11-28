@@ -63,8 +63,19 @@ void World::initCollisionProcessors()
         {
             for (auto& collision : collisions)
             {
-                auto obj = collision.getObject();
-                obj->state().setDestroyFlag(true);
+                auto object = collision.getObject();
+                object->state().setDestroyFlag(true);
+                auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
+                auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
+                plate->setBonusType(bonus->getBonusType());
+                if(plate->getBonusType().value() == BonusType::LongPlate)
+                {
+                    auto ball = m_objectFactory->createObject(ObjectType::Ball);
+                    sf::Vector2f pos = thisObject->state().getPos();
+                    pos = { pos.x, pos.y - 100 };
+                    ball->state().setPos(pos);
+                    m_balls.push_back(ball);
+                }
                 m_scopes++;
             }
         }
@@ -225,7 +236,7 @@ void World::draw(sf::RenderWindow& window)
     text.setFont(m_font);
     text.setScale(0.7, 0.7);
     std::ostringstream ss;
-    ss << "Scopes: " << m_scopes << std::endl;
+    ss << "Scopes: " << m_scopes << " Ball count: " << m_balls.size() <<  std::endl;
     text.setString(ss.str());
     window.draw(text);
 }

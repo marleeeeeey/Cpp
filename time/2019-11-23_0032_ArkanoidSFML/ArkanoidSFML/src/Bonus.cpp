@@ -26,22 +26,8 @@ void Bonus::draw(sf::RenderWindow& window)
         sf::Text text;
         text.setFont(m_font);
         text.setFillColor(sf::Color::Black);
-        std::map<BonusType, std::string> bonusMap
-        {
-            {BonusType::RenewableBalls, "R"},
-            {BonusType::MultiBalls, "M"},
-            {BonusType::AddPlateLive, "A"},
-            {BonusType::LongPlate, "L"},
-            {BonusType::MagnetPaddle, "M"},
-            {BonusType::DisableBonuses, "D"},
-            {BonusType::AroundWall, "W"},
-            {BonusType::NextLevel, "N"},
-            {BonusType::DecreaseBallSpeed, "S"},
-            {BonusType::FireBall, "F"},
-        };
-        text.setString(bonusMap[m_bonusType.value()]);
+        text.setString(hf::to_string(m_bonusType.value()));
         hf::setText—enterTo(text, state().getPos());
-
         window.draw(shape);
         window.draw(text);
     }
