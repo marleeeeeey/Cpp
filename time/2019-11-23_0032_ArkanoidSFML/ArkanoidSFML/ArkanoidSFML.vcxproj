@@ -27,6 +27,7 @@
     <ClCompile Include="src\CollisionBucket.cpp" />
     <ClCompile Include="src\DefaultObject.cpp" />
     <ClCompile Include="src\HelperFunctions.cpp" />
+    <ClCompile Include="src\LevelGenerator.cpp" />
     <ClCompile Include="src\ObjectFactory.cpp" />
     <ClCompile Include="src\Plate.cpp" />
     <ClCompile Include="src\State.cpp" />
@@ -41,9 +42,11 @@
     <ClInclude Include="src\CollisionBucket.h" />
     <ClInclude Include="src\DefaultObject.h" />
     <ClInclude Include="src\HelperFunctions.h" />
+    <ClInclude Include="src\ILevelGenerator.h" />
     <ClInclude Include="src\IObject.h" />
     <ClInclude Include="src\IObjectFactory.h" />
     <ClInclude Include="src\IWorld.h" />
+    <ClInclude Include="src\LevelGenerator.h" />
     <ClInclude Include="src\ObjectFactory.h" />
     <ClInclude Include="src\Plate.h" />
     <ClInclude Include="src\State.h" />

@@ -4,6 +4,7 @@
 #include "ObjectFactory.h"
 #include "World.h"
 #include "HelperFunctions.h"
+#include "LevelGenerator.h"
 
 int main()
 {
@@ -15,11 +16,13 @@ int main()
 
     srand(time(nullptr));
 
+    sf::Vector2f windowSize = { 800, 600 };
     auto objectFactory = std::make_shared<ObjectFactory>();
-    sf::Vector2f windowSize = {800, 600};
-    auto world = std::make_shared<World>(objectFactory, windowSize);
+    auto levelGenerator = std::make_shared<LevelGenerator>(objectFactory, windowSize);
+    auto world = std::make_shared<World>(objectFactory, levelGenerator, windowSize);
     sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "Arkanoid");
     sf::Clock clock;
+
     auto previousTimeStamp = clock.getElapsedTime();
     while (window.isOpen())
     {

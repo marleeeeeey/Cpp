@@ -2,11 +2,13 @@
 #include "IObjectFactory.h"
 #include "IWorld.h"
 #include "CollisionBucket.h"
+#include "ILevelGenerator.h"
 
 class World : public IWorld
 {
-    sf::Vector2f m_worldSize;
     std::shared_ptr<IObjectFactory> m_objectFactory;
+    std::shared_ptr<ILevelGenerator> m_levelGenerator;
+    sf::Vector2f m_windowSize;
     std::vector<std::shared_ptr<IObject>> m_balls;
     std::vector<std::shared_ptr<IObject>> m_plates;
     std::vector<std::shared_ptr<IObject>> m_bricks;
@@ -31,7 +33,7 @@ class World : public IWorld
     void initCollisionProcessors();
 
 public:
-    World(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);
+    World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILevelGenerator> levelGenerator, sf::Vector2f windowSize);
     void updateState(std::optional<sf::Event> event, sf::Time timeStep) override;
     void draw(sf::RenderWindow& window) override;
 };
