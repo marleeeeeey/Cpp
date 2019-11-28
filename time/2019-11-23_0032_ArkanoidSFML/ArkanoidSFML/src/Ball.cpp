@@ -3,8 +3,8 @@
 
 Ball::Ball()
 {
-    m_speed = {100 * 3, -85 * 3};
-    state().setSize({ 20, 20 });
+    m_speed = MathVector(0, 300);
+    DefaultObject::state().setSize({ 20, 20 });
 }
 
 float getArea(const sf::Vector2f& size)
@@ -33,15 +33,15 @@ void Ball::onBumping(std::vector<Collision>& collisions)
 
         if (cs.x == cs.y)
         {
-            m_speed = -m_speed;
+            m_speed.rotate(180);
         }
-        else if (cs.x > cs.y) // vertical flip
+        else if (cs.x > cs.y)
         {
-            m_speed.y = -m_speed.y;
+            m_speed.reflectFromHorizontal();
         }
-        else // horizontal flip
+        else
         {
-            m_speed.x = -m_speed.x;
+            m_speed.reflectFromVertical();
         };
 
         if (m_lastNonCollisionState)
@@ -63,7 +63,8 @@ void Ball::onBumping(std::vector<Collision>& collisions)
 void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
     auto pos = state().getPos();
-    sf::Vector2f offset = {elapsedTime.asSeconds() * m_speed.x, elapsedTime.asSeconds() * m_speed.y};
+    auto coordinates = m_speed.getCoordinates();
+    sf::Vector2f offset = {elapsedTime.asSeconds() * coordinates.x, elapsedTime.asSeconds() * coordinates.y};
     state().setPos(pos + offset);
 }
 

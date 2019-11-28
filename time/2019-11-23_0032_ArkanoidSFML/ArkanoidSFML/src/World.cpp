@@ -126,7 +126,7 @@ void World::initBricks()
 
 void World::initBalls()
 {
-    sf::Vector2f ballPos = {m_windowSize.x * 0.5f, m_windowSize.y * 0.9f};
+    sf::Vector2f ballPos = {m_windowSize.x * 0.5f, m_windowSize.y * 0.5f};
     auto ball = m_objectFactory->createObject(ObjectType::Ball);
     ball->state().setPos(ballPos);
     m_balls.push_back(ball);
