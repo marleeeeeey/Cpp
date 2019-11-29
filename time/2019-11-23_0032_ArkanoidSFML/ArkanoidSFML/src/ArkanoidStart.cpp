@@ -1,3 +1,4 @@
+#include "ArkanoidStart.h"
 #define NOMINMAX
 #include <ctime>
 #include "Windows.h"
@@ -6,7 +7,7 @@
 #include "HelperFunctions.h"
 #include "LevelGenerator.h"
 
-int main()
+int arcanoidStart()
 {
     if constexpr (false) // set true to hide console
     {
