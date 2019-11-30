@@ -6,8 +6,14 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArkanoidLib", "ArkanoidLib.vcxproj", "{AF7551F1-2B04-41AC-AFAB-62E12B749C7F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArkanoidTest", "ArkanoidTest.vcxproj", "{AF7541F1-2B04-41AC-AFAB-62E13B749C7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF7551F1-2B04-41AC-AFAB-62E12B749C7F} = {AF7551F1-2B04-41AC-AFAB-62E12B749C7F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Arkanoid", "Arkanoid.vcxproj", "{BED00D8E-CA7C-4096-8F64-62180A50EC32}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF7551F1-2B04-41AC-AFAB-62E12B749C7F} = {AF7551F1-2B04-41AC-AFAB-62E12B749C7F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

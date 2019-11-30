@@ -7,7 +7,7 @@
 #include "HelperFunctions.h"
 #include "LevelGenerator.h"
 
-int arcanoidStart()
+int arkanoidStart()
 {
     if constexpr (false) // set true to hide console
     {

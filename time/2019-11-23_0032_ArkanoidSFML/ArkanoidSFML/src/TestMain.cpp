@@ -7,7 +7,6 @@
 void checkMathVector(MathVector mv, sf::Vector2f expectedResult)
 {
     auto mvCoodinate = mv.getCoordinates();
-    std::cout << "cur="<< mvCoodinate << ", expected=" << expectedResult << std::endl;
     EXPECT_TRUE(hf::isEqual(expectedResult.x, mvCoodinate.x));
     EXPECT_TRUE(hf::isEqual(expectedResult.y, mvCoodinate.y));
 }
@@ -65,7 +64,5 @@ TEST(MathVector, Flip_30)
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleMock(&argc, argv);
-    RUN_ALL_TESTS();
-    std::cout << "Press any key to quit";
-    std::cin.get();
+    return RUN_ALL_TESTS();
 }
