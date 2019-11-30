@@ -28,6 +28,13 @@ namespace HelperFunctions
         ss << value;
         return  ss.str();
     }
+
+    template<typename T>
+    bool isEqual(T lhs, T rhs)
+    {
+        return fabs(lhs - rhs) < 0.01;
+    }
+
 }
 
 namespace hf = HelperFunctions;

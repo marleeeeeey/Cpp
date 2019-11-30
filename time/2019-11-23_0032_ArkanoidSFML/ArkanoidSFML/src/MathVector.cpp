@@ -1,6 +1,7 @@
 #include "MathVector.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "HelperFunctions.h"
 
 float radToDeg(float radians)
 {
@@ -63,9 +64,41 @@ void MathVector::setCoordinates(sf::Vector2f coordinate)
 {
     auto x = coordinate.x;
     auto y = coordinate.y;
-    m_size = sqrt(x * x + y * y);
-    auto radians = atan(y / x);
-    setAngle(radToDeg(radians));
+    setSize(sqrt(x * x + y * y));
+
+    if(hf::isEqual(x, 0.0f))
+    {
+        if(hf::isEqual(y, 0.0f))
+            setAngle(0);
+        else if(y > 0)
+            setAngle(90);
+        else
+            setAngle(-90);   
+    }
+    else if(hf::isEqual(y, 0.0f))
+    {
+        if(hf::isEqual(x, 0.0f))
+            setAngle(0);        
+        if(x > 0)
+            setAngle(0);
+        else
+            setAngle(180);
+    }
+    else
+    {
+        auto radians = atan(abs(y) / abs(x));
+        auto deg = radToDeg(radians);
+        if(x > 0 && y > 0)
+            setAngle(deg);
+        else if(x > 0 && y < 0)
+            setAngle(-deg);
+        else if(x < 0 && y > 0)
+            setAngle(180 - deg);
+        else if(x < 0 && y < 0)
+            setAngle(180 + deg);
+        else
+            throw std::exception("MathVector::setCoordinates angle error");
+    }
 }
 
 sf::Vector2f MathVector::getCoordinates()

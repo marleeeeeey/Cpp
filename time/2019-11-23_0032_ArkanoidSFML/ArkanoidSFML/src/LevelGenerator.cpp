@@ -6,7 +6,7 @@ LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf
 {
     m_objectFactory = objectFactory;
     m_worldSize = worldSize;
-    m_brickZoneSize = { m_worldSize.x * 0.8f, m_worldSize.y * 0.1f };
+    m_brickZoneSize = { m_worldSize.x * 0.8f, m_worldSize.y * 0.3f };
     m_brickZoneLeftTopPos = { m_worldSize.x * 0.1f, m_worldSize.y * 0.2f };
     m_resolutionInBricks = { 10, 5 };
     m_brickGap = 8;

@@ -2,26 +2,64 @@
 #include "gtest/gtest.h"
 
 #include "MathVector.h"
-
-template<typename T>
-bool isEqual(T lhs, T rhs)
-{
-    return fabs(lhs - rhs) < std::numeric_limits<T>::epsilon() * 100;
-}
+#include "HelperFunctions.h"
 
 void checkMathVector(MathVector mv, sf::Vector2f expectedResult)
 {
-    EXPECT_TRUE(isEqual(expectedResult.x, mv.getCoordinates().x));
-    EXPECT_TRUE(isEqual(expectedResult.y, mv.getCoordinates().y));
+    auto mvCoodinate = mv.getCoordinates();
+    std::cout << "cur="<< mvCoodinate << ", expected=" << expectedResult << std::endl;
+    EXPECT_TRUE(hf::isEqual(expectedResult.x, mvCoodinate.x));
+    EXPECT_TRUE(hf::isEqual(expectedResult.y, mvCoodinate.y));
 }
 
-TEST(MathVector, AllDirections)
+TEST(MathVector, SimpleDirections)
 {
     checkMathVector(MathVector(0, 0), { 0, 0 });
     checkMathVector(MathVector(0, 100), { 100, 0 });
     checkMathVector(MathVector(180, 100), { -100, 0 });
     checkMathVector(MathVector(-90, 100), { 0, -100 });
     checkMathVector(MathVector(90, 100), { 0, 100 });
+}
+
+TEST(MathVector, Flip_0_90)
+{
+    MathVector mv{ 0, 0 };
+    mv.reflectFromHorizontal();
+    checkMathVector(mv, { 0,0 });
+    mv.reflectFromVertical();
+    checkMathVector(mv, { 0,0 });
+
+    mv.setAngle(0);
+    mv.setSize(100);
+    checkMathVector(mv, { 100, 0 });
+    mv.reflectFromVertical();
+    checkMathVector(mv, { -100, 0 });
+    mv.reflectFromVertical();
+    checkMathVector(mv, { 100, 0 });
+    mv.reflectFromHorizontal();
+    checkMathVector(mv, { 100, 0 });
+
+    mv.setAngle(90);
+    mv.setSize(100);
+    checkMathVector(mv, { 0,100 });
+    mv.reflectFromHorizontal();
+    checkMathVector(mv, { 0, -100 });
+    mv.reflectFromHorizontal();
+    checkMathVector(mv, { 0,100 });
+    mv.reflectFromVertical();
+    checkMathVector(mv, { 0,100 });
+}
+
+TEST(MathVector, Flip_30)
+{
+    MathVector mv{ 30, 100 };
+    EXPECT_TRUE(hf::isEqual(30.f, mv.getAngle()));
+    mv.reflectFromVertical();
+    EXPECT_TRUE(hf::isEqual(150.f, mv.getAngle()));
+    mv.reflectFromVertical();
+    EXPECT_TRUE(hf::isEqual(30.f, mv.getAngle()));
+    mv.reflectFromHorizontal();
+    EXPECT_TRUE(hf::isEqual(-30.f, mv.getAngle()));
 }
 
 int main(int argc, char** argv)
