@@ -1,14 +1,16 @@
 #include "MathVector.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 float radToDeg(float radians)
 {
-    auto degrees = radians * (180.0 / 3.141592653589793238463);
+    auto degrees = radians * (180.0 / M_PI);
     return degrees;
 }
 
 float degToRad(float degrees)
 {
-    auto radians = degrees / (180.0 / 3.141592653589793238463);
+    auto radians = degrees / (180.0 / M_PI);
     return radians;
 }
 
@@ -70,8 +72,8 @@ sf::Vector2f MathVector::getCoordinates()
 {
     auto radians = degToRad(m_angle_deg);
     sf::Vector2f coord;
-    coord.x = cos(radians) * m_size;
     coord.y = sin(radians) * m_size;
+    coord.x = cos(radians) * m_size;
     return coord;
 }
 

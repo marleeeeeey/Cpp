@@ -3,20 +3,31 @@
 
 #include "MathVector.h"
 
-TEST(MathVector, DefaultConstructor)
+template<typename T>
+bool isEqual(T lhs, T rhs)
 {
-    MathVector mathVector;
-    EXPECT_EQ(sf::Vector2f( 0, 0 ), mathVector.getCoordinates());
+    return fabs(lhs - rhs) < std::numeric_limits<T>::epsilon() * 100;
 }
 
-TEST(MathVector, RightAngleDirections)
+void checkMathVector(MathVector mv, sf::Vector2f expectedResult)
 {
-    MathVector mathVector(0, 100);
-    EXPECT_EQ(sf::Vector2f(100, 0), mathVector.getCoordinates());
+    EXPECT_TRUE(isEqual(expectedResult.x, mv.getCoordinates().x));
+    EXPECT_TRUE(isEqual(expectedResult.y, mv.getCoordinates().y));
+}
+
+TEST(MathVector, AllDirections)
+{
+    checkMathVector(MathVector(0, 0), { 0, 0 });
+    checkMathVector(MathVector(0, 100), { 100, 0 });
+    checkMathVector(MathVector(180, 100), { -100, 0 });
+    checkMathVector(MathVector(-90, 100), { 0, -100 });
+    checkMathVector(MathVector(90, 100), { 0, 100 });
 }
 
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleMock(&argc, argv);
-    return RUN_ALL_TESTS();
+    RUN_ALL_TESTS();
+    std::cout << "Press any key to quit";
+    std::cin.get();
 }
