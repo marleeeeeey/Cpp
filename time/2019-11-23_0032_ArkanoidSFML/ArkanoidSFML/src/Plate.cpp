@@ -76,7 +76,7 @@ void Plate::draw(sf::RenderWindow& window)
         text.setFont(font);
         text.setString(hf::to_string(m_bonusType.value()));
         text.setFillColor(sf::Color::Blue);
-        hf::setText—enterTo(text, state().getPos());
+        hf::setTextCenterTo(text, state().getPos());
         window.draw(text);
     }
 }

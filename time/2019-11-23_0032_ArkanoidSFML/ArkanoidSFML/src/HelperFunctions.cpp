@@ -110,7 +110,7 @@ sf::Color HelperFunctions::getAlphaColor(sf::Color color, sf::Uint8 alpha)
     return color;
 }
 
-void HelperFunctions::setText—enterTo(sf::Text& text, sf::Vector2f centerPos)
+void HelperFunctions::setTextCenterTo(sf::Text& text, sf::Vector2f centerPos)
 {
     text.setPosition(centerPos);
     auto textRect = hf::createRectangleShape(text.getGlobalBounds());
