@@ -95,9 +95,17 @@ void Plate::onBumping(std::vector<Collision>& collisions)
 
             m_offset = 0;
         }
-        else if(ball)
+        else if (ball)
         {
-            
+            auto ballSpeed = ball->getSpeed();
+            auto ballCenter = obj->state().getPos();
+            auto plateCenter = state().getPos();
+            auto centersShift = ballCenter.x - plateCenter.x;
+            auto halfLength = state().getSize().x / 2;
+            float maxAgnleShift = 10;
+            float angleShift = maxAgnleShift * centersShift / halfLength;
+            ballSpeed.rotate(angleShift);
+            ball->setSpeed(ballSpeed);
         }
     }
 
