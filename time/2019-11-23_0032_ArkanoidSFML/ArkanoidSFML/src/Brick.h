@@ -1,9 +1,9 @@
 #pragma once
 #include "DefaultObject.h"
-#include "IBrick.h"
+#include "IDescructible.h"
 #include "IBonusOwner.h"
 
-class Brick : public DefaultObject, public IBrick, public IBonusOwner
+class Brick : public DefaultObject, public IDescructible, public IBonusOwner
 {
     int m_lives;
     int m_appearanceNumber;

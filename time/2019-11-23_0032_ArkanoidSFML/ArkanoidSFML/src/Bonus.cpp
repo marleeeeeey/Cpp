@@ -1,6 +1,5 @@
 #include "Bonus.h"
 #include "HelperFunctions.h"
-#include <sstream>
 
 Bonus::Bonus()
 {

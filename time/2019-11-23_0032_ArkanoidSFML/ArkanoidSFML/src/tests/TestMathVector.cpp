@@ -5,7 +5,7 @@
 
 void checkMathVector(MathVector mv, sf::Vector2f expectedResult)
 {
-    auto mvCoodinate = mv.getCoordinates();
+    auto mvCoodinate = mv.getCoordinate();
     EXPECT_TRUE(hf::isEqual(expectedResult.x, mvCoodinate.x));
     EXPECT_TRUE(hf::isEqual(expectedResult.y, mvCoodinate.y));
 }

@@ -16,7 +16,7 @@ public:
     void setAngle(float angle_deg);
     float getAngle();
     void setCoordinates(sf::Vector2f coordinate);
-    sf::Vector2f getCoordinates();
+    sf::Vector2f getCoordinate();
     void rotate(float angle_deg);
     void reflectFromVertical();
     void reflectFromHorizontal();

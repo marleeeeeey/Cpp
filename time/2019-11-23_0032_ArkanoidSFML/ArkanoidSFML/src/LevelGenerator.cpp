@@ -1,14 +1,14 @@
 #include "LevelGenerator.h"
-#include "IBrick.h"
+#include "IDescructible.h"
 #include "IBonusOwner.h"
 
 LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize)
 {
     m_objectFactory = objectFactory;
     m_worldSize = worldSize;
-    m_brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.3f};
+    m_brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.6f};
     m_brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.2f};
-    m_resolutionInBricks = {10, 5};
+    m_resolutionInBricks = {15, 10};
     m_brickGap = 8;
 }
 
@@ -30,7 +30,7 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getNextLevelBricks()
             };
             obj->state().setPos(brickPos);
             obj->state().setSize({brickSize.x - m_brickGap, brickSize.y - m_brickGap});
-            auto brick = std::dynamic_pointer_cast<IBrick>(obj);
+            auto brick = std::dynamic_pointer_cast<IDescructible>(obj);
             brick->setAppearance(brickRow);
             auto bonus = std::dynamic_pointer_cast<IBonusOwner>(obj);
             bonus->setBonusType(getBonusTypeFromInt(brickCol));

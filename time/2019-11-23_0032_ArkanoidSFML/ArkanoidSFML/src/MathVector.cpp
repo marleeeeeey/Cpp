@@ -101,7 +101,7 @@ void MathVector::setCoordinates(sf::Vector2f coordinate)
     }
 }
 
-sf::Vector2f MathVector::getCoordinates()
+sf::Vector2f MathVector::getCoordinate()
 {
     auto radians = degToRad(m_angle_deg);
     sf::Vector2f coord;
@@ -117,14 +117,14 @@ void MathVector::rotate(float angle_deg)
 
 void MathVector::reflectFromVertical()
 {
-    auto coordinate = getCoordinates();
+    auto coordinate = getCoordinate();
     coordinate.x = -coordinate.x;
     setCoordinates(coordinate);
 }
 
 void MathVector::reflectFromHorizontal()
 {
-    auto coordinate = getCoordinates();
+    auto coordinate = getCoordinate();
     coordinate.y = -coordinate.y;
     setCoordinates(coordinate);
 }

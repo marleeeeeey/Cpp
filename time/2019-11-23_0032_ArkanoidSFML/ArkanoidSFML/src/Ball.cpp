@@ -63,7 +63,7 @@ void Ball::onBumping(std::vector<Collision>& collisions)
 void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
     auto pos = state().getPos();
-    auto coordinates = m_speed.getCoordinates();
+    auto coordinates = m_speed.getCoordinate();
     sf::Vector2f offset = {elapsedTime.asSeconds() * coordinates.x, elapsedTime.asSeconds() * coordinates.y};
     state().setPos(pos + offset);
 }
@@ -75,4 +75,14 @@ void Ball::draw(sf::RenderWindow& window)
     auto circleShape = hf::createCircleShape(radius, state().getPos());
     circleShape.setFillColor(sf::Color::Blue);
     window.draw(circleShape);
+}
+
+void Ball::setSpeed(MathVector speed)
+{
+    m_speed = speed;
+}
+
+MathVector Ball::getSpeed()
+{
+    return m_speed;
 }

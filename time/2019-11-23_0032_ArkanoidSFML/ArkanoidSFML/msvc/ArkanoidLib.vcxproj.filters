@@ -116,9 +116,6 @@
     <ClInclude Include="..\src\LevelGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\IBrick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\IBonusOwner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,6 +126,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MathVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\IDescructible.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\IDynamicObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\IStaticObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

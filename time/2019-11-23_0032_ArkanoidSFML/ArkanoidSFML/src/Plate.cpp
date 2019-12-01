@@ -1,7 +1,7 @@
 #include "Plate.h"
 #include "HelperFunctions.h"
-#include "Wall.h"
-#include <iostream>
+#include "IStaticObject.h"
+#include "IDynamicObject.h"
 
 Plate::Plate()
 {
@@ -86,14 +86,18 @@ void Plate::onBumping(std::vector<Collision>& collisions)
     for (auto collision : collisions)
     {
         auto obj = collision.getObject();
-        auto wall = std::dynamic_pointer_cast<Wall>(obj);
+        auto wall = std::dynamic_pointer_cast<IStaticObject>(obj);
+        auto ball = std::dynamic_pointer_cast<IDynamicObject>(obj);
         if (wall)
         {
             if (m_lastNonCollisionState)
                 state() = m_lastNonCollisionState.value();
 
             m_offset = 0;
-            return;
+        }
+        else if(ball)
+        {
+            
         }
     }
 

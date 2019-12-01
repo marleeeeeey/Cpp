@@ -39,10 +39,12 @@
     <ClInclude Include="..\src\DefaultObject.h" />
     <ClInclude Include="..\src\HelperFunctions.h" />
     <ClInclude Include="..\src\IBonusOwner.h" />
-    <ClInclude Include="..\src\IBrick.h" />
+    <ClInclude Include="..\src\IDescructible.h" />
+    <ClInclude Include="..\src\IDynamicObject.h" />
     <ClInclude Include="..\src\ILevelGenerator.h" />
     <ClInclude Include="..\src\IObject.h" />
     <ClInclude Include="..\src\IObjectFactory.h" />
+    <ClInclude Include="..\src\IStaticObject.h" />
     <ClInclude Include="..\src\IWorld.h" />
     <ClInclude Include="..\src\LevelGenerator.h" />
     <ClInclude Include="..\src\MathVector.h" />

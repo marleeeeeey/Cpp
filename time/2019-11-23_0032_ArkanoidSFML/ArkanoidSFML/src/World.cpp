@@ -1,6 +1,5 @@
 #include "World.h"
 #include "HelperFunctions.h"
-#include <iostream>
 #include <sstream>
 #include "IBonusOwner.h"
 
