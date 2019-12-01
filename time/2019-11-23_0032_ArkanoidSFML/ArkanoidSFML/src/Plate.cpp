@@ -9,7 +9,7 @@ Plate::Plate()
     m_plateState = PlateState::Stop;
 }
 
-void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
+void Plate::calculateOffset(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
     if (event && event.value().type == sf::Event::EventType::KeyPressed
         && event.value().key.code == sf::Keyboard::Key::Left
@@ -38,7 +38,7 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 
     int speed_pxps = 600;
     float absOffset = speed_pxps * elapsedTime.asSeconds();
-    float absDampingOffset = absOffset * 0.03f;
+    float absDampingOffset = absOffset * 0.08f;
 
     switch (m_plateState)
     {
@@ -57,10 +57,30 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
         m_offset = absOffset;
         break;
     }
+}
 
+void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
+{
+    calculateOffset(event, elapsedTime);
     auto pos = state().getPos();
     pos.x += m_offset;
     state().setPos(pos);
+
+    auto size = state().getSize();
+    if(m_bonusType && m_bonusType.value() == BonusType::LongPlate)
+    {
+        if(!m_originalSize)
+            m_originalSize = size;
+
+        size = m_originalSize.value();
+        size.x *= 1.5;
+        state().setSize(size);
+    }
+    else
+    {
+        if(m_originalSize)
+            state().setSize(m_originalSize.value());
+    }
 }
 
 void Plate::draw(sf::RenderWindow& window)

@@ -11,10 +11,13 @@ enum class PlateState
 
 class Plate : public DefaultObject, public IBonusOwner
 {
+    std::optional<sf::Vector2f> m_originalSize;
     float m_offset;
     std::optional<State> m_lastNonCollisionState;
     PlateState m_plateState;
     std::optional<BonusType> m_bonusType;
+
+    void calculateOffset(std::optional<sf::Event> event, sf::Time elapsedTime);
 
 public:
     Plate();
