@@ -116,7 +116,7 @@ void HelperFunctions::setTextCenterTo(sf::Text& text, sf::Vector2f centerPos)
     auto textRect = hf::createRectangleShape(text.getGlobalBounds());
     auto t = textRect.getPosition();
     auto c = centerPos;
-    sf::Vector2f diff = { t.x - c.x, t.y - c.y };;
+    sf::Vector2f diff = {t.x - c.x, t.y - c.y};;
     text.move(-diff);
 }
 

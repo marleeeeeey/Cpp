@@ -69,7 +69,7 @@ void Plate::draw(sf::RenderWindow& window)
     shape.setFillColor(sf::Color::Cyan);
     window.draw(shape);
 
-    if(m_bonusType)
+    if (m_bonusType)
     {
         sf::Text text;
         sf::Font font = hf::getDefaultFont();

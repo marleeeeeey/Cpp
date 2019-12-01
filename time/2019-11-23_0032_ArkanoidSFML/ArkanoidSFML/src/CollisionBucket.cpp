@@ -2,8 +2,8 @@
 #include "HelperFunctions.h"
 
 CollisionBucket::CollisionBucket(std::vector<std::shared_ptr<IObject>>& primaryObjects,
-                                       std::vector<std::shared_ptr<IObject>>& secondaryObjects,
-                                       OnBumpingCallback cb)
+                                 std::vector<std::shared_ptr<IObject>>& secondaryObjects,
+                                 OnBumpingCallback cb)
     : m_primaryObjects(primaryObjects), m_secondaryObjects(secondaryObjects), m_onBumpingCallback(cb)
 {
 }

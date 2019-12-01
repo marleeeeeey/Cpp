@@ -17,7 +17,7 @@ int arkanoidStart()
 
     srand(time(nullptr));
 
-    sf::Vector2f windowSize = { 800, 600 };
+    sf::Vector2f windowSize = {800, 600};
     auto objectFactory = std::make_shared<ObjectFactory>();
     auto levelGenerator = std::make_shared<LevelGenerator>(objectFactory, windowSize);
     auto world = std::make_shared<World>(objectFactory, levelGenerator, windowSize);

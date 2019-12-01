@@ -40,10 +40,10 @@ void Bonus::draw(sf::RenderWindow& window)
 void Bonus::setBonusType(std::optional<BonusType> bonusType)
 {
     m_bonusType = bonusType;
-    if(m_bonusType)
+    if (m_bonusType)
     {
         auto oldSize = state().getSize();
-        state().setSize({ oldSize.x * 4, oldSize.y * 4 });
+        state().setSize({oldSize.x * 4, oldSize.y * 4});
     }
 }
 

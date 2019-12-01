@@ -21,20 +21,19 @@ namespace HelperFunctions
 
     sf::Color getAlphaColor(sf::Color color, sf::Uint8 alpha);
 
-    template<typename T>
+    template <typename T>
     std::string to_string(const T& value)
     {
         std::ostringstream ss;
         ss << value;
-        return  ss.str();
+        return ss.str();
     }
 
-    template<typename T>
+    template <typename T>
     bool isEqual(T lhs, T rhs)
     {
         return fabs(lhs - rhs) < 0.01;
     }
-
 }
 
 namespace hf = HelperFunctions;

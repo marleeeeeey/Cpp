@@ -5,7 +5,7 @@
 Brick::Brick()
 {
     m_lives = 1;
-    m_appearanceNumber = 0;    
+    m_appearanceNumber = 0;
 }
 
 void Brick::draw(sf::RenderWindow& window)

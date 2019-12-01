@@ -1,7 +1,7 @@
 #pragma once
 #include "IObject.h"
 
-class ILevelGenerator 
+class ILevelGenerator
 {
 public:
     virtual ~ILevelGenerator() = default;

@@ -4,7 +4,7 @@
 Ball::Ball()
 {
     m_speed = MathVector(-33, 300);
-    DefaultObject::state().setSize({ 20, 20 });
+    DefaultObject::state().setSize({20, 20});
 }
 
 float getArea(const sf::Vector2f& size)
@@ -31,7 +31,7 @@ void Ball::onBumping(std::vector<Collision>& collisions)
         m_biggestCollision = getBiggestCollision(collisions);
         auto cs = m_biggestCollision.value().getCollisionRect().getSize();
 
-        if (hf::isEqual(cs.x , cs.y))
+        if (hf::isEqual(cs.x, cs.y))
         {
             m_speed.rotate(180);
         }

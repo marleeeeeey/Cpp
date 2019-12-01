@@ -66,20 +66,20 @@ void MathVector::setCoordinates(sf::Vector2f coordinate)
     auto y = coordinate.y;
     setSize(sqrt(x * x + y * y));
 
-    if(hf::isEqual(x, 0.0f))
+    if (hf::isEqual(x, 0.0f))
     {
-        if(hf::isEqual(y, 0.0f))
+        if (hf::isEqual(y, 0.0f))
             setAngle(0);
-        else if(y > 0)
+        else if (y > 0)
             setAngle(90);
         else
-            setAngle(-90);   
+            setAngle(-90);
     }
-    else if(hf::isEqual(y, 0.0f))
+    else if (hf::isEqual(y, 0.0f))
     {
-        if(hf::isEqual(x, 0.0f))
-            setAngle(0);        
-        if(x > 0)
+        if (hf::isEqual(x, 0.0f))
+            setAngle(0);
+        if (x > 0)
             setAngle(0);
         else
             setAngle(180);
@@ -88,13 +88,13 @@ void MathVector::setCoordinates(sf::Vector2f coordinate)
     {
         auto radians = atan(abs(y) / abs(x));
         auto deg = radToDeg(radians);
-        if(x > 0 && y > 0)
+        if (x > 0 && y > 0)
             setAngle(deg);
-        else if(x > 0 && y < 0)
+        else if (x > 0 && y < 0)
             setAngle(-deg);
-        else if(x < 0 && y > 0)
+        else if (x < 0 && y > 0)
             setAngle(180 - deg);
-        else if(x < 0 && y < 0)
+        else if (x < 0 && y < 0)
             setAngle(180 + deg);
         else
             throw std::exception("MathVector::setCoordinates angle error");

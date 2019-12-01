@@ -28,7 +28,8 @@ bool World::isObjectOutOfBorder(std::shared_ptr<IObject> object)
     return false;
 }
 
-World::World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILevelGenerator> levelGenerator, sf::Vector2f windowSize)
+World::World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILevelGenerator> levelGenerator,
+             sf::Vector2f windowSize)
 {
     m_objectFactory = objectFactory;
     m_levelGenerator = levelGenerator;
@@ -68,11 +69,11 @@ void World::initCollisionProcessors()
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
                 plate->setBonusType(bonus->getBonusType());
-                if(plate->getBonusType().value() == BonusType::LongPlate)
+                if (plate->getBonusType().value() == BonusType::LongPlate)
                 {
                     auto ball = m_objectFactory->createObject(ObjectType::Ball);
                     sf::Vector2f pos = thisObject->state().getPos();
-                    pos = { pos.x, pos.y - 100 };
+                    pos = {pos.x, pos.y - 100};
                     ball->state().setPos(pos);
                     m_balls.push_back(ball);
                 }
@@ -103,7 +104,10 @@ void World::initWalls()
     sf::Vector2f verticalWallSize = {m_windowSize.x * wallKoefThinkness, m_windowSize.y * (1 - wallTopOffset)};
     auto leftWall = m_objectFactory->createObject(ObjectType::Wall);
     leftWall->state().setCollisionRect(verticalWallSize,
-                                       {m_windowSize.x * wallKoefThinkness / 2, m_windowSize.y * (0.5f + wallTopOffset)});
+                                       {
+                                           m_windowSize.x * wallKoefThinkness / 2,
+                                           m_windowSize.y * (0.5f + wallTopOffset)
+                                       });
     auto rightWall = m_objectFactory->createObject(ObjectType::Wall);
     rightWall->state().setCollisionRect(verticalWallSize,
                                         {
@@ -235,7 +239,7 @@ void World::draw(sf::RenderWindow& window)
     text.setFont(m_font);
     text.setScale(0.7, 0.7);
     std::ostringstream ss;
-    ss << "Scopes: " << m_scopes << " Ball count: " << m_balls.size() <<  std::endl;
+    ss << "Scopes: " << m_scopes << " Ball count: " << m_balls.size() << std::endl;
     text.setString(ss.str());
     window.draw(text);
 }

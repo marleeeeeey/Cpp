@@ -11,7 +11,7 @@ class CollisionBucket
 
 public:
     CollisionBucket(std::vector<std::shared_ptr<IObject>>& primaryObjects,
-                       std::vector<std::shared_ptr<IObject>>& secondaryObjects,
-                       OnBumpingCallback cb);
+                    std::vector<std::shared_ptr<IObject>>& secondaryObjects,
+                    OnBumpingCallback cb);
     void process() const;
 };

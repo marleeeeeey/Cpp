@@ -33,7 +33,8 @@ class World : public IWorld
     void initCollisionProcessors();
 
 public:
-    World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILevelGenerator> levelGenerator, sf::Vector2f windowSize);
+    World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILevelGenerator> levelGenerator,
+          sf::Vector2f windowSize);
     void updateState(std::optional<sf::Event> event, sf::Time timeStep) override;
     void draw(sf::RenderWindow& window) override;
 };
