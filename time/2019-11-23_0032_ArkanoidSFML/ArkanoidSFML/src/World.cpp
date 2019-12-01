@@ -2,6 +2,8 @@
 #include "HelperFunctions.h"
 #include <sstream>
 #include "IBonusOwner.h"
+#include "IDynamicObject.h"
+#include <cassert>
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
@@ -68,13 +70,35 @@ void World::initCollisionProcessors()
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
                 plate->setBonusType(bonus->getBonusType());
-                if (plate->getBonusType().value() == BonusType::LongPlate)
+                if (plate->getBonusType().value() == BonusType::MultiBalls)
                 {
-                    auto ball = m_objectFactory->createObject(ObjectType::Ball);
-                    sf::Vector2f pos = thisObject->state().getPos();
-                    pos = {pos.x, pos.y - 100};
-                    ball->state().setPos(pos);
-                    m_balls.push_back(ball);
+                    std::vector<std::shared_ptr<IObject>> createdBalls;
+                    const unsigned maxNumberOfNewBalls = 2;
+                    unsigned numberOfNewBalls = maxNumberOfNewBalls;
+                    float viewSize_deg = 30;
+                    float angleStep = viewSize_deg / numberOfNewBalls;
+                    float angleShift = - viewSize_deg / 2;
+                    while (!m_balls.empty() && numberOfNewBalls != 0)
+                    {
+                        assert(numberOfNewBalls <= maxNumberOfNewBalls);
+                        for (auto existingBall : m_balls)
+                        {
+                            auto state = existingBall->state();
+                            auto existingBallDynamicObject = std::dynamic_pointer_cast<IDynamicObject>(existingBall);
+                            auto createdBall = m_objectFactory->createObject(ObjectType::Ball);
+                            auto createdBallDynamicObject = std::dynamic_pointer_cast<IDynamicObject>(createdBall);
+                            createdBall->state() = state;
+                            auto speed = existingBallDynamicObject->getSpeed();
+                            speed.rotate(angleShift);
+                            createdBallDynamicObject->setSpeed(speed);
+                            createdBalls.push_back(createdBall);
+                            angleShift += angleStep;
+                            numberOfNewBalls--;
+                            if(numberOfNewBalls == 0)
+                                break;
+                        }
+                    }
+                    m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());
                 }
                 m_scopes++;
             }
