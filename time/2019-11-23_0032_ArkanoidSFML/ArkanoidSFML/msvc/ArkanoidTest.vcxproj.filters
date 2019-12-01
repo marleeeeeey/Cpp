@@ -83,7 +83,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\TestMain.cpp">
+    <ClCompile Include="..\src\tests\TestMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tests\TestMathVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

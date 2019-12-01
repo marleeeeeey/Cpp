@@ -1,6 +1,5 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
 #include "MathVector.h"
 #include "HelperFunctions.h"
 
@@ -59,10 +58,4 @@ TEST(MathVector, Flip_30)
     EXPECT_TRUE(hf::isEqual(30.f, mv.getAngle()));
     mv.reflectFromHorizontal();
     EXPECT_TRUE(hf::isEqual(-30.f, mv.getAngle()));
-}
-
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleMock(&argc, argv);
-    return RUN_ALL_TESTS();
 }
