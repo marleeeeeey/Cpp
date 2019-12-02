@@ -122,18 +122,18 @@ void HelperFunctions::setTextCenterTo(sf::Text& text, sf::Vector2f centerPos)
 
 int HelperFunctions::charToInt(char ch)
 {
-    if(!isdigit(ch))
+    if (!isdigit(ch))
     {
         std::ostringstream os;
         os << "Can't convert char '" << ch << "' to int";
-        throw std::exception(os.str().c_str());        
+        throw std::exception(os.str().c_str());
     }
 
     std::stringstream ss;
     ss << ch;
     int retValue;
     ss >> retValue;
-    return  retValue;
+    return retValue;
 }
 
 std::ostream& operator<<(std::ostream& os, const sf::Vector2f& vec)

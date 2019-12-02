@@ -11,15 +11,15 @@ public:
 TEST(LevelGenerator, LevelLinesHaveSameSize)
 {
     auto objectFactoryMock = std::make_shared<ObjectFactoryMock>();
-    LevelGenerator levelGenerator(objectFactoryMock, {0,0});
+    LevelGenerator levelGenerator(objectFactoryMock, {0, 0});
     auto levels = levelGenerator.getSymbolLevels();
 
-    for(const auto& level : levels)
+    for (const auto& level : levels)
     {
         EXPECT_FALSE(level.empty());
 
         auto lineSize = level.front().size();
-        for(const auto& line : level)
+        for (const auto& line : level)
         {
             EXPECT_TRUE(lineSize == line.size());
         }

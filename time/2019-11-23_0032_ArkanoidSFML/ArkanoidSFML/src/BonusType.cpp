@@ -25,9 +25,9 @@ BonusType getBonusTypeFromInt(int number)
 
 BonusType getBonusTypeFromChar(char ch)
 {
-    for (const auto & [type, c] : bonusMap)
+    for (const auto& [type, c] : bonusMap)
     {
-        if(c == ch)
+        if (c == ch)
             return type;
     }
 

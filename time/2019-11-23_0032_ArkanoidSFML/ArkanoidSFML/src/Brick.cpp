@@ -29,9 +29,9 @@ void Brick::draw(sf::RenderWindow& window)
 void Brick::onBumping(std::vector<Collision>& collisions)
 {
     m_lives--;
-    if(m_lives < 1)
+    if (m_lives < 1)
     {
-        state().setDestroyFlag(true);        
+        state().setDestroyFlag(true);
     }
 }
 

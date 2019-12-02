@@ -50,7 +50,7 @@ void World::initCollisionProcessors()
             for (auto collision : collisions)
             {
                 auto brickAsObject = collision.getObject();
-                if(!brickAsObject->state().getDestroyFlag())
+                if (!brickAsObject->state().getDestroyFlag())
                     continue;
                 auto object = m_objectFactory->createObject(ObjectType::Bonus);
                 object->state().setSize({5, 5});
@@ -98,7 +98,7 @@ void World::initCollisionProcessors()
                             createdBalls.push_back(createdBall);
                             angleShift += angleStep;
                             numberOfNewBalls--;
-                            if(numberOfNewBalls == 0)
+                            if (numberOfNewBalls == 0)
                                 break;
                         }
                     }
