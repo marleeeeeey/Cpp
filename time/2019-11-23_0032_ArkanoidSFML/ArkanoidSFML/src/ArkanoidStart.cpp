@@ -41,6 +41,7 @@ int arkanoidStart()
 
         auto currentTime = clock.getElapsedTime();
         auto timeDiff = currentTime - previousTimeStamp;
+        // TODO fix issue with big diffTime
         previousTimeStamp = currentTime;
         world->updateState(optEvent, timeDiff);
         window.clear();

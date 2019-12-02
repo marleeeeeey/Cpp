@@ -47,14 +47,17 @@ void World::initCollisionProcessors()
     m_collisionBuckets.emplace_back(
         m_balls, m_bricks, [&](std::shared_ptr<IObject> thisObject, std::vector<Collision>& collisions)
         {
-            if (!collisions.empty())
+            for (auto collision : collisions)
             {
-                auto brick = std::dynamic_pointer_cast<IBonusOwner>(collisions.front().getObject());
+                auto brickAsObject = collision.getObject();
+                if(!brickAsObject->state().getDestroyFlag())
+                    continue;
                 auto object = m_objectFactory->createObject(ObjectType::Bonus);
                 object->state().setSize({5, 5});
                 object->state().setPos(thisObject->state().getPos());
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
-                bonus->setBonusType(brick->getBonusType());
+                auto brickAsBonusOwner = std::dynamic_pointer_cast<IBonusOwner>(collision.getObject());
+                bonus->setBonusType(brickAsBonusOwner->getBonusType());
                 m_bonuses.push_back(object);
             }
         }
@@ -154,7 +157,7 @@ void World::initBricks()
 
 void World::initBalls()
 {
-    sf::Vector2f ballPos = {m_windowSize.x * 0.5f, m_windowSize.y * 0.5f};
+    sf::Vector2f ballPos = {m_windowSize.x * 0.5f, m_windowSize.y * 0.9f};
     auto ball = m_objectFactory->createObject(ObjectType::Ball);
     ball->state().setPos(ballPos);
     m_balls.push_back(ball);
