@@ -34,6 +34,8 @@ namespace HelperFunctions
     {
         return fabs(lhs - rhs) < 0.01;
     }
+
+    int charToInt(char ch);
 }
 
 namespace hf = HelperFunctions;

@@ -69,8 +69,9 @@ void World::initCollisionProcessors()
                 object->state().setDestroyFlag(true);
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
-                plate->setBonusType(bonus->getBonusType());
-                if (plate->getBonusType().value() == BonusType::MultiBalls)
+                auto bonusType = bonus->getBonusType();
+                plate->setBonusType(bonusType);
+                if (bonusType && bonusType.value() == BonusType::MultiBalls)
                 {
                     std::vector<std::shared_ptr<IObject>> createdBalls;
                     const unsigned maxNumberOfNewBalls = 2;

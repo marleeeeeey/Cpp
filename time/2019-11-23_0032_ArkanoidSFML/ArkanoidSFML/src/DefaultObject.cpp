@@ -51,8 +51,8 @@ void DefaultObject::checkBumping(std::vector<std::shared_ptr<IObject>>& objects)
 {
     auto thisObject = shared_from_this();
     auto collisions = getCollisions(thisObject, objects);
+    onBumping(collisions);
     if (m_onBumpingCallback)
         m_onBumpingCallback(thisObject, collisions);
-    onBumping(collisions);
     m_onBumpingCallback = {};
 }

@@ -16,5 +16,6 @@ enum class BonusType
 };
 
 BonusType getBonusTypeFromInt(int number);
+BonusType getBonusTypeFromChar(char ch);
 
 std::ostream& operator<<(std::ostream& os, const BonusType& type);
