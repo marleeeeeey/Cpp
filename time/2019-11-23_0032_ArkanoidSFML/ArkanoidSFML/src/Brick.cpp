@@ -16,6 +16,10 @@ void Brick::draw(sf::RenderWindow& window)
         sf::Color::Red,
         sf::Color::Blue,
         sf::Color::Yellow,
+        sf::Color::White,
+        sf::Color::Green,
+        sf::Color::Cyan,
+        sf::Color::Magenta,
     };
     auto colorIndex = m_appearanceNumber % colors.size();
     shape.setFillColor(colors[colorIndex]);
