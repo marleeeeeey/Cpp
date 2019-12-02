@@ -5,7 +5,7 @@
 Brick::Brick()
 {
     m_lives = 1;
-    m_appearanceNumber = 0;
+    m_appearanceNumber = 1;
 }
 
 void Brick::draw(sf::RenderWindow& window)
@@ -14,12 +14,12 @@ void Brick::draw(sf::RenderWindow& window)
     const std::vector<sf::Color> colors
     {
         sf::Color::Red,
+        sf::Color::Cyan,
         sf::Color::Blue,
         sf::Color::Yellow,
-        sf::Color::White,
         sf::Color::Green,
-        sf::Color::Cyan,
         sf::Color::Magenta,
+        sf::Color::White,
     };
     auto colorIndex = m_appearanceNumber % colors.size();
     shape.setFillColor(colors[colorIndex]);

@@ -7,11 +7,11 @@ void LevelGenerator::initLevels()
     std::vector<Level> levels
     {
         {
-        "...31L1111L13...",
+        "...31M1111M13...",
         "...3111111113...",
         "...3111111113...",
         "...3111111113...",
-        "...311L11L113...",
+        "...311M11M113...",
         "...3111111113...",
         "...3111111113...",
         "...3111111113...",
@@ -68,14 +68,14 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getNextLevelBricks()
                     brick->setLives(999);
                 else
                     brick->setLives(number);
-                brick->setAppearance(number);
+                brick->setAppearance(number + 1);
                 bonus->setBonusType({});
             }
             else
             {
                 brick->setLives(1);
                 auto bonusType = getBonusTypeFromChar(symbol);
-                brick->setAppearance(static_cast<int>(bonusType));
+                brick->setAppearance(0);
                 bonus->setBonusType(bonusType);
             }
             bricks.push_back(obj);
