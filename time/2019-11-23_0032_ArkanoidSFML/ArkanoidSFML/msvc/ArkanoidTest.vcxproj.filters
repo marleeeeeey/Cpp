@@ -89,5 +89,8 @@
     <ClCompile Include="..\src\tests\TestMathVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\tests\TestLevelGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

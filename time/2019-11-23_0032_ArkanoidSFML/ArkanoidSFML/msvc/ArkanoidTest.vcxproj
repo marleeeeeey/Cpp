@@ -35,6 +35,7 @@
     <ClInclude Include="..\src\World.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\tests\TestLevelGenerator.cpp" />
     <ClCompile Include="..\src\tests\TestMain.cpp" />
     <ClCompile Include="..\src\tests\TestMathVector.cpp" />
   </ItemGroup>
