@@ -21,5 +21,6 @@ class LevelGenerator : public ILevelGenerator
 
 public:
     LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);
-    std::vector<std::shared_ptr<IObject>> getNextLevelBricks() override;
+    void changeLevel();
+    std::vector<std::shared_ptr<IObject>> getLevelBricks() override;
 };

@@ -4,6 +4,7 @@
 #include "IBonusOwner.h"
 #include "IDynamicObject.h"
 #include <cassert>
+#include "IDescructible.h"
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
@@ -76,12 +77,12 @@ void World::initCollisionProcessors()
                 plate->setBonusType(bonusType);
                 if (bonusType && bonusType.value() == BonusType::MultiBalls)
                 {
+
                     std::vector<std::shared_ptr<IObject>> createdBalls;
                     const unsigned maxNumberOfNewBalls = 2;
                     unsigned numberOfNewBalls = maxNumberOfNewBalls;
-                    float viewSize_deg = 30;
-                    float angleStep = viewSize_deg / numberOfNewBalls;
-                    float angleShift = - viewSize_deg / 2;
+                    const float angleStep = 5;
+                    float angleShift = 5;
                     while (!m_balls.empty() && numberOfNewBalls != 0)
                     {
                         assert(numberOfNewBalls <= maxNumberOfNewBalls);
@@ -97,12 +98,20 @@ void World::initCollisionProcessors()
                             createdBallDynamicObject->setSpeed(speed);
                             createdBalls.push_back(createdBall);
                             angleShift += angleStep;
+                            if(angleShift == 0)
+                                angleShift += angleStep;
                             numberOfNewBalls--;
-                            if (numberOfNewBalls == 0)
+                            if(numberOfNewBalls == 0)
                                 break;
                         }
                     }
                     m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());
+                    unsigned maxNumberOfBalls = 10;
+                    if(m_balls.size() > maxNumberOfBalls)
+                    {
+                        m_balls.resize(maxNumberOfBalls);                        
+                    }
+
                 }
                 m_scopes++;
             }
@@ -152,7 +161,7 @@ void World::initWalls()
 
 void World::initBricks()
 {
-    m_bricks = m_levelGenerator->getNextLevelBricks();
+    m_bricks = m_levelGenerator->getLevelBricks();
 }
 
 void World::initBalls()
@@ -212,12 +221,19 @@ void World::updateGameOverStatus()
         return !isObjectOutOfBorder(ball);
     });
 
+    auto isAllBricksHaveSuperLive = std::all_of(m_bricks.begin(), m_bricks.end(), [&](auto brick)
+        {
+            auto destructibleBall = std::dynamic_pointer_cast<IDescructible>(brick);
+            std::optional<int> lives = destructibleBall->getLives();
+            return !lives.has_value();
+        });
+
     if (isAllBallsOutOfBorder && !m_bricks.empty())
     {
         m_scopes = 0;
         m_isGameOver = true;
     }
-    else if (m_bricks.empty())
+    else if (m_bricks.empty() || isAllBricksHaveSuperLive)
     {
         std::for_each(m_balls.begin(), m_balls.end(), [](std::shared_ptr<IObject> ballObject)
         {
@@ -226,11 +242,15 @@ void World::updateGameOverStatus()
 
         if (m_bonuses.empty())
             m_isGameOver = true;
+
+        m_levelGenerator->changeLevel();
     }
 }
 
-void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
+void World::updateState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
+    m_elapsedTime_ms = elapsedTime.asMilliseconds();
+
     if (m_isGameOver)
     {
         generate();
@@ -244,7 +264,7 @@ void World::updateState(std::optional<sf::Event> event, sf::Time timeStep)
 
     for (auto object : getAllObjects())
     {
-        object->calcState(event, timeStep);
+        object->calcState(event, elapsedTime);
         if (isObjectOutOfBorder(object))
         {
             object->state().setDestroyFlag(true);
@@ -266,7 +286,16 @@ void World::draw(sf::RenderWindow& window)
     text.setFont(m_font);
     text.setScale(0.7, 0.7);
     std::ostringstream ss;
-    ss << "Scopes: " << m_scopes << " Ball count: " << m_balls.size() << std::endl;
+    ss  << " Scopes: " << m_scopes
+        << " Ball count: " << m_balls.size()
+        << " Elapsed time: " << m_elapsedTime_ms << " ms"
+        << std::endl;
+
+    for (auto ball : m_balls)
+    {
+        ss << ball->state().getPos() << ", ";
+    }
+
     text.setString(ss.str());
     window.draw(text);
 }

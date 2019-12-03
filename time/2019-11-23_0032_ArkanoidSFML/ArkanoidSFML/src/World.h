@@ -18,6 +18,7 @@ class World : public IWorld
     sf::Font m_font;
     unsigned m_scopes;
     bool m_isGameOver;
+    float m_elapsedTime_ms;
 
     std::vector<std::shared_ptr<IObject>> getAllObjects();
     bool isObjectOutOfBorder(std::shared_ptr<IObject> object);
@@ -35,6 +36,6 @@ class World : public IWorld
 public:
     World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILevelGenerator> levelGenerator,
           sf::Vector2f windowSize);
-    void updateState(std::optional<sf::Event> event, sf::Time timeStep) override;
+    void updateState(std::optional<sf::Event> event, sf::Time elapsedTime) override;
     void draw(sf::RenderWindow& window) override;
 };

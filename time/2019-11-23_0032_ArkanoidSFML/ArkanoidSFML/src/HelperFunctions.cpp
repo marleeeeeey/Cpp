@@ -138,7 +138,7 @@ int HelperFunctions::charToInt(char ch)
 
 std::ostream& operator<<(std::ostream& os, const sf::Vector2f& vec)
 {
-    os << "(" << vec.x << ", " << vec.y << ")";
+    os << "(" << static_cast<int>(vec.x) << ", " << static_cast<int>(vec.y) << ")";
     return os;
 }
 

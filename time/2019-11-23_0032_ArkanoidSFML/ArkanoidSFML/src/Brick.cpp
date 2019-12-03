@@ -28,16 +28,24 @@ void Brick::draw(sf::RenderWindow& window)
 
 void Brick::onBumping(std::vector<Collision>& collisions)
 {
-    m_lives--;
-    if (m_lives < 1)
+    if(!m_lives)
+        return;
+
+    m_lives.value()--;
+    if (m_lives.value() < 1)
     {
         state().setDestroyFlag(true);
     }
 }
 
-void Brick::setLives(int lives)
+void Brick::setLives(std::optional<int> lives)
 {
     m_lives = lives;
+}
+
+std::optional<int> Brick::getLives()
+{
+    return m_lives;
 }
 
 void Brick::setAppearance(int appearanceNumber)

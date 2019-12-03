@@ -7,16 +7,30 @@ std::vector<Level> LevelGenerator::getSymbolLevels()
     std::vector<Level> levels
     {
         {
-            "........MM........",
-            ".0002000000002000.",
-            ".0111111111111110.",
-            ".0111111111111110.",
-            ".0111111111111110.",
-            ".0111111111111110.",
-            ".0111111111111110.",
-            ".0000000000000000.",
+            "................",
+            "0000000000000000",
+            "MMMMMMMMMMMMMMMM",
         },
         {
+            "................",
+            ".MMMMMMMMMMMMMM.",
+            ".MMMMMMMMMMMMMM.",
+            ".MMMMMMMMMMMMMM.",
+            ".MMMMMMMMMMMMMM.",
+            ".MMMMMMMMMMMMMM.",
+            ".MMMMMMMMMMMMMM.",
+        },
+        {
+            "................",
+            ".11111111111111.",
+            ".11111111111111.",
+            ".111111MM111111.",
+            ".11111111111111.",
+            ".11MM111111MM11.",
+            ".11111111111111.",
+        },
+        {
+            "................",
             "...31M1111M13...",
             "...3111111113...",
             "...3111111113...",
@@ -27,6 +41,16 @@ std::vector<Level> LevelGenerator::getSymbolLevels()
             "...3111111113...",
             "...3111111113...",
             "...3111111113...",
+        },
+        {
+            "........MM........",
+            ".0002000000002000.",
+            ".0111111111111110.",
+            ".0111111111111110.",
+            ".0111111111111110.",
+            ".0111111111111110.",
+            ".0111111111111110.",
+            ".0000000000000000.",
         },
     };
 
@@ -44,7 +68,12 @@ LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf
     m_levels = getSymbolLevels();
 }
 
-std::vector<std::shared_ptr<IObject>> LevelGenerator::getNextLevelBricks()
+void LevelGenerator::changeLevel()
+{
+    m_currentLevelNumber++;
+}
+
+std::vector<std::shared_ptr<IObject>> LevelGenerator::getLevelBricks()
 {
     auto levelNumber = m_currentLevelNumber % m_levels.size();
     auto currentLevel = m_levels.at(levelNumber);
@@ -76,7 +105,7 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getNextLevelBricks()
             {
                 int number = hf::charToInt(symbol);
                 if (number == 0)
-                    brick->setLives(999);
+                    brick->setLives({});
                 else
                     brick->setLives(number);
                 brick->setAppearance(number + 1);

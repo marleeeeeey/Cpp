@@ -37,7 +37,10 @@ void Plate::calculateOffset(std::optional<sf::Event> event, sf::Time elapsedTime
     }
 
     int speed_pxps = 600;
-    float absOffset = speed_pxps * elapsedTime.asSeconds();
+    float elapsedSec = elapsedTime.asSeconds();
+    if(elapsedSec > 0.1)
+        elapsedSec = 0.1;
+    float absOffset = speed_pxps * elapsedSec;
     float absDampingOffset = absOffset * 0.08f;
 
     switch (m_plateState)
