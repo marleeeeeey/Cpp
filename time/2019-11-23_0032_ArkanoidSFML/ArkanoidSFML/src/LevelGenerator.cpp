@@ -119,18 +119,21 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getLevelBricks()
                     brick->lives() = {};
                 else
                     brick->lives() = number;
-                brick->setAppearance(number + 1);
                 bonus->bonusType() = {};
             }
             else
             {
                 brick->lives() = 1;
                 bonus->bonusType() = getBonusTypeFromChar(symbol);
-                brick->setAppearance(0);
             }
             bricks.push_back(obj);
         }
     }
 
     return bricks;
+}
+
+void LevelGenerator::resetLevelProgress()
+{
+    m_currentLevelNumber = 0;
 }

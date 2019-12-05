@@ -5,24 +5,35 @@
 Brick::Brick()
 {
     m_lives = 1;
-    m_appearanceNumber = 1;
 }
 
 void Brick::draw(sf::RenderWindow& window)
 {
-    auto shape = state().getCollisionRect();
-    const std::vector<sf::Color> colors
+    sf::Color shapeColor;
+    if(!m_lives)
     {
-        sf::Color::Red,
-        sf::Color::Cyan,
-        sf::Color::Blue,
-        sf::Color::Yellow,
-        sf::Color::Green,
-        sf::Color::Magenta,
-        sf::Color::White,
-    };
-    auto colorIndex = m_appearanceNumber % colors.size();
-    shape.setFillColor(colors[colorIndex]);
+        shapeColor = sf::Color::Cyan;
+    }
+    else if(m_bonusType)
+    {
+        shapeColor = sf::Color::Red;
+    }
+    else
+    {
+        const std::vector<sf::Color> livesColor
+        {
+            sf::Color::Blue,
+            sf::Color::Yellow,
+            sf::Color::Green,
+            sf::Color::Magenta,
+            sf::Color::White,
+        };
+
+        auto colorIndex = m_lives.value() / livesColor.size();
+        shapeColor = livesColor.at(colorIndex);
+    }
+    auto shape = state().getCollisionRect();
+    shape.setFillColor(shapeColor);
     window.draw(shape);
 }
 
@@ -37,11 +48,6 @@ void Brick::onBumping(std::vector<Collision>& collisions)
 std::optional<int>& Brick::lives()
 {
     return m_lives;
-}
-
-void Brick::setAppearance(int appearanceNumber)
-{
-    m_appearanceNumber = appearanceNumber;
 }
 
 std::optional<BonusType>& Brick::bonusType()

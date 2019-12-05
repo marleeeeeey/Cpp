@@ -24,4 +24,5 @@ public:
     LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);
     void changeLevel();
     std::vector<std::shared_ptr<IObject>> getLevelBricks() override;
+    void resetLevelProgress() override;
 };
