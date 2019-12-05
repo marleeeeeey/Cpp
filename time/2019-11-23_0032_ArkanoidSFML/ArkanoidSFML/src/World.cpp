@@ -92,16 +92,16 @@ void World::initCollisionProcessors()
                 {
                     plate->bonusType() = {};
 
-                    for(auto ball : m_balls)
+                    for (auto ball : m_balls)
                     {
                         auto bonusBall = std::dynamic_pointer_cast<IBonusOwner>(ball);
-                        bonusBall->bonusType() = {};                        
+                        bonusBall->bonusType() = {};
                     }
                 }
 
-                if(plate->bonusType() && plate->bonusType().value() == BonusType::FireBall)
+                if (plate->bonusType() && plate->bonusType().value() == BonusType::FireBall)
                 {
-                    if(!m_balls.empty())
+                    if (!m_balls.empty())
                     {
                         auto firstBall = m_balls.front();
                         auto bonusBall = std::dynamic_pointer_cast<IBonusOwner>(firstBall);
@@ -109,9 +109,9 @@ void World::initCollisionProcessors()
                     }
                 }
 
-                if(plate->bonusType() && plate->bonusType().value() == BonusType::DecreaseBallSpeed)
+                if (plate->bonusType() && plate->bonusType().value() == BonusType::DecreaseBallSpeed)
                 {
-                    for(auto ball : m_balls)
+                    for (auto ball : m_balls)
                     {
                         auto bonusBall = std::dynamic_pointer_cast<IBonusOwner>(ball);
                         bonusBall->bonusType() = plate->bonusType().value();

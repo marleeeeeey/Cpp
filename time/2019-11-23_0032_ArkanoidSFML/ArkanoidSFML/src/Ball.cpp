@@ -114,11 +114,11 @@ void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
     float accelerate_pxps = 5;
     float speedShift = accelerate_pxps * sec;
     float speed = m_speed.getSize() + speedShift;
-    if(speed > m_maxSpeed)
+    if (speed > m_maxSpeed)
         speed = m_maxSpeed;
     m_speed.setSize(speed);
 
-    if(m_bonusType && m_bonusType.value() == BonusType::DecreaseBallSpeed)
+    if (m_bonusType && m_bonusType.value() == BonusType::DecreaseBallSpeed)
     {
         m_bonusType = {};
         m_speed.setSize(m_bonusSpeed);
@@ -126,7 +126,7 @@ void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 
     auto pos = state().getPos();
     auto coordinates = m_speed.getCoordinate();
-    sf::Vector2f offset = { sec * coordinates.x, sec * coordinates.y};
+    sf::Vector2f offset = {sec * coordinates.x, sec * coordinates.y};
     state().setPos(pos + offset);
 }
 
