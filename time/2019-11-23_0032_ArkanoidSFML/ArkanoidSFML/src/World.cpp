@@ -3,7 +3,7 @@
 #include <sstream>
 #include "IBonusOwner.h"
 #include "IDynamicObject.h"
-#include "IDescructible.h"
+#include "IDestructible.h"
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
@@ -94,7 +94,7 @@ void World::initCollisionProcessors()
                         }
                     }
                     m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());
-                    unsigned maxNumberOfBalls = 10;
+                    unsigned maxNumberOfBalls = 30;
                     if (m_balls.size() > maxNumberOfBalls)
                     {
                         m_balls.resize(maxNumberOfBalls);
@@ -210,8 +210,8 @@ void World::updateGameOverStatus()
 
     auto isAllBricksHaveSuperLive = std::all_of(m_bricks.begin(), m_bricks.end(), [&](auto brick)
     {
-        auto destructibleBall = std::dynamic_pointer_cast<IDescructible>(brick);
-        std::optional<int> lives = destructibleBall->getLives();
+        auto destructibleBall = std::dynamic_pointer_cast<IDestructible>(brick);
+        std::optional<int> lives = destructibleBall->lives();
         return !lives.has_value();
     });
 

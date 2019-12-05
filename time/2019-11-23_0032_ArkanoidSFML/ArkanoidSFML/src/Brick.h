@@ -1,9 +1,9 @@
 #pragma once
 #include "DefaultObject.h"
-#include "IDescructible.h"
+#include "IDestructible.h"
 #include "IBonusOwner.h"
 
-class Brick : public DefaultObject, public IDescructible, public IBonusOwner
+class Brick : public DefaultObject, public IDestructible, public IBonusOwner
 {
     std::optional<int> m_lives;
     int m_appearanceNumber;
@@ -13,8 +13,7 @@ public:
     Brick();
     void draw(sf::RenderWindow& window) override;
     void onBumping(std::vector<Collision>& collisions) override;
-    void setLives(std::optional<int> lives) override;
-    std::optional<int> getLives() override;
+    std::optional<int>& lives() override;
     void setAppearance(int appearanceNumber) override;
     void setBonusType(std::optional<BonusType> bonusType) override;
     std::optional<BonusType> getBonusType() override;

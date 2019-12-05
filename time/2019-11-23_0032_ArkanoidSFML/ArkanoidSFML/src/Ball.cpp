@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "HelperFunctions.h"
+#include "IDestructible.h"
 
 Ball::Ball()
 {
@@ -52,11 +53,28 @@ void Ball::onBumping(std::vector<Collision>& collisions)
         m_lastNonCollisionState = state();
     }
 
+    std::vector<std::shared_ptr<IDestructible>> desctructibleObjects;
     for (auto collision : collisions)
     {
-        std::vector<Collision> responseCollisions;
-        responseCollisions.emplace_back(shared_from_this(), collision.getCollisionRect());
-        collision.getObject()->onBumping(responseCollisions);
+        auto desctructible = std::dynamic_pointer_cast<IDestructible>(collision.getObject());
+        if (desctructible)
+        {
+            desctructibleObjects.push_back(desctructible);
+        }
+    }
+
+    if (!desctructibleObjects.empty())
+    {
+        auto& biggestObjectLives = desctructibleObjects.front()->lives();
+        if (biggestObjectLives)
+            biggestObjectLives.value()--;
+    }
+
+    for (auto collision : collisions)
+    {
+        std::vector<Collision> oneBackCollision;
+        oneBackCollision.emplace_back(shared_from_this(), collision.getCollisionRect());
+        collision.getObject()->onBumping(oneBackCollision);
     }
 }
 

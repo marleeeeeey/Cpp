@@ -1,5 +1,5 @@
 #include "LevelGenerator.h"
-#include "IDescructible.h"
+#include "IDestructible.h"
 #include "IBonusOwner.h"
 #include "HelperFunctions.h"
 
@@ -108,21 +108,21 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getLevelBricks()
             };
             obj->state().setPos(brickPos);
             obj->state().setSize({brickSize.x - m_brickGap, brickSize.y - m_brickGap});
-            auto brick = std::dynamic_pointer_cast<IDescructible>(obj);
+            auto brick = std::dynamic_pointer_cast<IDestructible>(obj);
             auto bonus = std::dynamic_pointer_cast<IBonusOwner>(obj);
             if (std::isdigit(symbol))
             {
                 int number = hf::charToInt(symbol);
                 if (number == 0)
-                    brick->setLives({});
+                    brick->lives() = {};
                 else
-                    brick->setLives(number);
+                    brick->lives() = number;
                 brick->setAppearance(number + 1);
                 bonus->setBonusType({});
             }
             else
             {
-                brick->setLives(1);
+                brick->lives() = 1;
                 auto bonusType = getBonusTypeFromChar(symbol);
                 brick->setAppearance(0);
                 bonus->setBonusType(bonusType);

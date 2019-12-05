@@ -128,13 +128,13 @@
     <ClInclude Include="..\src\MathVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\IDescructible.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\IDynamicObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\IStaticObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\IDestructible.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
