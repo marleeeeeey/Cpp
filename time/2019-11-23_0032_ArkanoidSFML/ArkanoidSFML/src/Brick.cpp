@@ -22,14 +22,14 @@ void Brick::draw(sf::RenderWindow& window)
     {
         const std::vector<sf::Color> livesColor
         {
+            sf::Color::White,
             sf::Color::Blue,
             sf::Color::Yellow,
             sf::Color::Green,
             sf::Color::Magenta,
-            sf::Color::White,
         };
 
-        auto colorIndex = m_lives.value() / livesColor.size();
+        auto colorIndex = m_lives.value() % livesColor.size();
         shapeColor = livesColor.at(colorIndex);
     }
     auto shape = state().getCollisionRect();

@@ -7,11 +7,14 @@
 class Ball : public DefaultObject, public IDynamicObject, public IBonusOwner
 {
     MathVector m_speed;
+    float m_bonusSpeed = 200;
+    float m_maxSpeed = 400;
     std::optional<Collision> m_biggestCollision;
     std::optional<State> m_lastNonCollisionState;
     std::optional<BonusType> m_bonusType;
 
     void changeDirection();
+    void stealLiveFromOneDestructibleObject(std::vector<Collision>& collisions);
 
 public:
     Ball();

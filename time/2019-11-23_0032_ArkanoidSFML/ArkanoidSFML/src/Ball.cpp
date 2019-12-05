@@ -44,6 +44,26 @@ void Ball::changeDirection()
     };
 }
 
+void Ball::stealLiveFromOneDestructibleObject(std::vector<Collision>& collisions)
+{
+    std::vector<std::shared_ptr<IDestructible>> desctructibleObjects;
+    for (auto collision : collisions)
+    {
+        auto desctructible = std::dynamic_pointer_cast<IDestructible>(collision.getObject());
+        if (desctructible)
+        {
+            desctructibleObjects.push_back(desctructible);
+        }
+    }
+
+    if (!desctructibleObjects.empty())
+    {
+        auto& biggestObjectLives = desctructibleObjects.front()->lives();
+        if (biggestObjectLives)
+            biggestObjectLives.value()--;
+    }
+}
+
 void Ball::onBumping(std::vector<Collision>& collisions)
 {
     if (!collisions.empty())
@@ -77,22 +97,7 @@ void Ball::onBumping(std::vector<Collision>& collisions)
         m_lastNonCollisionState = state();
     }
 
-    std::vector<std::shared_ptr<IDestructible>> desctructibleObjects;
-    for (auto collision : collisions)
-    {
-        auto desctructible = std::dynamic_pointer_cast<IDestructible>(collision.getObject());
-        if (desctructible)
-        {
-            desctructibleObjects.push_back(desctructible);
-        }
-    }
-
-    if (!desctructibleObjects.empty())
-    {
-        auto& biggestObjectLives = desctructibleObjects.front()->lives();
-        if (biggestObjectLives)
-            biggestObjectLives.value()--;
-    }
+    stealLiveFromOneDestructibleObject(collisions);
 
     for (auto collision : collisions)
     {
@@ -104,9 +109,24 @@ void Ball::onBumping(std::vector<Collision>& collisions)
 
 void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
+    auto sec = elapsedTime.asSeconds();
+
+    float accelerate_pxps = 5;
+    float speedShift = accelerate_pxps * sec;
+    float speed = m_speed.getSize() + speedShift;
+    if(speed > m_maxSpeed)
+        speed = m_maxSpeed;
+    m_speed.setSize(speed);
+
+    if(m_bonusType && m_bonusType.value() == BonusType::DecreaseBallSpeed)
+    {
+        m_bonusType = {};
+        m_speed.setSize(m_bonusSpeed);
+    }
+
     auto pos = state().getPos();
     auto coordinates = m_speed.getCoordinate();
-    sf::Vector2f offset = {elapsedTime.asSeconds() * coordinates.x, elapsedTime.asSeconds() * coordinates.y};
+    sf::Vector2f offset = { sec * coordinates.x, sec * coordinates.y};
     state().setPos(pos + offset);
 }
 

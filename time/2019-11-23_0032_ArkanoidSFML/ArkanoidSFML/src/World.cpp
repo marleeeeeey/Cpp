@@ -109,6 +109,15 @@ void World::initCollisionProcessors()
                     }
                 }
 
+                if(plate->bonusType() && plate->bonusType().value() == BonusType::DecreaseBallSpeed)
+                {
+                    for(auto ball : m_balls)
+                    {
+                        auto bonusBall = std::dynamic_pointer_cast<IBonusOwner>(ball);
+                        bonusBall->bonusType() = plate->bonusType().value();
+                    }
+                }
+
                 m_scopes++;
             }
         }
