@@ -73,8 +73,9 @@ void World::initCollisionProcessors()
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
                 auto bonusBonusType = bonus->bonusType();
-                if(!plate->bonusType() && bonusBonusType)
+                if(bonusBonusType)
                     plate->bonusType() = bonusBonusType;
+
                 if (plate->bonusType() && plate->bonusType().value() == BonusType::MultiBalls)
                 {
                     int ballsNumber = hf::randomInt(1, 3);
@@ -85,6 +86,11 @@ void World::initCollisionProcessors()
                     {
                         m_balls.resize(maxNumberOfBalls);
                     }
+                }
+                
+                if(plate->bonusType() && plate->bonusType().value() == BonusType::DisableBonuses)
+                {
+                    plate->bonusType() = {};
                 }
                 m_scopes++;
             }
