@@ -18,7 +18,7 @@ std::vector<Level> LevelGenerator::getSymbolLevels()
             "11....D11D....11",
             "11....D11D....11",
             "11....D11D....11",
-            "000RRR0000RRR000", 
+            "000RRR0000RRR000",
             "................",
             "................",
         },

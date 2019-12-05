@@ -73,7 +73,7 @@ void World::initCollisionProcessors()
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
                 auto bonusBonusType = bonus->bonusType();
-                if(bonusBonusType)
+                if (bonusBonusType)
                     plate->bonusType() = bonusBonusType;
 
                 if (plate->bonusType() && plate->bonusType().value() == BonusType::MultiBalls)
@@ -87,8 +87,8 @@ void World::initCollisionProcessors()
                         m_balls.resize(maxNumberOfBalls);
                     }
                 }
-                
-                if(plate->bonusType() && plate->bonusType().value() == BonusType::DisableBonuses)
+
+                if (plate->bonusType() && plate->bonusType().value() == BonusType::DisableBonuses)
                 {
                     plate->bonusType() = {};
                 }
@@ -248,22 +248,21 @@ void World::updateGameOverStatus()
 
 void World::onEveryUpdate()
 {
-    if(m_plates.empty())
+    if (m_plates.empty())
         return;
 
     auto plate = std::dynamic_pointer_cast<IBonusOwner>(m_plates.front());
     auto plateBonus = plate->bonusType();
-    if(plateBonus && plateBonus.value() == BonusType::RenewableBalls)
+    if (plateBonus && plateBonus.value() == BonusType::RenewableBalls)
     {
         int countRenewableBalls = 3;
-        if(m_balls.size() < countRenewableBalls)
+        if (m_balls.size() < countRenewableBalls)
         {
             int ballsNumber = countRenewableBalls - m_balls.size();
             auto createdBalls = generateNewBalls(ballsNumber);
-            m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());                
+            m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());
         }
     }
-
 }
 
 void World::updateState(std::optional<sf::Event> event, sf::Time elapsedTime)

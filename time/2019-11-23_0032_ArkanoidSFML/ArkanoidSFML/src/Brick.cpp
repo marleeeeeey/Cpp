@@ -10,11 +10,11 @@ Brick::Brick()
 void Brick::draw(sf::RenderWindow& window)
 {
     sf::Color shapeColor;
-    if(!m_lives)
+    if (!m_lives)
     {
         shapeColor = sf::Color::Cyan;
     }
-    else if(m_bonusType)
+    else if (m_bonusType)
     {
         shapeColor = sf::Color::Red;
     }

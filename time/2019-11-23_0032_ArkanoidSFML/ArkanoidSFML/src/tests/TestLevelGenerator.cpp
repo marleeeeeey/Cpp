@@ -30,16 +30,16 @@ TEST(LevelGenerator, LevelLinesHaveSameSize)
 TEST(LevelGenerator, LevelsHaveCorrectBonusLetters)
 {
     auto objectFactoryMock = std::make_shared<ObjectFactoryMock>();
-    LevelGenerator levelGenerator(objectFactoryMock, { 0, 0 });
+    LevelGenerator levelGenerator(objectFactoryMock, {0, 0});
     auto levels = levelGenerator.getSymbolLevels();
 
-    for(const auto& level : levels)
+    for (const auto& level : levels)
     {
         for (const auto& line : level)
         {
-            for(auto ch : line)
+            for (auto ch : line)
             {
-                if(isalpha(ch))
+                if (isalpha(ch))
                     getBonusTypeFromChar(ch);
             }
         }
