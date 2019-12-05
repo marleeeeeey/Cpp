@@ -120,14 +120,13 @@ std::vector<std::shared_ptr<IObject>> LevelGenerator::getLevelBricks()
                 else
                     brick->lives() = number;
                 brick->setAppearance(number + 1);
-                bonus->setBonusType({});
+                bonus->bonusType() = {};
             }
             else
             {
                 brick->lives() = 1;
-                auto bonusType = getBonusTypeFromChar(symbol);
+                bonus->bonusType() = getBonusTypeFromChar(symbol);
                 brick->setAppearance(0);
-                bonus->setBonusType(bonusType);
             }
             bricks.push_back(obj);
         }

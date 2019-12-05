@@ -4,6 +4,8 @@
 Bonus::Bonus()
 {
     m_font = hf::getDefaultFont();
+    m_boundRectStandartSize = { 5,5 };
+    m_boundRectBonusSize = { 20, 20 };
 }
 
 void Bonus::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
@@ -13,6 +15,14 @@ void Bonus::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
     auto pos = state().getPos();
     sf::Vector2f offset = {elapsedTime.asSeconds() * speed.x, elapsedTime.asSeconds() * speed.y};
     state().setPos(pos + offset);
+    if(m_bonusType)
+    {
+        state().setSize(m_boundRectBonusSize);
+    }
+    else
+    {
+        state().setSize(m_boundRectStandartSize);
+    }
 }
 
 void Bonus::draw(sf::RenderWindow& window)
@@ -36,17 +46,7 @@ void Bonus::draw(sf::RenderWindow& window)
     }
 }
 
-void Bonus::setBonusType(std::optional<BonusType> bonusType)
-{
-    m_bonusType = bonusType;
-    if (m_bonusType)
-    {
-        auto oldSize = state().getSize();
-        state().setSize({oldSize.x * 4, oldSize.y * 4});
-    }
-}
-
-std::optional<BonusType> Bonus::getBonusType()
+std::optional<BonusType>& Bonus::bonusType()
 {
     return m_bonusType;
 }

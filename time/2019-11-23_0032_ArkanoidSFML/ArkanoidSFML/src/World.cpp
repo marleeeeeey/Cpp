@@ -54,11 +54,10 @@ void World::initCollisionProcessors()
                 if (!brickAsObject->state().getDestroyFlag())
                     continue;
                 auto object = m_objectFactory->createObject(ObjectType::Bonus);
-                object->state().setSize({5, 5});
                 object->state().setPos(thisObject->state().getPos());
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto brickAsBonusOwner = std::dynamic_pointer_cast<IBonusOwner>(collision.getObject());
-                bonus->setBonusType(brickAsBonusOwner->getBonusType());
+                bonus->bonusType() = brickAsBonusOwner->bonusType();
                 m_bonuses.push_back(object);
             }
         }
@@ -73,8 +72,8 @@ void World::initCollisionProcessors()
                 object->state().setDestroyFlag(true);
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
-                auto bonusType = bonus->getBonusType();
-                plate->setBonusType(bonusType);
+                auto bonusType = bonus->bonusType();
+                plate->bonusType() = bonusType;
                 if (bonusType && bonusType.value() == BonusType::MultiBalls)
                 {
                     int ballsNumber = hf::randomInt(1, 3);
@@ -246,7 +245,7 @@ void World::onEveryUpdate()
         return;
 
     auto plate = std::dynamic_pointer_cast<IBonusOwner>(m_plates.front());
-    auto plateBonus = plate->getBonusType();
+    auto plateBonus = plate->bonusType();
     if(plateBonus && plateBonus.value() == BonusType::RenewableBalls)
     {
         int countRenewableBalls = 3;

@@ -44,12 +44,7 @@ void Brick::setAppearance(int appearanceNumber)
     m_appearanceNumber = appearanceNumber;
 }
 
-void Brick::setBonusType(std::optional<BonusType> bonusType)
-{
-    m_bonusType = bonusType;
-}
-
-std::optional<BonusType> Brick::getBonusType()
+std::optional<BonusType>& Brick::bonusType()
 {
     return m_bonusType;
 }

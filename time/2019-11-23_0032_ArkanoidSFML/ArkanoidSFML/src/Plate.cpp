@@ -133,12 +133,7 @@ void Plate::onBumping(std::vector<Collision>& collisions)
     m_lastNonCollisionState = state();
 }
 
-void Plate::setBonusType(std::optional<BonusType> bonusType)
-{
-    m_bonusType = bonusType;
-}
-
-std::optional<BonusType> Plate::getBonusType()
+std::optional<BonusType>& Plate::bonusType()
 {
     return m_bonusType;
 }
