@@ -36,6 +36,8 @@ namespace HelperFunctions
     }
 
     int charToInt(char ch);
+
+    int randomInt(int min, int max);
 }
 
 namespace hf = HelperFunctions;

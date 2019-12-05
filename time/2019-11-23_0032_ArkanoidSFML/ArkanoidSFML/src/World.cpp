@@ -78,18 +78,16 @@ void World::initCollisionProcessors()
                 if (bonusType && bonusType.value() == BonusType::MultiBalls)
                 {
                     std::vector<std::shared_ptr<IObject>> createdBalls;
-                    int numberOfNewBalls = 2;
-                    const float angleStep = 5;
-                    float angleShift = 5;
+                    int numberOfNewBalls = hf::randomInt(1, 3);
                     while (!m_balls.empty() && createdBalls.size() < numberOfNewBalls)
                     {
                         for (auto existingBall : m_balls)
                         {
                             auto createdBall = existingBall->createCopyFromThis();
                             auto createdBallDynamicObject = std::dynamic_pointer_cast<IDynamicObject>(createdBall);
-                            createdBallDynamicObject->speed().rotate(angleShift);
+                            auto randomAngle = hf::randomInt(5, 355);
+                            createdBallDynamicObject->speed().rotate(randomAngle);
                             createdBalls.push_back(createdBall);
-                            angleShift += angleStep;
                             if (createdBalls.size() == numberOfNewBalls)
                                 break;
                         }
@@ -278,11 +276,6 @@ void World::draw(sf::RenderWindow& window)
     ss << " Scopes: " << m_scopes
         << " Ball count: " << m_balls.size()
         << " Elapsed time: " << m_elapsedTime_ms << " ms\n\n";
-
-    for (auto ball : m_balls)
-    {
-        ss << "     " << ball->state().getPos() << "\n";
-    }
 
     text.setString(ss.str());
     window.draw(text);

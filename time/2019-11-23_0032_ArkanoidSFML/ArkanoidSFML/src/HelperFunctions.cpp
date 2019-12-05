@@ -1,4 +1,6 @@
 #include "HelperFunctions.h"
+#include <stdlib.h>
+#include <cassert>
 
 using namespace HelperFunctions;
 
@@ -134,6 +136,14 @@ int HelperFunctions::charToInt(char ch)
     int retValue;
     ss >> retValue;
     return retValue;
+}
+
+int HelperFunctions::randomInt(int min, int max)
+{
+    assert(max - min >= 0);
+    auto length = max - min;
+    auto val = rand() % length + min;
+    return val;
 }
 
 std::ostream& operator<<(std::ostream& os, const sf::Vector2f& vec)
