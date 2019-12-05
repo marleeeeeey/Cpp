@@ -27,11 +27,13 @@ class World : public IWorld
     void removeAllObjects();
     void generate();
     void updateGameOverStatus();
+    void onEveryUpdate();
     void initPlates();
     void initWalls();
     void initBricks();
     void initBalls();
     void initCollisionProcessors();
+    std::vector<std::shared_ptr<IObject>> generateNewBalls(int ballsNumber);
 
 public:
     World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILevelGenerator> levelGenerator,

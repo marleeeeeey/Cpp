@@ -77,21 +77,8 @@ void World::initCollisionProcessors()
                 plate->setBonusType(bonusType);
                 if (bonusType && bonusType.value() == BonusType::MultiBalls)
                 {
-                    std::vector<std::shared_ptr<IObject>> createdBalls;
-                    int numberOfNewBalls = hf::randomInt(1, 3);
-                    while (!m_balls.empty() && createdBalls.size() < numberOfNewBalls)
-                    {
-                        for (auto existingBall : m_balls)
-                        {
-                            auto createdBall = existingBall->createCopyFromThis();
-                            auto createdBallDynamicObject = std::dynamic_pointer_cast<IDynamicObject>(createdBall);
-                            auto randomAngle = hf::randomInt(5, 355);
-                            createdBallDynamicObject->speed().rotate(randomAngle);
-                            createdBalls.push_back(createdBall);
-                            if (createdBalls.size() == numberOfNewBalls)
-                                break;
-                        }
-                    }
+                    int ballsNumber = hf::randomInt(1, 3);
+                    auto createdBalls = generateNewBalls(ballsNumber);
                     m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());
                     unsigned maxNumberOfBalls = 30;
                     if (m_balls.size() > maxNumberOfBalls)
@@ -103,6 +90,25 @@ void World::initCollisionProcessors()
             }
         }
     );
+}
+
+std::vector<std::shared_ptr<IObject>> World::generateNewBalls(int ballsNumber)
+{
+    std::vector<std::shared_ptr<IObject>> createdBalls;
+    while (!m_balls.empty() && createdBalls.size() < ballsNumber)
+    {
+        for (auto existingBall : m_balls)
+        {
+            auto createdBall = existingBall->createCopyFromThis();
+            auto createdBallDynamicObject = std::dynamic_pointer_cast<IDynamicObject>(createdBall);
+            auto randomAngle = hf::randomInt(5, 355);
+            createdBallDynamicObject->speed().rotate(randomAngle);
+            createdBalls.push_back(createdBall);
+            if (createdBalls.size() == ballsNumber)
+                break;
+        }
+    }
+    return createdBalls;
 }
 
 void World::initPlates()
@@ -234,6 +240,26 @@ void World::updateGameOverStatus()
     }
 }
 
+void World::onEveryUpdate()
+{
+    if(m_plates.empty())
+        return;
+
+    auto plate = std::dynamic_pointer_cast<IBonusOwner>(m_plates.front());
+    auto plateBonus = plate->getBonusType();
+    if(plateBonus && plateBonus.value() == BonusType::RenewableBalls)
+    {
+        int countRenewableBalls = 3;
+        if(m_balls.size() < countRenewableBalls)
+        {
+            int ballsNumber = countRenewableBalls - m_balls.size();
+            auto createdBalls = generateNewBalls(ballsNumber);
+            m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());                
+        }
+    }
+
+}
+
 void World::updateState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
     m_elapsedTime_ms = elapsedTime.asMilliseconds();
@@ -242,6 +268,8 @@ void World::updateState(std::optional<sf::Event> event, sf::Time elapsedTime)
     {
         generate();
     }
+
+    onEveryUpdate();
 
     for (auto& collisionProcessor : m_collisionBuckets)
     {
