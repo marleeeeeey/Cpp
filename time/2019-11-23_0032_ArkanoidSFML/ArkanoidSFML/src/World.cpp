@@ -91,7 +91,24 @@ void World::initCollisionProcessors()
                 if (plate->bonusType() && plate->bonusType().value() == BonusType::DisableBonuses)
                 {
                     plate->bonusType() = {};
+
+                    for(auto ball : m_balls)
+                    {
+                        auto bonusBall = std::dynamic_pointer_cast<IBonusOwner>(ball);
+                        bonusBall->bonusType() = {};                        
+                    }
                 }
+
+                if(plate->bonusType() && plate->bonusType().value() == BonusType::FireBall)
+                {
+                    if(!m_balls.empty())
+                    {
+                        auto firstBall = m_balls.front();
+                        auto bonusBall = std::dynamic_pointer_cast<IBonusOwner>(firstBall);
+                        bonusBall->bonusType() = plate->bonusType().value();
+                    }
+                }
+
                 m_scopes++;
             }
         }

@@ -1,6 +1,7 @@
 #include "Ball.h"
 #include "HelperFunctions.h"
 #include "IDestructible.h"
+#include "IStaticObject.h"
 
 Ball::Ball()
 {
@@ -25,25 +26,48 @@ Collision getBiggestCollision(std::vector<Collision>& collisions)
     return collisions.back();
 }
 
+void Ball::changeDirection()
+{
+    auto cs = m_biggestCollision.value().getCollisionRect().getSize();
+
+    if (hf::isEqual(cs.x, cs.y))
+    {
+        m_speed.rotate(180);
+    }
+    else if (cs.x > cs.y)
+    {
+        m_speed.reflectFromHorizontal();
+    }
+    else
+    {
+        m_speed.reflectFromVertical();
+    };
+}
+
 void Ball::onBumping(std::vector<Collision>& collisions)
 {
     if (!collisions.empty())
     {
         m_biggestCollision = getBiggestCollision(collisions);
-        auto cs = m_biggestCollision.value().getCollisionRect().getSize();
 
-        if (hf::isEqual(cs.x, cs.y))
+        if (m_bonusType && m_bonusType.value() == BonusType::FireBall)
         {
-            m_speed.rotate(180);
-        }
-        else if (cs.x > cs.y)
-        {
-            m_speed.reflectFromHorizontal();
+            auto collision = m_biggestCollision.value();
+            auto collisionObject = collision.getObject();
+            auto desctuctibleObject = std::dynamic_pointer_cast<IDestructible>(collisionObject);
+            if (desctuctibleObject && desctuctibleObject->lives())
+            {
+                // do nothing
+            }
+            else
+            {
+                changeDirection();
+            }
         }
         else
         {
-            m_speed.reflectFromVertical();
-        };
+            changeDirection();
+        }
 
         if (m_lastNonCollisionState)
             state() = m_lastNonCollisionState.value();
@@ -91,7 +115,18 @@ void Ball::draw(sf::RenderWindow& window)
     float rectSide = state().getCollisionRect().getSize().x;
     float radius = rectSide / sqrt(2);
     auto circleShape = hf::createCircleShape(radius, state().getPos());
-    circleShape.setFillColor(sf::Color::Blue);
+
+    sf::Color shapeColor;
+    if (m_bonusType && m_bonusType.value() == BonusType::FireBall)
+    {
+        shapeColor = sf::Color::Red;
+    }
+    else
+    {
+        shapeColor = sf::Color::Blue;
+    }
+
+    circleShape.setFillColor(shapeColor);
     window.draw(circleShape);
 }
 
@@ -106,4 +141,9 @@ std::shared_ptr<IObject> Ball::createCopyFromThis()
     Ball& createdObject = *createdObjectPtr.get();
     createdObject = *this;
     return createdObjectPtr;
+}
+
+std::optional<BonusType>& Ball::bonusType()
+{
+    return m_bonusType;
 }
