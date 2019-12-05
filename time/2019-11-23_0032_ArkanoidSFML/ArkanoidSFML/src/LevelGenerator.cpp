@@ -2,6 +2,7 @@
 #include "IDestructible.h"
 #include "IBonusOwner.h"
 #include "HelperFunctions.h"
+#include <iostream>
 
 std::vector<Level> LevelGenerator::getSymbolLevels()
 {

@@ -4,6 +4,7 @@
 #include "IBonusOwner.h"
 #include "IDynamicObject.h"
 #include "IDestructible.h"
+#include <iostream>
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
 {
@@ -215,12 +216,7 @@ void World::updateGameOverStatus()
         return !lives.has_value();
     });
 
-    if (isAllBallsOutOfBorder && !m_bricks.empty())
-    {
-        m_scopes = 0;
-        m_isGameOver = true;
-    }
-    else if (m_bricks.empty() || isAllBricksHaveSuperLive)
+    if (m_bricks.empty() || isAllBricksHaveSuperLive)
     {
         std::for_each(m_balls.begin(), m_balls.end(), [](std::shared_ptr<IObject> ballObject)
         {
@@ -228,9 +224,15 @@ void World::updateGameOverStatus()
         });
 
         if (m_bonuses.empty())
+        {
             m_isGameOver = true;
-
-        m_levelGenerator->changeLevel();
+            m_levelGenerator->changeLevel();
+        }
+    }
+    else if (isAllBallsOutOfBorder && !m_bricks.empty())
+    {
+        m_scopes = 0;
+        m_isGameOver = true;
     }
 }
 
