@@ -18,4 +18,5 @@ public:
     void setAppearance(int appearanceNumber) override;
     void setBonusType(std::optional<BonusType> bonusType) override;
     std::optional<BonusType> getBonusType() override;
+    std::shared_ptr<IObject> createCopyFromThis() override;
 };

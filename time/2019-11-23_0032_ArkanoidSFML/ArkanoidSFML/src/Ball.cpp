@@ -77,12 +77,15 @@ void Ball::draw(sf::RenderWindow& window)
     window.draw(circleShape);
 }
 
-void Ball::setSpeed(MathVector speed)
-{
-    m_speed = speed;
-}
-
-MathVector Ball::getSpeed()
+MathVector& Ball::speed()
 {
     return m_speed;
+}
+
+std::shared_ptr<IObject> Ball::createCopyFromThis()
+{
+    auto createdObjectPtr = std::make_shared<Ball>();
+    Ball& createdObject = *createdObjectPtr.get();
+    createdObject = *this;
+    return createdObjectPtr;
 }

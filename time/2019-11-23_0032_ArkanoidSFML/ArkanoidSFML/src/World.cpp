@@ -3,7 +3,6 @@
 #include <sstream>
 #include "IBonusOwner.h"
 #include "IDynamicObject.h"
-#include <cassert>
 #include "IDescructible.h"
 
 std::vector<std::shared_ptr<IObject>> World::getAllObjects()
@@ -77,41 +76,29 @@ void World::initCollisionProcessors()
                 plate->setBonusType(bonusType);
                 if (bonusType && bonusType.value() == BonusType::MultiBalls)
                 {
-
                     std::vector<std::shared_ptr<IObject>> createdBalls;
-                    const unsigned maxNumberOfNewBalls = 2;
-                    unsigned numberOfNewBalls = maxNumberOfNewBalls;
+                    int numberOfNewBalls = 2;
                     const float angleStep = 5;
                     float angleShift = 5;
-                    while (!m_balls.empty() && numberOfNewBalls != 0)
+                    while (!m_balls.empty() && createdBalls.size() < numberOfNewBalls)
                     {
-                        assert(numberOfNewBalls <= maxNumberOfNewBalls);
                         for (auto existingBall : m_balls)
                         {
-                            auto state = existingBall->state();
-                            auto existingBallDynamicObject = std::dynamic_pointer_cast<IDynamicObject>(existingBall);
-                            auto createdBall = m_objectFactory->createObject(ObjectType::Ball);
+                            auto createdBall = existingBall->createCopyFromThis();
                             auto createdBallDynamicObject = std::dynamic_pointer_cast<IDynamicObject>(createdBall);
-                            createdBall->state() = state;
-                            auto speed = existingBallDynamicObject->getSpeed();
-                            speed.rotate(angleShift);
-                            createdBallDynamicObject->setSpeed(speed);
+                            createdBallDynamicObject->speed().rotate(angleShift);
                             createdBalls.push_back(createdBall);
                             angleShift += angleStep;
-                            if(angleShift == 0)
-                                angleShift += angleStep;
-                            numberOfNewBalls--;
-                            if(numberOfNewBalls == 0)
+                            if (createdBalls.size() == numberOfNewBalls)
                                 break;
                         }
                     }
                     m_balls.insert(m_balls.end(), createdBalls.begin(), createdBalls.end());
                     unsigned maxNumberOfBalls = 10;
-                    if(m_balls.size() > maxNumberOfBalls)
+                    if (m_balls.size() > maxNumberOfBalls)
                     {
-                        m_balls.resize(maxNumberOfBalls);                        
+                        m_balls.resize(maxNumberOfBalls);
                     }
-
                 }
                 m_scopes++;
             }
@@ -222,11 +209,11 @@ void World::updateGameOverStatus()
     });
 
     auto isAllBricksHaveSuperLive = std::all_of(m_bricks.begin(), m_bricks.end(), [&](auto brick)
-        {
-            auto destructibleBall = std::dynamic_pointer_cast<IDescructible>(brick);
-            std::optional<int> lives = destructibleBall->getLives();
-            return !lives.has_value();
-        });
+    {
+        auto destructibleBall = std::dynamic_pointer_cast<IDescructible>(brick);
+        std::optional<int> lives = destructibleBall->getLives();
+        return !lives.has_value();
+    });
 
     if (isAllBallsOutOfBorder && !m_bricks.empty())
     {
@@ -286,14 +273,13 @@ void World::draw(sf::RenderWindow& window)
     text.setFont(m_font);
     text.setScale(0.7, 0.7);
     std::ostringstream ss;
-    ss  << " Scopes: " << m_scopes
+    ss << " Scopes: " << m_scopes
         << " Ball count: " << m_balls.size()
-        << " Elapsed time: " << m_elapsedTime_ms << " ms"
-        << std::endl;
+        << " Elapsed time: " << m_elapsedTime_ms << " ms\n\n";
 
     for (auto ball : m_balls)
     {
-        ss << ball->state().getPos() << ", ";
+        ss << "     " << ball->state().getPos() << "\n";
     }
 
     text.setString(ss.str());

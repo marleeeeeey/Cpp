@@ -18,4 +18,5 @@ public:
     virtual void calcState(std::optional<sf::Event> event, sf::Time elapsedTime) = 0;
     virtual void draw(sf::RenderWindow& window) = 0;
     virtual State& state() = 0;
+    virtual std::shared_ptr<IObject> createCopyFromThis() = 0;
 };

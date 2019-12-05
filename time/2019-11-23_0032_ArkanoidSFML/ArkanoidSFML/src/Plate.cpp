@@ -38,7 +38,7 @@ void Plate::calculateOffset(std::optional<sf::Event> event, sf::Time elapsedTime
 
     int speed_pxps = 600;
     float elapsedSec = elapsedTime.asSeconds();
-    if(elapsedSec > 0.1)
+    if (elapsedSec > 0.1)
         elapsedSec = 0.1;
     float absOffset = speed_pxps * elapsedSec;
     float absDampingOffset = absOffset * 0.08f;
@@ -70,9 +70,9 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
     state().setPos(pos);
 
     auto size = state().getSize();
-    if(m_bonusType && m_bonusType.value() == BonusType::LongPlate)
+    if (m_bonusType && m_bonusType.value() == BonusType::LongPlate)
     {
-        if(!m_originalSize)
+        if (!m_originalSize)
             m_originalSize = size;
 
         size = m_originalSize.value();
@@ -81,7 +81,7 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
     }
     else
     {
-        if(m_originalSize)
+        if (m_originalSize)
             state().setSize(m_originalSize.value());
     }
 }
@@ -120,15 +120,13 @@ void Plate::onBumping(std::vector<Collision>& collisions)
         }
         else if (ball)
         {
-            auto ballSpeed = ball->getSpeed();
             auto ballCenter = obj->state().getPos();
             auto plateCenter = state().getPos();
             auto centersShift = ballCenter.x - plateCenter.x;
             auto halfLength = state().getSize().x / 2;
             float maxAgnleShift = 10;
             float angleShift = maxAgnleShift * centersShift / halfLength;
-            ballSpeed.rotate(angleShift);
-            ball->setSpeed(ballSpeed);
+            ball->speed().rotate(angleShift);
         }
     }
 
@@ -143,4 +141,12 @@ void Plate::setBonusType(std::optional<BonusType> bonusType)
 std::optional<BonusType> Plate::getBonusType()
 {
     return m_bonusType;
+}
+
+std::shared_ptr<IObject> Plate::createCopyFromThis()
+{
+    auto createdObjectPtr = std::make_shared<Plate>();
+    Plate& createdObject = *createdObjectPtr.get();
+    createdObject = *this;
+    return createdObjectPtr;
 }

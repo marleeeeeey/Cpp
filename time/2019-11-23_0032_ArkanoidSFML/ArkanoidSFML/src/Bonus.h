@@ -13,4 +13,5 @@ public:
     void draw(sf::RenderWindow& window) override;
     void setBonusType(std::optional<BonusType> bonusType) override;
     std::optional<BonusType> getBonusType() override;
+    std::shared_ptr<IObject> createCopyFromThis() override;
 };

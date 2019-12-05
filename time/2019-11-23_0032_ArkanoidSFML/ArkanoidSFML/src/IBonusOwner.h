@@ -1,5 +1,4 @@
 #pragma once
-#include "HelperFunctions.h"
 #include "BonusType.h"
 
 class IBonusOwner

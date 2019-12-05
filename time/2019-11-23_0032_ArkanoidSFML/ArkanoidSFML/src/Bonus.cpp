@@ -50,3 +50,11 @@ std::optional<BonusType> Bonus::getBonusType()
 {
     return m_bonusType;
 }
+
+std::shared_ptr<IObject> Bonus::createCopyFromThis()
+{
+    auto createdObjectPtr = std::make_shared<Bonus>();
+    Bonus& createdObject = *createdObjectPtr.get();
+    createdObject = *this;
+    return createdObjectPtr;
+}

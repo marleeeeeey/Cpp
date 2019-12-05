@@ -1,6 +1,7 @@
 #include "LevelGenerator.h"
 #include "IDescructible.h"
 #include "IBonusOwner.h"
+#include "HelperFunctions.h"
 
 std::vector<Level> LevelGenerator::getSymbolLevels()
 {
@@ -10,6 +11,14 @@ std::vector<Level> LevelGenerator::getSymbolLevels()
             "................",
             "0000000000000000",
             "MMMMMMMMMMMMMMMM",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
+            "................",
         },
         {
             "................",

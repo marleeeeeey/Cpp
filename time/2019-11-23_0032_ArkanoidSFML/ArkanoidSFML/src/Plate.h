@@ -26,4 +26,5 @@ public:
     void onBumping(std::vector<Collision>& collisions) override;
     void setBonusType(std::optional<BonusType> bonusType) override;
     std::optional<BonusType> getBonusType() override;
+    std::shared_ptr<IObject> createCopyFromThis() override;
 };

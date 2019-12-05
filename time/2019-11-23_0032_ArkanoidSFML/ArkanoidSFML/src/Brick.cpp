@@ -28,7 +28,7 @@ void Brick::draw(sf::RenderWindow& window)
 
 void Brick::onBumping(std::vector<Collision>& collisions)
 {
-    if(!m_lives)
+    if (!m_lives)
         return;
 
     m_lives.value()--;
@@ -61,4 +61,12 @@ void Brick::setBonusType(std::optional<BonusType> bonusType)
 std::optional<BonusType> Brick::getBonusType()
 {
     return m_bonusType;
+}
+
+std::shared_ptr<IObject> Brick::createCopyFromThis()
+{
+    auto createdObjectPtr = std::make_shared<Brick>();
+    Brick& createdObject = *createdObjectPtr.get();
+    createdObject = *this;
+    return createdObjectPtr;
 }
