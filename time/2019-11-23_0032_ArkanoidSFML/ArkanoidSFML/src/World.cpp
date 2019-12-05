@@ -72,9 +72,10 @@ void World::initCollisionProcessors()
                 object->state().setDestroyFlag(true);
                 auto bonus = std::dynamic_pointer_cast<IBonusOwner>(object);
                 auto plate = std::dynamic_pointer_cast<IBonusOwner>(thisObject);
-                auto bonusType = bonus->bonusType();
-                plate->bonusType() = bonusType;
-                if (bonusType && bonusType.value() == BonusType::MultiBalls)
+                auto bonusBonusType = bonus->bonusType();
+                if(!plate->bonusType() && bonusBonusType)
+                    plate->bonusType() = bonusBonusType;
+                if (plate->bonusType() && plate->bonusType().value() == BonusType::MultiBalls)
                 {
                     int ballsNumber = hf::randomInt(1, 3);
                     auto createdBalls = generateNewBalls(ballsNumber);
