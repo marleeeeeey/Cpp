@@ -2,7 +2,7 @@
 #include "HelperFunctions.h"
 #include "IStaticObject.h"
 #include "IDynamicObject.h"
-#include <iostream>
+#include "IHaveParent.h"
 
 Plate::Plate()
 {
@@ -36,7 +36,7 @@ void Plate::calculateOffset(std::optional<sf::Event> event, sf::Time elapsedTime
     {
         m_plateState = PlateState::Stop;
     }
-    else if(event && event.value().type == sf::Event::EventType::KeyReleased
+    else if (event && event.value().type == sf::Event::EventType::KeyReleased
         && event.value().key.code == sf::Keyboard::Key::Space
         && m_plateState != PlateState::Attack)
     {
@@ -71,11 +71,12 @@ void Plate::calculateOffset(std::optional<sf::Event> event, sf::Time elapsedTime
 
 void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
+    sf::Vector2f pos01 = state().getPos();
     calculateOffset(event, elapsedTime);
     auto pos = state().getPos();
     pos.x += m_offset;
     state().setPos(pos);
-    if(haveCollisions(m_collisionWalls))
+    if (haveCollisions(m_collisionWalls))
     {
         m_offset = 0;
         restoreState();
@@ -85,6 +86,9 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
         saveState();
         m_collisionWalls.clear();
     }
+
+    sf::Vector2f pos02 = state().getPos();
+    sf::Vector2f shift = pos02 - pos01;
 
     auto size = state().getSize();
     if (m_bonusType && m_bonusType.value() == BonusType::LongPlate)
@@ -100,6 +104,13 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
     {
         if (m_originalSize)
             state().setSize(m_originalSize.value());
+    }
+
+    for (auto ball : m_magnetBalls)
+    {
+        auto ballPos = ball->state().getPos();
+        ballPos += shift;
+        ball->state().setPos(ballPos);
     }
 }
 
@@ -121,6 +132,16 @@ void Plate::draw(sf::RenderWindow& window)
     }
 }
 
+float getShiftCoef(std::shared_ptr<IObject> plate, std::shared_ptr<IObject> obj)
+{
+    auto ballCenter = obj->state().getPos();
+    auto plateCenter = plate->state().getPos();
+    auto centersShift = ballCenter.x - plateCenter.x;
+    auto halfLength = plate->state().getSize().x / 2;
+    auto result = centersShift / halfLength;
+    return result;
+}
+
 void Plate::onBumping(std::vector<Collision>& collisions)
 {
     for (auto collision : collisions)
@@ -130,28 +151,37 @@ void Plate::onBumping(std::vector<Collision>& collisions)
         auto ball = std::dynamic_pointer_cast<IDynamicObject>(obj);
         if (wall)
         {
-            m_collisionWalls.push_back(obj);
+            m_collisionWalls.insert(obj);
         }
         if (ball)
         {
-            auto ballCenter = obj->state().getPos();
-            auto plateCenter = state().getPos();
-            auto centersShift = ballCenter.x - plateCenter.x;
-            auto halfLength = state().getSize().x / 2;
             float maxAgnleShift = 10;
-            float angleShift = maxAgnleShift * centersShift / halfLength;
+            float angleShift = maxAgnleShift * getShiftCoef(shared_from_this(), obj);
             ball->speed().rotate(angleShift);
-            if(m_bonusType && m_bonusType.value() == BonusType::MagnetPaddle && m_plateState != PlateState::Attack)
+            if (m_bonusType && m_bonusType.value() == BonusType::MagnetPaddle)
             {
-                auto ballPos = obj->state().getPos();
-                float plateLeft = state().getCollisionRect().getGlobalBounds().left;
-                float plateRight = plateLeft + state().getCollisionRect().getGlobalBounds().width;
-                if(ballPos.x < plateLeft)
-                    ballPos.x = plateLeft;
-                if(ballPos.x > plateRight)
-                    ballPos.x = plateRight;
-                obj->state().setPos(ballPos);
-                ball->speed().setSize(0);
+                if (m_plateState != PlateState::Attack)
+                {
+                    auto result = m_magnetBalls.insert(obj);
+                    if (result.second)
+                    {
+                        auto ball = std::dynamic_pointer_cast<IHaveParent>(obj);
+                        ball->setParent(shared_from_this());
+                    }
+                }
+                else
+                {
+                    for (auto magnetBall : m_magnetBalls)
+                    {
+                        auto childBall = std::dynamic_pointer_cast<IHaveParent>(magnetBall);
+                        childBall->removeParent();
+                        float maxAngle_deg = 45;
+                        float angle = maxAngle_deg * getShiftCoef(shared_from_this(), magnetBall) - 90;
+                        auto dynamicBall = std::dynamic_pointer_cast<IDynamicObject>(magnetBall);
+                        dynamicBall->speed().setAngle(angle);
+                    }
+                    m_magnetBalls.clear();
+                }
             }
         }
     }

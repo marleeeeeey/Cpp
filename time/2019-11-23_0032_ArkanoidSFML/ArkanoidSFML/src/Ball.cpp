@@ -108,6 +108,9 @@ void Ball::onBumping(std::vector<Collision>& collisions)
 
 void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
+    if(m_parent)
+        return;
+
     auto sec = elapsedTime.asSeconds();
 
     float accelerate_pxps = 5;
@@ -170,4 +173,14 @@ std::optional<BonusType>& Ball::bonusType()
 std::string Ball::name()
 {
     return "Ball";
+}
+
+void Ball::setParent(std::shared_ptr<IObject> parent)
+{
+    m_parent = parent;
+}
+
+void Ball::removeParent()
+{
+    m_parent.reset();
 }

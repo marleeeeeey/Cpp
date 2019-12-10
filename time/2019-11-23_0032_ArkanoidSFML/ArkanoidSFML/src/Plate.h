@@ -2,6 +2,7 @@
 #include "DefaultObject.h"
 #include "IBonusOwner.h"
 #include "IDestructible.h"
+#include <set>
 
 enum class PlateState
 {
@@ -14,7 +15,8 @@ enum class PlateState
 class Plate : public DefaultObject, public IBonusOwner
 {
     std::optional<sf::Vector2f> m_originalSize;
-    std::vector<std::shared_ptr<IObject>> m_collisionWalls;
+    std::set<std::shared_ptr<IObject>> m_collisionWalls;
+    std::set<std::shared_ptr<IObject>> m_magnetBalls;
     float m_offset;
     PlateState m_plateState;
     std::optional<BonusType> m_bonusType;

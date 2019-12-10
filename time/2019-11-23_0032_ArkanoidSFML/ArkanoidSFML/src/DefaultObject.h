@@ -1,5 +1,6 @@
 #pragma once
 #include "IObject.h"
+#include <set>
 
 class DefaultObject : public IObject
 {
@@ -8,7 +9,7 @@ class DefaultObject : public IObject
     OnBumpingCallback m_onBumpingCallback;
 
 protected:
-    bool haveCollisions(std::vector<std::shared_ptr<IObject>> objects);
+    bool haveCollisions(std::set<std::shared_ptr<IObject>> objects);
 
 public:
     void checkBumping(std::vector<std::shared_ptr<IObject>>& objects) override;

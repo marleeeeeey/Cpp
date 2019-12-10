@@ -57,8 +57,10 @@ void DefaultObject::setOnBumpingCallBack(OnBumpingCallback cb)
     m_onBumpingCallback = cb;
 }
 
-bool DefaultObject::haveCollisions(std::vector<std::shared_ptr<IObject>> objects)
+bool DefaultObject::haveCollisions(std::set<std::shared_ptr<IObject>> objectsSet)
 {
+    std::vector<std::shared_ptr<IObject>> objects;
+    std::copy(objectsSet.begin(), objectsSet.end(), std::back_inserter(objects));
     auto collisions = getCollisions(shared_from_this(), objects);
     return !collisions.empty();
 }
