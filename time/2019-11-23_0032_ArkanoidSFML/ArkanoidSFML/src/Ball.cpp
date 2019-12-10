@@ -108,7 +108,7 @@ void Ball::onBumping(std::vector<Collision>& collisions)
 
 void Ball::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
-    if(m_parent)
+    if (m_parent)
         return;
 
     auto sec = elapsedTime.asSeconds();
