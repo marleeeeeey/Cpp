@@ -62,3 +62,8 @@ std::shared_ptr<IObject> Brick::createCopyFromThis()
     createdObject = *this;
     return createdObjectPtr;
 }
+
+std::string Brick::name()
+{
+    return "Brick";
+}

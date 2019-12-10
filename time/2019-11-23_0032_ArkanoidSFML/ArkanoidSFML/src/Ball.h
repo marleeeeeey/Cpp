@@ -10,7 +10,6 @@ class Ball : public DefaultObject, public IDynamicObject, public IBonusOwner
     float m_bonusSpeed = 200;
     float m_maxSpeed = 400;
     std::optional<Collision> m_biggestCollision;
-    std::optional<State> m_lastNonCollisionState;
     std::optional<BonusType> m_bonusType;
 
     void changeDirection();
@@ -24,4 +23,5 @@ public:
     MathVector& speed() override;
     std::shared_ptr<IObject> createCopyFromThis() override;
     std::optional<BonusType>& bonusType() override;
+    std::string name() override;
 };

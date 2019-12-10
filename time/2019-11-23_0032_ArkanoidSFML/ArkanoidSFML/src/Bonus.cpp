@@ -58,3 +58,8 @@ std::shared_ptr<IObject> Bonus::createCopyFromThis()
     createdObject = *this;
     return createdObjectPtr;
 }
+
+std::string Bonus::name()
+{
+    return "Bonus";
+}

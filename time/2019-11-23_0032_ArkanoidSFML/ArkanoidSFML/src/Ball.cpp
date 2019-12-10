@@ -89,12 +89,11 @@ void Ball::onBumping(std::vector<Collision>& collisions)
             changeDirection();
         }
 
-        if (m_lastNonCollisionState)
-            state() = m_lastNonCollisionState.value();
+        restoreState();
     }
     else
     {
-        m_lastNonCollisionState = state();
+        saveState();
     }
 
     stealLiveFromOneDestructibleObject(collisions);
@@ -166,4 +165,9 @@ std::shared_ptr<IObject> Ball::createCopyFromThis()
 std::optional<BonusType>& Ball::bonusType()
 {
     return m_bonusType;
+}
+
+std::string Ball::name()
+{
+    return "Ball";
 }

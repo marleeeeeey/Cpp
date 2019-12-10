@@ -14,3 +14,8 @@ std::shared_ptr<IObject> Wall::createCopyFromThis()
     createdObject = *this;
     return createdObjectPtr;
 }
+
+std::string Wall::name()
+{
+    return "Wall";
+}

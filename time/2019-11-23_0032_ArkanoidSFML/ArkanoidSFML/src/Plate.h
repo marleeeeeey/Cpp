@@ -8,13 +8,14 @@ enum class PlateState
     Stop,
     MoveLeft,
     MoveRight,
+    Attack,
 };
 
 class Plate : public DefaultObject, public IBonusOwner
 {
     std::optional<sf::Vector2f> m_originalSize;
+    std::vector<std::shared_ptr<IObject>> m_collisionWalls;
     float m_offset;
-    std::optional<State> m_lastNonCollisionState;
     PlateState m_plateState;
     std::optional<BonusType> m_bonusType;
 
@@ -27,4 +28,5 @@ public:
     void onBumping(std::vector<Collision>& collisions) override;
     std::optional<BonusType>& bonusType() override;
     std::shared_ptr<IObject> createCopyFromThis() override;
+    std::string name() override;
 };

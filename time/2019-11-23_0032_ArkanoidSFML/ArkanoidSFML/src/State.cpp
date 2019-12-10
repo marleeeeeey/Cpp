@@ -1,6 +1,11 @@
 #include "State.h"
 #include "HelperFunctions.h"
 
+State::State()
+{
+    m_destroyFlag = false;
+}
+
 sf::RectangleShape State::getCollisionRect() const
 {
     return m_collisionRect;

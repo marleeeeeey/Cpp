@@ -41,6 +41,7 @@
     <ClInclude Include="..\src\IBonusOwner.h" />
     <ClInclude Include="..\src\IDestructible.h" />
     <ClInclude Include="..\src\IDynamicObject.h" />
+    <ClInclude Include="..\src\IHaveFamily.h" />
     <ClInclude Include="..\src\ILevelGenerator.h" />
     <ClInclude Include="..\src\IObject.h" />
     <ClInclude Include="..\src\IObjectFactory.h" />

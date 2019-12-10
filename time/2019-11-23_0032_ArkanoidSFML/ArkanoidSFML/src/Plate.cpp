@@ -2,6 +2,7 @@
 #include "HelperFunctions.h"
 #include "IStaticObject.h"
 #include "IDynamicObject.h"
+#include <iostream>
 
 Plate::Plate()
 {
@@ -34,6 +35,12 @@ void Plate::calculateOffset(std::optional<sf::Event> event, sf::Time elapsedTime
         && m_plateState == PlateState::MoveRight)
     {
         m_plateState = PlateState::Stop;
+    }
+    else if(event && event.value().type == sf::Event::EventType::KeyReleased
+        && event.value().key.code == sf::Keyboard::Key::Space
+        && m_plateState != PlateState::Attack)
+    {
+        m_plateState = PlateState::Attack;
     }
 
     int speed_pxps = 600;
@@ -68,6 +75,16 @@ void Plate::calcState(std::optional<sf::Event> event, sf::Time elapsedTime)
     auto pos = state().getPos();
     pos.x += m_offset;
     state().setPos(pos);
+    if(haveCollisions(m_collisionWalls))
+    {
+        m_offset = 0;
+        restoreState();
+    }
+    else
+    {
+        saveState();
+        m_collisionWalls.clear();
+    }
 
     auto size = state().getSize();
     if (m_bonusType && m_bonusType.value() == BonusType::LongPlate)
@@ -113,12 +130,9 @@ void Plate::onBumping(std::vector<Collision>& collisions)
         auto ball = std::dynamic_pointer_cast<IDynamicObject>(obj);
         if (wall)
         {
-            if (m_lastNonCollisionState)
-                state() = m_lastNonCollisionState.value();
-
-            m_offset = 0;
+            m_collisionWalls.push_back(obj);
         }
-        else if (ball)
+        if (ball)
         {
             auto ballCenter = obj->state().getPos();
             auto plateCenter = state().getPos();
@@ -127,10 +141,20 @@ void Plate::onBumping(std::vector<Collision>& collisions)
             float maxAgnleShift = 10;
             float angleShift = maxAgnleShift * centersShift / halfLength;
             ball->speed().rotate(angleShift);
+            if(m_bonusType && m_bonusType.value() == BonusType::MagnetPaddle && m_plateState != PlateState::Attack)
+            {
+                auto ballPos = obj->state().getPos();
+                float plateLeft = state().getCollisionRect().getGlobalBounds().left;
+                float plateRight = plateLeft + state().getCollisionRect().getGlobalBounds().width;
+                if(ballPos.x < plateLeft)
+                    ballPos.x = plateLeft;
+                if(ballPos.x > plateRight)
+                    ballPos.x = plateRight;
+                obj->state().setPos(ballPos);
+                ball->speed().setSize(0);
+            }
         }
     }
-
-    m_lastNonCollisionState = state();
 }
 
 std::optional<BonusType>& Plate::bonusType()
@@ -144,4 +168,9 @@ std::shared_ptr<IObject> Plate::createCopyFromThis()
     Plate& createdObject = *createdObjectPtr.get();
     createdObject = *this;
     return createdObjectPtr;
+}
+
+std::string Plate::name()
+{
+    return "Plate";
 }

@@ -1,13 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <optional>
+
+class State;
 
 class State
 {
-    bool m_destroyFlag = false;
+    bool m_destroyFlag;
     sf::Time m_timeStep;
     sf::RectangleShape m_collisionRect;
 
 public:
+    State();
     sf::RectangleShape getCollisionRect() const;
     void setCollisionRect(const sf::RectangleShape& collisionRect);
     void setCollisionRect(const sf::Vector2f& size, const sf::Vector2f& pos);
