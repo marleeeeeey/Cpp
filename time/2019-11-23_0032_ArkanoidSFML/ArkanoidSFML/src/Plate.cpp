@@ -158,30 +158,27 @@ void Plate::onBumping(std::vector<Collision>& collisions)
             float maxAgnleShift = 10;
             float angleShift = maxAgnleShift * getShiftCoef(shared_from_this(), obj);
             ball->speed().rotate(angleShift);
-            if (m_bonusType && m_bonusType.value() == BonusType::MagnetPaddle)
+            if (m_bonusType && m_bonusType.value() == BonusType::MagnetPaddle && m_plateState != PlateState::Attack)
             {
-                if (m_plateState != PlateState::Attack)
+                auto result = m_magnetBalls.insert(obj);
+                if(result.second)
                 {
-                    auto result = m_magnetBalls.insert(obj);
-                    if (result.second)
-                    {
-                        auto ball = std::dynamic_pointer_cast<IHaveParent>(obj);
-                        ball->setParent(shared_from_this());
-                    }
+                    auto ball = std::dynamic_pointer_cast<IHaveParent>(obj);
+                    ball->setParent(shared_from_this());
                 }
-                else
+            }
+            else
+            {
+                for(auto magnetBall : m_magnetBalls)
                 {
-                    for (auto magnetBall : m_magnetBalls)
-                    {
-                        auto childBall = std::dynamic_pointer_cast<IHaveParent>(magnetBall);
-                        childBall->removeParent();
-                        float maxAngle_deg = 45;
-                        float angle = maxAngle_deg * getShiftCoef(shared_from_this(), magnetBall) - 90;
-                        auto dynamicBall = std::dynamic_pointer_cast<IDynamicObject>(magnetBall);
-                        dynamicBall->speed().setAngle(angle);
-                    }
-                    m_magnetBalls.clear();
+                    auto childBall = std::dynamic_pointer_cast<IHaveParent>(magnetBall);
+                    childBall->removeParent();
+                    float maxAngle_deg = 45;
+                    float angle = maxAngle_deg * getShiftCoef(shared_from_this(), magnetBall) - 90;
+                    auto dynamicBall = std::dynamic_pointer_cast<IDynamicObject>(magnetBall);
+                    dynamicBall->speed().setAngle(angle);
                 }
+                m_magnetBalls.clear();
             }
         }
     }
