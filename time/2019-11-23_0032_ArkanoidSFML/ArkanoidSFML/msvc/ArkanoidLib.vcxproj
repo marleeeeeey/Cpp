@@ -23,6 +23,7 @@
     <ClCompile Include="..\src\LevelGenerator.cpp" />
     <ClCompile Include="..\src\MathVector.cpp" />
     <ClCompile Include="..\src\ObjectFactory.cpp" />
+    <ClCompile Include="..\src\PauseMenu.cpp" />
     <ClCompile Include="..\src\Plate.cpp" />
     <ClCompile Include="..\src\State.cpp" />
     <ClCompile Include="..\src\Wall.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="..\src\LevelGenerator.h" />
     <ClInclude Include="..\src\MathVector.h" />
     <ClInclude Include="..\src\ObjectFactory.h" />
+    <ClInclude Include="..\src\PauseMenu.h" />
     <ClInclude Include="..\src\Plate.h" />
     <ClInclude Include="..\src\State.h" />
     <ClInclude Include="..\src\Wall.h" />

@@ -39,6 +39,9 @@ World::World(std::shared_ptr<IObjectFactory> objectFactory, std::shared_ptr<ILev
     m_font = hf::getDefaultFont();
     m_isGameOver = true;
     m_scopes = 0;
+    m_pauseMenu = objectFactory->createObject(ObjectType::PauseMenu);
+    m_pauseMenu->state().setSize(windowSize);
+    m_pauseMenu->state().setPos({windowSize.x / 2, windowSize.y / 2});
 }
 
 void World::initCollisionProcessors()
@@ -295,6 +298,13 @@ void World::updateState(std::optional<sf::Event> event, sf::Time elapsedTime)
 {
     m_elapsedTime_ms = elapsedTime.asMilliseconds();
 
+    m_pauseMenu->calcState(event, elapsedTime);
+
+    if (m_pauseMenu->isVisible())
+    {
+        return;
+    }
+
     if (m_isGameOver)
     {
         generate();
@@ -323,7 +333,7 @@ void World::updateState(std::optional<sf::Event> event, sf::Time elapsedTime)
 
 void World::draw(sf::RenderWindow& window)
 {
-    for (auto object : getAllObjects())
+    for(auto object : getAllObjects())
     {
         object->draw(window);
     }
@@ -338,4 +348,9 @@ void World::draw(sf::RenderWindow& window)
 
     text.setString(ss.str());
     window.draw(text);
+
+    if (m_pauseMenu->isVisible())
+    {
+        m_pauseMenu->draw(window);
+    }
 }

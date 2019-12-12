@@ -20,4 +20,5 @@ public:
     State& state() override;
     void saveState() override;
     void restoreState() override;
+    bool isVisible() override;
 };

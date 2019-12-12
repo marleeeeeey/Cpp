@@ -19,6 +19,7 @@ class World : public IWorld
     unsigned m_scopes;
     bool m_isGameOver;
     float m_elapsedTime_ms;
+    std::shared_ptr<IObject> m_pauseMenu;
 
     std::vector<std::shared_ptr<IObject>> getAllObjects();
     bool isObjectOutOfBorder(std::shared_ptr<IObject> object);

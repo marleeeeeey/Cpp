@@ -52,6 +52,11 @@ void DefaultObject::restoreState()
         m_state = m_savedState.value();
 }
 
+bool DefaultObject::isVisible()
+{
+    return true;
+}
+
 void DefaultObject::setOnBumpingCallBack(OnBumpingCallback cb)
 {
     m_onBumpingCallback = cb;
