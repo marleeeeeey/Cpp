@@ -5,7 +5,7 @@
 PauseMenu::PauseMenu()
 {
     m_font = hf::getDefaultFont();
-    m_isVisible = true;
+    m_isVisible = false;
     m_elapsed_ms = 0;
 }
 
