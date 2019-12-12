@@ -8,6 +8,7 @@ enum class ObjectType
     Ball,
     Bonus,
     Wall,
+    PauseMenu,
 };
 
 class IObjectFactory : public std::enable_shared_from_this<IObjectFactory>

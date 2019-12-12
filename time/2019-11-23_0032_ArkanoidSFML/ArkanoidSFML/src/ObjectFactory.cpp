@@ -4,6 +4,7 @@
 #include "Wall.h"
 #include "Plate.h"
 #include "Bonus.h"
+#include "PauseMenu.h"
 
 std::shared_ptr<IObject> ObjectFactory::createObject(ObjectType objectType)
 {
@@ -19,6 +20,8 @@ std::shared_ptr<IObject> ObjectFactory::createObject(ObjectType objectType)
         return std::make_shared<Bonus>();
     case ObjectType::Wall:
         return std::make_shared<Wall>();
+    case ObjectType::PauseMenu:
+        return std::make_shared<PauseMenu>();
     default: ;
     }
     return {};
