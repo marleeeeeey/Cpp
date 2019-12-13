@@ -344,7 +344,7 @@ void World::draw(sf::RenderWindow& window)
     std::ostringstream ss;
     ss << " Scopes: " << m_scopes
         << " Ball count: " << m_balls.size()
-        << " Elapsed time: " << m_elapsedTime_ms << " ms\n\n";
+        << " FPS: " << (int)(1000 / m_elapsedTime_ms);
 
     text.setString(ss.str());
     window.draw(text);

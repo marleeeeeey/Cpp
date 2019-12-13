@@ -9,7 +9,7 @@
 
 int arkanoidStart()
 {
-    if constexpr (false) // set true to hide console
+    if constexpr (true) // set true to hide console
     {
         auto hwnd = GetConsoleWindow();
         ShowWindow(hwnd, SW_HIDE);

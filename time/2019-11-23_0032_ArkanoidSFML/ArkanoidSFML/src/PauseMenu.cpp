@@ -37,7 +37,7 @@ void PauseMenu::draw(sf::RenderWindow& window)
     float alpha = (float)counter * 2 / blinkPeriod_ms * 0xff;
 
     text.setFillColor(hf::getAlphaColor(sf::Color::White, alpha));
-    text.setString(hf::to_string("Pause Menu"));
+    text.setString(hf::to_string("PAUSE"));
     hf::setTextCenterTo(text, state().getPos());
     window.draw(shape);
     window.draw(text);
