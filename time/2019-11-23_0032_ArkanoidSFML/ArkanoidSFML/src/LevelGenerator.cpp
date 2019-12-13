@@ -6,6 +6,83 @@
 
 std::vector<Level> LevelGenerator::getSymbolLevels()
 {
+
+    std::vector<Level> newLevels
+    {
+        //{
+        //    "...........",
+        //    "...........",
+        //    "...........",
+        //    "33333333333",
+        //    "11R11311R11",
+        //    "11111311111",
+        //    "11111311111",
+        //    "111L131L111",
+        //    "11111311111",
+        //    "M111131111M",
+        //    "11111311111",
+        //    "33333333333",
+        //    "...........",
+        //    "...........",
+        //    "...........",
+        //    "...........",
+        //},
+        //{
+        //    "...........",
+        //    "...........",
+        //    "...........",
+        //    "...11111...",
+        //    "..1111111..",
+        //    "..1111111..",
+        //    ".111111111.",
+        //    ".1111.1111.",
+        //    ".1111.1111.",
+        //    "1111...1111",
+        //    "1111...1111",
+        //    "1111...1111",
+        //    "111.....111",
+        //    "111.....111",
+        //    "111.....111",
+        //    "2222...2222",
+        //},
+        {
+            "...........",
+            "...........",
+            "...........",
+            "...11M11...",
+            "...00000...",
+            "...........",
+            "..1111111..",
+            "..0000000..",
+            "...........",
+            ".L1111111L.",
+            ".000000000.",
+            "...........",
+            "..111R111..",
+            "..0000000..",
+            "...........",
+            "...........",
+        },
+        {
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+            "..........",
+        },
+    };
+
     std::vector<Level> levels
     {
         {
@@ -79,16 +156,17 @@ std::vector<Level> LevelGenerator::getSymbolLevels()
         },
     };
 
-    return levels;
+    return newLevels;
 }
 
 LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize)
 {
     m_objectFactory = objectFactory;
     m_worldSize = worldSize;
-    m_brickZoneSize = {m_worldSize.x * 0.8f, m_worldSize.y * 0.6f};
-    m_brickZoneLeftTopPos = {m_worldSize.x * 0.1f, m_worldSize.y * 0.1f};
-    m_brickGap = 8;
+    float wide = 0.95;
+    m_brickZoneSize = {m_worldSize.x * wide, m_worldSize.y * 0.6f};
+    m_brickZoneLeftTopPos = {m_worldSize.x * (1 - wide) / 2, m_worldSize.y * 0.1f};
+    m_brickGap = 5;
     m_currentLevelNumber = 0;
     m_levels = getSymbolLevels();
 }

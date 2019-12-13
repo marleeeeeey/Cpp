@@ -148,7 +148,7 @@ std::vector<std::shared_ptr<IObject>> World::generateNewBalls(int ballsNumber)
 
 void World::initPlates()
 {
-    float plateKoefThinkness = 0.04;
+    float plateKoefThinkness = 0.025;
     float plateKoefSize = 0.2;
     auto plate = m_objectFactory->createObject(ObjectType::Plate);
     plate->state().setSize({m_windowSize.x * plateKoefSize, m_windowSize.y * plateKoefThinkness});
@@ -163,7 +163,7 @@ void World::initPlates()
 void World::initWalls()
 {
     float wallKoefThinkness = 0.02;
-    float wallTopOffset = 0.05;
+    float wallTopOffset = 0.035;
     sf::Vector2f verticalWallSize = {m_windowSize.x * wallKoefThinkness, m_windowSize.y * (1 - wallTopOffset)};
     auto leftWall = m_objectFactory->createObject(ObjectType::Wall);
     leftWall->state().setCollisionRect(verticalWallSize,
