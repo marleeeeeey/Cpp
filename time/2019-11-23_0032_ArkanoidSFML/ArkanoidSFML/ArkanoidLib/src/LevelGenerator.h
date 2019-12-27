@@ -1,15 +1,14 @@
 #pragma once
 #include "ILevelGenerator.h"
 #include "IObjectFactory.h"
-//#include "gtest/gtest_prod.h" //TODO
+#include "gtest/gtest_prod.h"
 
 using Level = std::vector<std::string>;
 
 class LevelGenerator : public ILevelGenerator
 {
-    // TODO
-    //FRIEND_TEST(LevelGenerator, LevelLinesHaveSameSize);
-    //FRIEND_TEST(LevelGenerator, LevelsHaveCorrectBonusLetters);
+    FRIEND_TEST(LevelGenerator, LevelLinesHaveSameSize);
+    FRIEND_TEST(LevelGenerator, LevelsHaveCorrectBonusLetters);
 
     std::shared_ptr<IObjectFactory> m_objectFactory;
     sf::Vector2f m_worldSize;

@@ -1,16 +1,12 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(ArkanoidProject)
+project(Arkanoid)
 
-#Arkanoid
-function(custom_add_executable_from_dir TARGET DIR)
-    file(GLOB TARGET_SRC "${DIR}/*.*")
-    add_executable(${TARGET} ${TARGET_SRC})
-endfunction()
-custom_add_executable_from_dir(arkanoid src)
-target_compile_features(arkanoid PUBLIC cxx_std_17)
+set(GTEST_ROOT "C:/Program Files (x86)/googletest-distribution/")
+find_package(GTest REQUIRED)
 
-#SFML
-set(SFML_STATIC_LIBRARIES TRUE)
-find_package(SFML 2.5 COMPONENTS graphics system window REQUIRED)
-target_link_libraries(arkanoid sfml-graphics sfml-system sfml-window)
+set(GMOCK_ROOT "${GTEST_ROOT}")
+find_package(GMock REQUIRED)
+
+add_subdirectory(ArkanoidLib)
+add_subdirectory(ArkanoidMain)
