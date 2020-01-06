@@ -1,4 +1,4 @@
-#include  "Info.h"
+#include "Info.h"
 #include "Cell.h"
 
 Info::Info()
@@ -7,7 +7,7 @@ Info::Info()
     if (!font.loadFromFile(fontFileName))
     {
         std::string msg = "Can't open font file " + fontFileName;
-        throw std::exception(msg.c_str());
+        throw std::runtime_error(msg);
     }
     scopes.push_back(0);
 }
