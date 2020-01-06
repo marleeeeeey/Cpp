@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.15)
 project(TetrisSFML)
 
 #SFML
-set(SFML_STATIC_LIBRARIES TRUE)
+IF (WIN32)
+  set(SFML_STATIC_LIBRARIES TRUE)
+ENDIF()
 find_package(SFML 2.5 COMPONENTS graphics system window REQUIRED)
 
 add_executable(tetris 
