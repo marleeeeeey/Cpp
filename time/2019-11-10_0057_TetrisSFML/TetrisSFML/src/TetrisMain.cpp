@@ -18,10 +18,6 @@ int main()
             {
                 window.close();
             }
-            else if (event.type == sf::Event::Resized)
-            {
-                //window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
-            }
 
             game.dispatchKey(event);
         }

@@ -1,11 +1,12 @@
 #pragma once
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <deque>
 
 class Info
 {
     sf::Vector2u m_pos;
-    std::vector<int> scopes;
+    std::deque<int> scopes;
     sf::Font font;
 
 public:

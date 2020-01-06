@@ -9,35 +9,52 @@ Info::Info()
         std::string msg = "Can't open font file " + fontFileName;
         throw std::runtime_error(msg);
     }
-    scopes.push_back(0);
+    scopes.push_front(0);
 }
+
 
 void Info::draw(sf::RenderWindow& window) const
 {
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(Cell::getSize());
-    text.setFillColor(sf::Color::Red);
 
     auto curPos = m_pos;
+    text.setPosition(curPos.x * Cell::getSize(), curPos.y * Cell::getSize());
+    text.setString("Scopes:");
+    window.draw(text);
+    curPos.y += 2;
 
-    for (auto& scope : scopes)
+    for(auto it = scopes.begin(); it != scopes.end(); ++it, ++curPos.y)
     {
+        if(it == scopes.begin())
+        {
+            text.setFillColor(sf::Color::Green);
+        }
+        else
+        {
+            text.setFillColor(sf::Color::Red);
+        }
+
+        const auto scope = *it;
         text.setPosition(curPos.x * Cell::getSize(), curPos.y * Cell::getSize());
         text.setString(std::to_string(scope));
         window.draw(text);
-        curPos.y += 1;
     }
 }
 
 void Info::setScope(unsigned scope)
 {
-    scopes.back() = scope * 100;
+    scopes.front() = scope * 100;
 }
 
 void Info::fixScope()
 {
-    scopes.push_back(0);
+    scopes.push_front(0);
+    if(scopes.size() > 10)
+    {
+        scopes.pop_back();
+    }
 }
 
 void Info::setPos(sf::Vector2u pos)
