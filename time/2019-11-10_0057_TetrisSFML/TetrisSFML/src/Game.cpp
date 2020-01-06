@@ -6,7 +6,9 @@ Game::Game(sf::Vector2u size)
     m_lastTimeStemp = clock.getElapsedTime();
     m_nextObject.setPos({size.x + 3, 1});
     m_object.setPos({1, 0});
-    m_info.setPos({size.x + 3, 5});
+    unsigned topOffset = 5;
+    m_info.setPos({size.x + 3, topOffset});
+    m_info.setLinesNumber(size.y - topOffset);
     m_isAccelerate = false;
     m_isPause = false;
 }

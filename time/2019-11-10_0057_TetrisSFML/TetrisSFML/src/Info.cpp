@@ -9,6 +9,7 @@ Info::Info()
         std::string msg = "Can't open font file " + fontFileName;
         throw std::runtime_error(msg);
     }
+    labelFont = font;
     scopes.push_front(0);
 }
 
@@ -41,6 +42,29 @@ void Info::draw(sf::RenderWindow& window) const
         text.setString(std::to_string(scope));
         window.draw(text);
     }
+
+
+    std::vector<std::string> labelLines = 
+    {
+        "TetrisSFML",
+        "v1.0",
+        "by Sergey Tyulenev",
+        "marleeeeeey@gmail.com"
+    };
+
+    text.setScale(0.7, 1);
+    text.setCharacterSize(text.getCharacterSize() / 1.6);
+    text.setFillColor(sf::Color::Yellow);
+    auto labelPos = m_pos;
+    labelPos.y += m_linesNumber - labelLines.size() + 1;
+    for(auto& line : labelLines)
+    {
+        text.setPosition((labelPos.x - 0.7) * Cell::getSize(), labelPos.y * Cell::getSize());
+        text.setString(line);
+        window.draw(text);
+        labelPos.y += 1;
+    }
+
 }
 
 void Info::setScope(unsigned scope)
@@ -60,4 +84,9 @@ void Info::fixScope()
 void Info::setPos(sf::Vector2u pos)
 {
     m_pos = pos;
+}
+
+void Info::setLinesNumber(unsigned linesNumber)
+{
+    m_linesNumber = linesNumber;
 }
