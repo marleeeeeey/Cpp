@@ -1,7 +1,15 @@
+#define NOMINMAX
+#include "Windows.h"
 #include "Game.h"
 
 int main()
 {
+    if constexpr (true) // set true to hide console
+    {
+        auto hwnd = GetConsoleWindow();
+        ShowWindow(hwnd, SW_HIDE);
+    }
+
     srand(time(NULL));
     sf::Vector2u size{14, 25};
     unsigned w = (size.x + 7) * Cell::getSize();
