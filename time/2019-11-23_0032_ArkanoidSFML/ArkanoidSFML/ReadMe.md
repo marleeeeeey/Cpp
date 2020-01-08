@@ -2,15 +2,17 @@
 
 ## Idea
 
-The idea is to create copy of the original arkanoid game from ZX Spectrum:
+The idea is to create a copy of the original arkanoid game from ZX Spectrum:
 
 ![image-20200108163600764](ReadMe/image-20200108163600764.png)
+
+Latest version available [here](https://github.com/marleeeeeey/PublicStore/tree/master/releases).
 
 ## Levels
 
 ![image-20200108163721990](ReadMe/image-20200108163721990.png)
 
-Not all of the levels is implemented now.
+Not all of the levels is implemented now. The levels order is random.
 
 ## Level editor
 
