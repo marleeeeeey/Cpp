@@ -142,6 +142,8 @@ int HelperFunctions::randomInt(int min, int max)
 {
     assert(max - min >= 0);
     auto length = max - min;
+    if(length == 0)
+        return min;
     auto val = rand() % length + min;
     return val;
 }

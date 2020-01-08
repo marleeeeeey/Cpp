@@ -63,7 +63,16 @@ add_executable(arkanoid_tests
 tests/TestMathVector.cpp
 tests/TestMain.cpp
 tests/TestLevelGenerator.cpp
+tests/TestHelperFunctions.cpp
 )
+
+# to make it works from visual studio run
+add_custom_command(TARGET arkanoid_tests 
+POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/config/levels.txt
+        ${CMAKE_CURRENT_BINARY_DIR}/config/levels.txt
+)                
 
 target_link_libraries(arkanoid_tests GTest::GTest GTest::Main GMock::GMock GMock::Main arkanoid_lib)
 target_include_directories(arkanoid_tests PRIVATE src include)

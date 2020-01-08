@@ -15,10 +15,12 @@ class LevelGenerator : public ILevelGenerator
     sf::Vector2f m_brickZoneSize;
     sf::Vector2f m_brickZoneLeftTopPos;
     float m_brickGap;
+    std::vector<Level> loadedLevels;
     std::vector<Level> m_levels;
     unsigned m_currentLevelNumber;
 
     std::vector<Level> getSymbolLevels();
+    void readLevelsFromTextFile();
 
 public:
     LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize);

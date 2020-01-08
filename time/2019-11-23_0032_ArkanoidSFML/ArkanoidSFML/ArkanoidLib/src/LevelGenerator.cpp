@@ -3,6 +3,8 @@
 #include "IBonusOwner.h"
 #include "HelperFunctions.h"
 #include <iostream>
+#include <sstream>
+#include <fstream>
 
 std::vector<Level> LevelGenerator::getSymbolLevels()
 {
@@ -116,11 +118,45 @@ std::vector<Level> LevelGenerator::getSymbolLevels()
     };
 
     m_currentLevelNumber += hf::randomInt(0, newLevels.size() - 1);
-    return newLevels;
+    return loadedLevels;
+}
+
+void LevelGenerator::readLevelsFromTextFile()
+{
+    std::ifstream infile("config\\levels.txt");
+
+    if(infile.fail())
+    {
+        throw std::runtime_error("Can't load config\\levels.txt file");
+    }
+
+    std::string line;
+    Level level;
+    while(std::getline(infile, line))
+    {
+        hf::trim(line);
+        if(line.empty())
+        {
+            if(!level.empty())
+            {
+                loadedLevels.push_back(level);
+                level.clear();
+            }
+            continue;
+        }
+        level.push_back(line);
+    }
+
+    if(!level.empty())
+    {
+        loadedLevels.push_back(level);
+    }
 }
 
 LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize)
 {
+    readLevelsFromTextFile();
+
     m_objectFactory = objectFactory;
     m_worldSize = worldSize;
     float wide = 0.95;
