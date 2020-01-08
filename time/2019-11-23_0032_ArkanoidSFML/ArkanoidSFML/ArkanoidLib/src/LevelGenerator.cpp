@@ -8,117 +8,39 @@
 
 std::vector<Level> LevelGenerator::getSymbolLevels()
 {
-    std::vector<Level> newLevels
+    std::vector<Level> standartLevels
     {
         {
-            "...........",
-            "...........",
-            "...........",
-            "33333333333",
-            "11R11311R11",
-            "11111311111",
-            "11111311111",
-            "111L131L111",
-            "11111311111",
-            "M111131111M",
-            "11111311111",
-            "33333333333",
-            "...........",
-            "...........",
-            "...........",
-            "...........",
-        },
-        {
-            "...........",
-            "...........",
-            "...........",
-            "...11111...",
-            "..1111111..",
-            "..1111111..",
-            ".1111R1111.",
-            ".1111.1111.",
-            ".111F.F111.",
-            "1111...1111",
-            "11M1...1M11",
-            "1111...1111",
-            "111.....111",
-            "111.....111",
-            "11L.....L11",
-            "2222...2222",
-        },
-        {
-            "...........",
-            "...........",
-            "...........",
-            "...11M11...",
-            "...00000...",
-            "...........",
-            "..1111111..",
-            "..0000000..",
-            "...........",
-            ".L1111111L.",
-            ".000000000.",
-            "...........",
-            "..111R111..",
-            "..0000000..",
-            "...........",
-            "...........",
-        },
-        {
-            "................",
-            ".0GGGMMMMMMGGG0.",
-            ".00000000000000.",
-            ".M.1111111111.M.",
-            ".M.1111111111.M.",
-            ".M.1111111111.M.",
-            ".M.0000000000.M.",
-            ".M............M.",
-            "11111G1111G11111",
-            "................",
-            "................",
-            "................",
-        },
-        {
-            "................",
-            "3333333333333333",
-            "11....D11D....11",
-            "S1....D11D....1S",
-            "S1.FF.D11D.FF.1S",
-            "S1....D11D....1S",
-            "S1....D11D....1S",
-            "S1....D11D....1S",
-            "11....D11D....11",
-            "000RRR0000RRR000",
-            "................",
-            "................",
-        },
-        {
-            "................",
-            "...31M1111M13...",
-            "...3111111113...",
-            "...3111111113...",
-            "...3111111113...",
-            "...311M11M113...",
-            "...3111111113...",
-            "...3111111113...",
-            "...3111111113...",
-            "...3111111113...",
-            "...3111111113...",
-        },
-        {
-            "........MM........",
-            ".0022200000022200.",
-            ".011R11111111R110.",
-            ".0111111111111110.",
-            ".0111111111111110.",
-            ".0111111FF1111110.",
-            ".0111111111111110.",
-            ".0000000000000000.",
+            "...............................",
+            ".1....1111.1..1.1111.1....1111.",
+            ".1....1....1..1.1....1....1....",
+            ".1....1111.1..1.1111.1....1111.",
+            ".1....1....1..1.1....1.......1.",
+            ".1111.1111..11..1111.1111.1111.",
+            "...............................",
+            ".1111.1111.1111.1111.1111.1111.",
+            ".1....1.11.1.11.1..1.1.11.1....",
+            ".1111.11...11...1..1.11...1111.",
+            ".1....1.1..1.1..1..1.1.1.....1.",
+            ".1111.1..1.1..1.1111.1..1.1111.",
+            "...............................",
+            "....MMMM.LLLL.RRR.DDDD.MMMMM...",
+            "...............................",
         },
     };
 
-    m_currentLevelNumber += hf::randomInt(0, newLevels.size() - 1);
-    return loadedLevels;
+    checkLevels(standartLevels);
+
+    if(loadedLevels.empty())
+    {
+        m_currentLevelNumber += hf::randomInt(0, standartLevels.size() - 1);
+        return standartLevels;
+    }
+    else
+    {
+        m_currentLevelNumber += hf::randomInt(0, loadedLevels.size() - 1);
+        return loadedLevels;
+    }
 }
 
 void LevelGenerator::readLevelsFromTextFile()
@@ -153,9 +75,54 @@ void LevelGenerator::readLevelsFromTextFile()
     }
 }
 
+void LevelGenerator::everyLevelLinesHasTheSameLength(const std::vector<Level>& levels)
+{
+    for(const auto& level : levels)
+    {
+        if(level.empty())
+            throw std::logic_error("level is empty");
+
+        auto lineSize = level.front().size();
+        for(const auto& line : level)
+        {
+            if(lineSize != line.size())
+                throw std::logic_error("level contains lines with different length");
+        }
+    }
+}
+
+void LevelGenerator::levelsHaveCorrectBonusLetters(const std::vector<Level>& levels)
+{
+    for(const auto& level : levels)
+    {
+        for(const auto& line : level)
+        {
+            for(auto ch : line)
+            {
+                if(isalpha(ch))
+                    getBonusTypeFromChar(ch);
+            }
+        }
+    }
+}
+
+void LevelGenerator::checkLevels(const std::vector<Level>& levels)
+{
+    everyLevelLinesHasTheSameLength(levels);
+    levelsHaveCorrectBonusLetters(levels);
+}
+
 LevelGenerator::LevelGenerator(std::shared_ptr<IObjectFactory> objectFactory, sf::Vector2f worldSize)
 {
-    readLevelsFromTextFile();
+    try
+    {
+        readLevelsFromTextFile();
+        checkLevels(loadedLevels);
+    }
+    catch(const std::exception& e)
+    {
+        loadedLevels.clear();
+    }
 
     m_objectFactory = objectFactory;
     m_worldSize = worldSize;
