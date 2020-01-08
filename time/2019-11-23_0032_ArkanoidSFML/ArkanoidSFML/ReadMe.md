@@ -18,18 +18,18 @@ Not all of the levels is implemented now. The levels order is random.
 
 To edit levels change file `config/levels.txt`. 
 
-`0` - immortal brick
-`1..9` - usual brick with lives
-`R` RenewableBalls
-`M` MultiBalls
-`A` AddPlateLive (coming soon)
-`L` LongPlate
-`G` MagnetPaddle
-`D` DisableBonuses
-`W` AroundWall (coming soon)
-`N` NextLevel (coming soon)
-`S` DecreaseBallSpeed
-`F` FireBall
+- `0` - immortal brick
+- `1..9` - usual brick with lives
+- `R` - RenewableBalls
+- `M` - MultiBalls
+- `A` - AddPlateLive (coming soon)
+- `L` - LongPlate
+- `G` - MagnetPaddle
+- `D` - DisableBonuses
+- `W` - AroundWall (coming soon)
+- `N` - NextLevel (coming soon)
+- `S` - DecreaseBallSpeed
+- `F` - FireBall
 
 In case of errors in level editor you will see special level in runtime:
 
