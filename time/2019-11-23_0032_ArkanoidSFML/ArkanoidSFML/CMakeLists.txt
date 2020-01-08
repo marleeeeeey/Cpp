@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 project(Arkanoid)
 
+include(CTest)
+
 set(GTEST_ROOT "C:/Program Files (x86)/googletest-distribution/")
 find_package(GTest REQUIRED)
 

@@ -67,3 +67,5 @@ tests/TestLevelGenerator.cpp
 
 target_link_libraries(arkanoid_tests GTest::GTest GTest::Main GMock::GMock GMock::Main arkanoid_lib)
 target_include_directories(arkanoid_tests PRIVATE src include)
+
+add_test(NAME arkanoid_tests COMMAND arkanoid_tests)
