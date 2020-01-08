@@ -1,9 +1,14 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.15)
 
-function(custom_add_executable TARGET)
-    file(GLOB TARGET_SRC "src/*.*")
-    add_executable(${TARGET} ${TARGET_SRC})
-endfunction()
-custom_add_executable(arkanoid)
+add_executable(arkanoid
+src/ArkanoidMain.cpp
+arkanoid.rc
+)
+
 target_compile_features(arkanoid PUBLIC cxx_std_17)
 target_link_libraries(arkanoid arkanoid_lib)
+
+install(TARGETS arkanoid
+        RUNTIME
+        DESTINATION bin
+        COMPONENT applications)
