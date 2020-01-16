@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.1)
+project(SpdLogProject)
+find_package(spdlog REQUIRED)
+add_executable(example_header_only example.cpp)
+target_link_libraries(example_header_only PRIVATE spdlog::spdlog_header_only)
