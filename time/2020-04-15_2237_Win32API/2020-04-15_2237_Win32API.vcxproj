@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="BaseWindow.hpp" />
     <ClInclude Include="ComLib.h" />
+    <ClInclude Include="DPIScale.h" />
     <ClInclude Include="DrawingWindow.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="IBaseWindow.h" />
@@ -160,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComLib.cpp" />
+    <ClCompile Include="DPIScale.cpp" />
     <ClCompile Include="DrawingWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />

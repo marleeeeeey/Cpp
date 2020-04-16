@@ -1,8 +1,12 @@
 #include "DrawingWindow.h"
 #include "ComLib.h"
+#include "DPIScale.h"
+#include <Windowsx.h>
 
 void DrawingWindow::CalculateLayout()
 {
+    return; // TODO restore it for big ellipse
+
     if (pRenderTarget != NULL)
     {
         D2D1_SIZE_F size = pRenderTarget->GetSize();
@@ -85,16 +89,59 @@ void DrawingWindow::Resize()
     }
 }
 
+void DrawingWindow::OnLButtonDown(int pixelX, int pixelY, DWORD flags)
+{
+    SetCapture(m_hwnd);
+    ellipse.point = ptMouse = DPIScale::PixelsToDips(pixelX, pixelY);
+    ellipse.radiusX = ellipse.radiusY = 1.0f;
+    InvalidateRect(m_hwnd, NULL, FALSE);
+}
+
+void DrawingWindow::OnLButtonUp()
+{
+    ReleaseCapture();
+}
+
+void DrawingWindow::OnMouseMove(int pixelX, int pixelY, DWORD flags)
+{
+    if (flags & MK_LBUTTON)
+    {
+        const D2D1_POINT_2F dips = DPIScale::PixelsToDips(pixelX, pixelY);
+
+        const float width = (dips.x - ptMouse.x) / 2;
+        const float height = (dips.y - ptMouse.y) / 2;
+        const float x1 = ptMouse.x + width;
+        const float y1 = ptMouse.y + height;
+
+        ellipse = D2D1::Ellipse(D2D1::Point2F(x1, y1), width, height);
+
+        InvalidateRect(m_hwnd, NULL, FALSE);
+    }
+}
+
 LRESULT DrawingWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
     {
+    case WM_LBUTTONDOWN:
+        OnLButtonDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);
+        return 0;
+
+    case WM_LBUTTONUP:
+        OnLButtonUp();
+        return 0;
+
+    case WM_MOUSEMOVE:
+        OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);
+        return 0;
+
     case WM_CREATE:
         if (FAILED(D2D1CreateFactory(
             D2D1_FACTORY_TYPE_SINGLE_THREADED, &pFactory)))
         {
             return -1;  // Fail CreateWindowEx.
         }
+        DPIScale::Initialize(pFactory);
         return 0;
 
     case WM_DESTROY:
