@@ -1,5 +1,7 @@
 #include "ComLib.h"
 #include <shobjidl.h> // CoInitializeEx
+#include <atlbase.h> // Contains the declaration of CComPtr.
+
 
 void ComLib::ShowFileOpenDialog()
 {
@@ -7,7 +9,7 @@ void ComLib::ShowFileOpenDialog()
         COINIT_DISABLE_OLE1DDE);
     if (SUCCEEDED(hr))
     {
-        IFileOpenDialog* pFileOpen;
+        CComPtr<IFileOpenDialog> pFileOpen;
 
         // Create the FileOpenDialog object.
         hr = CoCreateInstance(__uuidof(FileOpenDialog), NULL, CLSCTX_ALL,
@@ -21,7 +23,7 @@ void ComLib::ShowFileOpenDialog()
             // Get the file name from the dialog box.
             if (SUCCEEDED(hr))
             {
-                IShellItem* pItem;
+                CComPtr<IShellItem> pItem;
                 hr = pFileOpen->GetResult(&pItem);
                 if (SUCCEEDED(hr))
                 {
@@ -34,10 +36,8 @@ void ComLib::ShowFileOpenDialog()
                         MessageBox(NULL, pszFilePath, L"File Path", MB_OK);
                         CoTaskMemFree(pszFilePath);
                     }
-                    SafeRelease(&pItem);
                 }
             }
-            SafeRelease(&pFileOpen);
         }
         CoUninitialize();
     }
