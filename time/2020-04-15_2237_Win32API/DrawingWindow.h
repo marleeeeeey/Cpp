@@ -3,6 +3,7 @@
 #pragma comment(lib, "d2d1")
 
 #include "BaseWindow.hpp"
+#include "MouseTrackEvents.h"
 
 class DrawingWindow : public BaseWindow<DrawingWindow>
 {
@@ -11,6 +12,7 @@ class DrawingWindow : public BaseWindow<DrawingWindow>
     ID2D1SolidColorBrush* pBrush;
     D2D1_ELLIPSE ellipse;
     D2D1_POINT_2F ptMouse;
+    MouseTrackEvents mouseTrack;
 
     void    CalculateLayout();
     HRESULT CreateGraphicsResources();

@@ -45,6 +45,9 @@
     <ClInclude Include="DPIScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MouseTrackEvents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DPIScale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseTrackEvents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

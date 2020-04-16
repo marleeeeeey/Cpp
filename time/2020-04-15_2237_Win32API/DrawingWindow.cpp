@@ -5,15 +5,32 @@
 
 void DrawingWindow::CalculateLayout()
 {
-    return; // TODO restore it for big ellipse
-
-    if (pRenderTarget != NULL)
+    bool isEnableBigEllipse = false;
+    if (isEnableBigEllipse && pRenderTarget != NULL)
     {
         D2D1_SIZE_F size = pRenderTarget->GetSize();
         const float x = size.width / 2;
         const float y = size.height / 2;
         const float radius = min(x, y);
         ellipse = D2D1::Ellipse(D2D1::Point2F(x, y), radius, radius);
+    }
+
+    bool isClipCursor = false;
+    if (isClipCursor)
+    {
+        // Get the window client area.
+        RECT rc;
+        GetClientRect(m_hwnd, &rc);
+
+        // Convert the client area to screen coordinates.
+        POINT pt = { rc.left, rc.top };
+        POINT pt2 = { rc.right, rc.bottom };
+        ClientToScreen(m_hwnd, &pt);
+        ClientToScreen(m_hwnd, &pt2);
+        SetRect(&rc, pt.x, pt.y, pt2.x, pt2.y);
+
+        // Confine the cursor.
+        ClipCursor(&rc);
     }
 }
 
@@ -132,7 +149,16 @@ LRESULT DrawingWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         return 0;
 
     case WM_MOUSEMOVE:
+        mouseTrack.OnMouseMove(m_hwnd);  // Start tracking.
         OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (DWORD)wParam);
+        return 0;
+
+    case WM_MOUSELEAVE:
+        mouseTrack.Reset(m_hwnd);
+        return 0;
+
+    case WM_MOUSEHOVER:
+        mouseTrack.Reset(m_hwnd);
         return 0;
 
     case WM_CREATE:
