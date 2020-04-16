@@ -30,6 +30,17 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         return 0;
 
+    case WM_SETCURSOR:
+        if (LOWORD(lParam) == HTCLIENT)
+        {
+            swprintf_s(msg, L"WM_SETCURSOR\n");
+            OutputDebugString(msg);
+            auto hCursor = LoadCursor(NULL, IDC_ARROW);
+            SetCursor(hCursor);
+            return TRUE;
+        }
+        break;
+
     case WM_SYSKEYDOWN:
         swprintf_s(msg, L"WM_SYSKEYDOWN: 0x%x\n", wParam);
         OutputDebugString(msg);
