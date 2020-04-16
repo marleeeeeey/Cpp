@@ -1,15 +1,16 @@
-#include "MainWindow.h"
+#include "WindowFactory.h"  
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 {
-    MainWindow win;
+    WindowFactory wf;
+    auto win = wf.Create("DrawingWindow");
 
-    if (!win.Create(L"Learn to Program Windows", WS_OVERLAPPEDWINDOW))
+    if (!win->Create(L"Learn to Program Windows", WS_OVERLAPPEDWINDOW))
     {
         return 0;
     }
 
-    ShowWindow(win.Window(), nCmdShow);
+    ShowWindow(win->Window(), nCmdShow);
 
     // Run the message loop.
 

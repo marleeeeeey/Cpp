@@ -150,15 +150,20 @@
   <ItemGroup>
     <ClInclude Include="BaseWindow.hpp" />
     <ClInclude Include="ComLib.h" />
+    <ClInclude Include="DrawingWindow.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="IBaseWindow.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="WindowFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ComLib.cpp" />
+    <ClCompile Include="DrawingWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="WindowFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2020-04-15_2237_Win32API.rc" />

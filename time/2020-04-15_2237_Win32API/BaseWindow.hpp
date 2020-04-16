@@ -1,10 +1,11 @@
 #pragma once
 
+#include "IBaseWindow.h"
 #include "framework.h"
 #include "resource.h"
 
 template <class DERIVED_TYPE>
-class BaseWindow
+class BaseWindow : public IBaseWindow
 {
 public:
     static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
