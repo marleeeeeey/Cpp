@@ -34,10 +34,10 @@ void ComLib::ShowFileOpenDialog()
                         MessageBox(NULL, pszFilePath, L"File Path", MB_OK);
                         CoTaskMemFree(pszFilePath);
                     }
-                    pItem->Release();
+                    SafeRelease(&pItem);
                 }
             }
-            pFileOpen->Release();
+            SafeRelease(&pFileOpen);
         }
         CoUninitialize();
     }
