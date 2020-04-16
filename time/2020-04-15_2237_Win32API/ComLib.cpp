@@ -10,8 +10,8 @@ void ComLib::ShowFileOpenDialog()
         IFileOpenDialog* pFileOpen;
 
         // Create the FileOpenDialog object.
-        hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_ALL,
-            IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
+        hr = CoCreateInstance(__uuidof(FileOpenDialog), NULL, CLSCTX_ALL,
+            IID_PPV_ARGS(&pFileOpen));
 
         if (SUCCEEDED(hr))
         {
