@@ -10,8 +10,15 @@ void ChatCore::recieveLoop()
     {
         auto msg = m_connectionPoint->receive();
         m_userInterface->setInboxMsg(msg);
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2s);
+    }
+}
+
+void ChatCore::sendLoop()
+{
+    while (m_connectionPoint->getStatus() == CpStatus::Connected)
+    {
+        auto msg = m_userInterface->getUserInput();
+        m_connectionPoint->send(msg);
     }
 }
 
@@ -32,10 +39,12 @@ void ChatCore::start(std::string type, std::string connectInfo)
     if(type == "Server")
     {
         m_connectionPoint->accept(connectInfo);
+        recieveLoop();
     }
     else if (type == "Client")
     {
         m_connectionPoint->connect(connectInfo);
+        sendLoop();
     }
     else
     {
@@ -43,17 +52,11 @@ void ChatCore::start(std::string type, std::string connectInfo)
             + ". Expect Server or Client");
     }
 
-    std::thread recieveThread(&ChatCore::recieveLoop, this);
-
-    while (m_connectionPoint->getStatus() == CpStatus::Connected)
-    {
-        auto msg = m_userInterface->getUserInput();
-        m_connectionPoint->send(msg);
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(2s);
-    }
-
-    recieveThread.join();
+    //std::thread recieveThread(&ChatCore::recieveLoop, this);
+    //
+    //sendLoop();
+    //
+    //recieveThread.join();
 
     if(m_connectionPoint->getStatus() == CpStatus::Connected)
     {

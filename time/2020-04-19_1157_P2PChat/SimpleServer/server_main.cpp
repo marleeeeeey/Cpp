@@ -32,7 +32,6 @@ int main()
     SocketAddress newClientAddress;
     auto clientSocket = listenSocket->Accept(newClientAddress);
     std::cout << "Accepted: " << newClientAddress.ToString() << std::endl;
-    //clientSocket->SetNonBlockingMode(true);
 
     //clientSocket->SetNonBlockingMode(true); // TODO
     char segment[GOOD_SEGMENT_SIZE] = {};

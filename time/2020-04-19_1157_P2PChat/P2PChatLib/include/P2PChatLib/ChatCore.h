@@ -10,6 +10,7 @@ class ChatCore
     ILoggerPtr m_logger;
 
     void recieveLoop();
+    void sendLoop();
 
 public:
     ChatCore(IConnectionPointPtr cp, IUserInterfacePtr ui, ILoggerPtr logger);
