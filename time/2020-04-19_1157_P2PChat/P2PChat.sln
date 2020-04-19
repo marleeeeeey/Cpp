@@ -4,8 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "P2PChat", "P2PChat\P2PChat.vcxproj", "{6420048B-D98E-4AF7-AE7A-188CCB69CA25}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF613E18-B767-4984-914A-7F703209BD13} = {AF613E18-B767-4984-914A-7F703209BD13}
+		{D089F569-C88D-4E8D-835B-194E6CD65E0C} = {D089F569-C88D-4E8D-835B-194E6CD65E0C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "P2PChatLib", "P2PChatLib\P2PChatLib.vcxproj", "{AF613E18-B767-4984-914A-7F703209BD13}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D089F569-C88D-4E8D-835B-194E6CD65E0C} = {D089F569-C88D-4E8D-835B-194E6CD65E0C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SocketWrapperLib", "SocketWrapperLib\SocketWrapperLib.vcxproj", "{D089F569-C88D-4E8D-835B-194E6CD65E0C}"
 EndProject

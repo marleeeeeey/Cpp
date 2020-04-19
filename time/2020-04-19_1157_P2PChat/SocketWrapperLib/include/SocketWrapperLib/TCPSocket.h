@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RoboCatShared.h"
+#include "SocketWrapperShared.h"
 
 class TCPSocket
 {
@@ -12,6 +12,7 @@ public:
 	shared_ptr< TCPSocket >			Accept( SocketAddress& inFromAddress );
 	int32_t							Send( const void* inData, size_t inLen );
 	int32_t							Receive( void* inBuffer, size_t inLen );
+	int SetNonBlockingMode(bool inShouldBeNonBlocking);
 private:
 	friend class SocketUtil;
 	TCPSocket( SOCKET inSocket ) : mSocket( inSocket ) {}

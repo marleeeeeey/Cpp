@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include\SocketWrapper</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include\SocketWrapperLib\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -101,7 +101,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include\SocketWrapper</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include\SocketWrapperLib\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include\SocketWrapper</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include\SocketWrapperLib\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>include\SocketWrapper</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include\SocketWrapperLib\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,21 +143,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\SocketWrapper\RoboCatShared.h" />
-    <ClInclude Include="include\SocketWrapper\SocketAddress.h" />
-    <ClInclude Include="include\SocketWrapper\SocketAddressFactory.h" />
-    <ClInclude Include="include\SocketWrapper\SocketUtil.h" />
-    <ClInclude Include="include\SocketWrapper\StringUtils.h" />
-    <ClInclude Include="include\SocketWrapper\TCPSocket.h" />
-    <ClInclude Include="include\SocketWrapper\UDPSocket.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\SocketAddress.cpp" />
     <ClCompile Include="src\SocketAddressFactory.cpp" />
     <ClCompile Include="src\SocketUtil.cpp" />
     <ClCompile Include="src\StringUtils.cpp" />
     <ClCompile Include="src\TCPSocket.cpp" />
     <ClCompile Include="src\UDPSocket.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\SocketWrapperLib\SocketAddress.h" />
+    <ClInclude Include="include\SocketWrapperLib\SocketAddressFactory.h" />
+    <ClInclude Include="include\SocketWrapperLib\SocketUtil.h" />
+    <ClInclude Include="include\SocketWrapperLib\SocketWrapperShared.h" />
+    <ClInclude Include="include\SocketWrapperLib\StringUtils.h" />
+    <ClInclude Include="include\SocketWrapperLib\TCPSocket.h" />
+    <ClInclude Include="include\SocketWrapperLib\UDPSocket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

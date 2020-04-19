@@ -33,13 +33,7 @@
     <ClInclude Include="include\P2PChatLib\IUserInterface.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="src\ChatCore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\DefaultLogger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DefaultFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DefaultUI.h">
@@ -48,11 +42,11 @@
     <ClInclude Include="include\P2PChatLib\ChatException.hpp">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="include\P2PChatLib\DefaultFactory.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\SocketConnectionPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

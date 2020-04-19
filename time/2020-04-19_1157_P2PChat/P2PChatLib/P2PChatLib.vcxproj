@@ -87,7 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SocketWrapperLib\include\;..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SocketWrapperLib\include\;..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SocketWrapperLib\include\;..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SocketWrapperLib\include\;..\3rdParty\include\;include\P2PChatLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,21 +143,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\P2PChatLib\ChatException.hpp" />
+    <ClInclude Include="include\P2PChatLib\DefaultFactory.h" />
     <ClInclude Include="include\P2PChatLib\IConnectionPoint.h" />
     <ClInclude Include="include\P2PChatLib\IFactory.h" />
     <ClInclude Include="include\P2PChatLib\ILogger.h" />
     <ClInclude Include="include\P2PChatLib\IUserInterface.h" />
-    <ClInclude Include="src\ChatCore.h" />
     <ClInclude Include="src\DefaultLogger.h" />
     <ClInclude Include="src\DefaultUI.h" />
     <ClInclude Include="src\SocketConnectionPoint.h" />
-    <ClInclude Include="src\DefaultFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ChatCore.cpp" />
     <ClCompile Include="src\DefaultLogger.cpp" />
     <ClCompile Include="src\DefaultUI.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\SocketConnectionPoint.cpp" />
     <ClCompile Include="src\DefaultFactory.cpp" />
   </ItemGroup>

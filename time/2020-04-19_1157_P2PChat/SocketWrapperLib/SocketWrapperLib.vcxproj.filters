@@ -18,29 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\SocketWrapper\UDPSocket.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SocketWrapper\SocketAddress.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SocketWrapper\SocketAddressFactory.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SocketWrapper\SocketUtil.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SocketWrapper\StringUtils.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SocketWrapper\TCPSocket.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SocketWrapper\RoboCatShared.h">
-      <Filter>include</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\SocketAddress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -59,5 +36,28 @@
     <ClCompile Include="src\UDPSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\SocketWrapperLib\SocketAddress.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketWrapperLib\SocketAddressFactory.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketWrapperLib\SocketUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketWrapperLib\SocketWrapperShared.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketWrapperLib\StringUtils.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketWrapperLib\TCPSocket.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SocketWrapperLib\UDPSocket.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

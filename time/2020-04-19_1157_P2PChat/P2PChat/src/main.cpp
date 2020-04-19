@@ -1,5 +1,5 @@
-#include "ChatCore.h"
-#include "DefaultFactory.h"
+#include "P2PChatLib\DefaultFactory.h"
+#include "P2PChatLib\ChatCore.h"
 
 
 int main()
