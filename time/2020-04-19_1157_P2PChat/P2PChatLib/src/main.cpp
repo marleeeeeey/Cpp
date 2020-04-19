@@ -11,5 +11,5 @@ int main()
     auto lg = factory.createLogger("");
 
     ChatCore chat(cp, ui, lg);
-    chat.start("Server");
+    chat.start("Server", "ConnectInfo");
 }

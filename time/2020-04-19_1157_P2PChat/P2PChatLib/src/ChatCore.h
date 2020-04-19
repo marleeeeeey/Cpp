@@ -9,8 +9,10 @@ class ChatCore
     IUserInterfacePtr m_userInterface;
     ILoggerPtr m_logger;
 
+    void recieveLoop();
+
 public:
     ChatCore(IConnectionPointPtr cp, IUserInterfacePtr ui, ILoggerPtr logger);
     ~ChatCore();
-    void start(std::string param);
+    void start(std::string type, std::string connectInfo);
 };

@@ -1,10 +1,10 @@
 #include "SocketConnectionPoint.h"
 
-void SocketConnectionPoint::accept(std::string param)
+void SocketConnectionPoint::accept(std::string connectInfo)
 {
 }
 
-void SocketConnectionPoint::connect(std::string param)
+void SocketConnectionPoint::connect(std::string connectInfo)
 {
 }
 
@@ -14,5 +14,14 @@ void SocketConnectionPoint::send(std::string msg)
 
 std::string SocketConnectionPoint::receive()
 {
-    return "Dummy";
+    return "Dummy recieved data";
+}
+
+void SocketConnectionPoint::disconnect()
+{
+}
+
+CpStatus SocketConnectionPoint::getStatus()
+{
+    return CpStatus::Connected;
 }
