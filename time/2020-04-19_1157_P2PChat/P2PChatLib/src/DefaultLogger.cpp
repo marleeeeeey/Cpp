@@ -12,16 +12,22 @@ struct DefaultLogger::impl
 DefaultLogger::DefaultLogger(std::string logFileName)
 {
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    //console_sink->set_level(spdlog::level::warn);
-    console_sink->set_level(spdlog::level::trace);
+    console_sink->set_level(spdlog::level::info);
 
-    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFileName, true);
+    bool isTruncateFile = false;
+    auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFileName, isTruncateFile);
     file_sink->set_level(spdlog::level::trace);
 
     auto logger = spdlog::logger("Log", { console_sink, file_sink });
-    logger.set_level(spdlog::level::debug);
+    logger.set_level(spdlog::level::trace);
 
     m_pimpl = std::make_unique<impl>(logger);
+}
+
+void DefaultLogger::LogTrace(std::string msg)
+{
+    m_pimpl->logger.trace(msg);
+    m_pimpl->logger.flush();
 }
 
 void DefaultLogger::LogInfo(std::string msg)

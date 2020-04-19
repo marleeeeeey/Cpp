@@ -9,7 +9,12 @@ void ChatCore::recieveLoop()
     while (m_connectionPoint->getStatus() == CpStatus::Connected)
     {
         auto msg = m_connectionPoint->receive();
-        m_userInterface->setInboxMsg(msg);
+        if(!msg.empty())
+        {
+            m_userInterface->setInboxMsg("[FRIEND]: " + msg);
+        }
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(1s);
     }
 }
 
@@ -27,6 +32,8 @@ ChatCore::ChatCore(IConnectionPointPtr cp, IUserInterfacePtr ui, ILoggerPtr logg
     m_connectionPoint = cp;
     m_userInterface = ui;
     m_logger = logger;
+
+    m_logger->LogInfo("Chat started");
 }
 
 ChatCore::~ChatCore()
@@ -39,12 +46,10 @@ void ChatCore::start(std::string type, std::string connectInfo)
     if(type == "Server")
     {
         m_connectionPoint->accept(connectInfo);
-        recieveLoop();
     }
     else if (type == "Client")
     {
         m_connectionPoint->connect(connectInfo);
-        sendLoop();
     }
     else
     {
@@ -52,11 +57,9 @@ void ChatCore::start(std::string type, std::string connectInfo)
             + ". Expect Server or Client");
     }
 
-    //std::thread recieveThread(&ChatCore::recieveLoop, this);
-    //
-    //sendLoop();
-    //
-    //recieveThread.join();
+    std::thread recieveThread(&ChatCore::recieveLoop, this);    
+    sendLoop();    
+    recieveThread.join();
 
     if(m_connectionPoint->getStatus() == CpStatus::Connected)
     {

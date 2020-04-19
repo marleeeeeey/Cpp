@@ -25,17 +25,16 @@ SocketConnectionPoint::~SocketConnectionPoint()
 
 void SocketConnectionPoint::accept(std::string connectInfo)
 {
-    m_logger->LogInfo("SocketConnectionPoint::accept");
-
     TCPSocketPtr listenSocket = SocketUtil::CreateTCPSocket(INET);
     auto receivingAddress = SocketAddressFactory::CreateIPv4FromString(connectInfo);
+    m_logger->LogInfo("Binding " + receivingAddress->ToString());
     if (listenSocket->Bind(*receivingAddress) != NO_ERROR)
     {
         m_status = CpStatus::ConnectionError;
         m_logger->LogError("Error: listenSocket->Bind()");
         return;
     }
-    m_logger->LogInfo("Bind OK: " + receivingAddress->ToString());
+    m_logger->LogTrace("Bind OK: " + receivingAddress->ToString());
 
 
     if(listenSocket->Listen() != NO_ERROR)
@@ -44,20 +43,20 @@ void SocketConnectionPoint::accept(std::string connectInfo)
         m_logger->LogError("Error: listenSocket->Listen()");
         return;
     }
-    m_logger->LogInfo("Listen OK");
-    m_logger->LogInfo("Waiting client to connection");
+    m_logger->LogTrace("Listen OK");
+    m_logger->LogInfo("Waiting clients");
 
 
     SocketAddress newClientAddress;
     m_pimpl->clientSocket = listenSocket->Accept(newClientAddress);
-    m_logger->LogInfo(std::string("Connected client") + newClientAddress.ToString());
-    //m_pimpl->clientSocket->SetNonBlockingMode(true); // TODO
+    m_logger->LogInfo(std::string("Connected client ") + newClientAddress.ToString());
+    m_pimpl->clientSocket->SetNonBlockingMode(true); // TODO
     m_status = CpStatus::Connected;
 }
 
 void SocketConnectionPoint::connect(std::string connectInfo)
 {
-    m_logger->LogInfo("SocketConnectionPoint::connect");
+    m_logger->LogTrace("SocketConnectionPoint::connect");
     SocketAddressPtr clientAddress = SocketAddressFactory::CreateIPv4FromString(connectInfo);
     if(!clientAddress)
     {
@@ -66,9 +65,9 @@ void SocketConnectionPoint::connect(std::string connectInfo)
     m_pimpl->clientSocket = SocketUtil::CreateTCPSocket(INET);
     m_logger->LogInfo("Connection to server: " + clientAddress->ToString());
     m_pimpl->clientSocket->Connect(*clientAddress);
-    //m_pimpl->clientSocket->SetNonBlockingMode(true); // TODO
+    m_pimpl->clientSocket->SetNonBlockingMode(true); // TODO
     m_status = CpStatus::Connected;
-    m_logger->LogInfo("connection successful");
+    m_logger->LogInfo("Connection successful");
 }
 
 
@@ -90,12 +89,19 @@ std::string SocketConnectionPoint::receive()
 {
     std::lock_guard<std::mutex> lg(m_pimpl->socketMutex);
     char segment[GOOD_SEGMENT_SIZE] = {};
-    int bytesReceived = m_pimpl->clientSocket->Receive(segment, GOOD_SEGMENT_SIZE);
-    if (bytesReceived < 0)
+
+
+    int bytesReceived = m_pimpl->clientSocket->Receive(segment, 0);
+    if (bytesReceived < 0 && -bytesReceived != WSAEWOULDBLOCK)
     {
         m_status = CpStatus::ConnectionError;
-        m_logger->LogError("Connection error during SocketConnectionPoint::receive. Error=" + std::to_string(-bytesReceived));
+        m_logger->LogError("Connection error during SocketConnectionPoint::receive(0). Error=" + std::to_string(-bytesReceived));
     }
+    else
+    {
+        int bytesReceived = m_pimpl->clientSocket->Receive(segment, GOOD_SEGMENT_SIZE);
+    }
+
     return segment;
 }
 

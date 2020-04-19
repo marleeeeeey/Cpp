@@ -15,5 +15,5 @@ ILoggerPtr DefaultFactory::createLogger(std::string logFilePath)
 
 IUserInterfacePtr DefaultFactory::createUserInterface(std::string msg, ILoggerPtr logger)
 {
-    return std::make_shared<DefaultUI>();
+    return std::make_shared<DefaultUI>(logger);
 }
