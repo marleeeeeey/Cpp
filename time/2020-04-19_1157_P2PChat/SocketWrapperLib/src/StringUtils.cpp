@@ -20,20 +20,20 @@ string StringUtils::GetCommandLineArg( int inIndex )
 }
 
 
-std::wstring StringUtils::Sprintf( const WCHAR* inFormat, ... )
+string StringUtils::Sprintf( const char* inFormat, ... )
 {
 	//not thread safe...
-	static WCHAR temp[ 4096 ];
+	static char temp[ 4096 ];
 	
 	va_list args;
 	va_start (args, inFormat );
 	
 #if _WIN32
-	_vsnwprintf_s( temp, 4096, 4096, inFormat, args );
+	_vsnprintf_s( temp, 4096, 4096, inFormat, args );
 #else
 	vsnprintf(temp, 4096, inFormat, args);
 #endif
-	return std::wstring( temp );
+	return string( temp );
 }
 
 // void StringUtils::Log( const char* inFormat )
@@ -42,20 +42,20 @@ std::wstring StringUtils::Sprintf( const WCHAR* inFormat, ... )
 // 	OutputDebugString( "\n" );
 // }
 
-void StringUtils::Log( const WCHAR* inFormat, ... )
+void StringUtils::Log( const char* inFormat, ... )
 {
 	//not thread safe...
-	static WCHAR temp[ 4096 ];
+	static char temp[ 4096 ];
 	
 	va_list args;
 	va_start (args, inFormat );
 	
 #if _WIN32
-	_vsnwprintf_s( temp, 4096, 4096, inFormat, args );
+	_vsnprintf_s( temp, 4096, 4096, inFormat, args );
 #else
 	vsnprintf(temp, 4096, inFormat, args);
 #endif
-	OutputDebugString( temp );
-	OutputDebugString( L"\n" );
+	// OutputDebugString( temp ); // TODO
+	// OutputDebugString( "\n" ); // TODO
 }
 

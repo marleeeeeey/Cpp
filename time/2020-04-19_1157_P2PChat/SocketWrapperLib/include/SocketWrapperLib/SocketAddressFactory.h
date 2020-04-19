@@ -1,5 +1,4 @@
 #pragma once
-
 #include "SocketWrapperShared.h"
 
 class SocketAddressFactory

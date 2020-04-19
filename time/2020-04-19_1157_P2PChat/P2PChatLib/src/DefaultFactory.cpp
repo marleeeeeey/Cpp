@@ -3,17 +3,17 @@
 #include "DefaultUI.h"
 #include "DefaultLogger.h"
 
-IConnectionPointPtr DefaultFactory::createConnectionPoint(std::string msg)
+IConnectionPointPtr DefaultFactory::createConnectionPoint(std::string msg, ILoggerPtr logger)
 {
-    return std::make_shared<SocketConnectionPoint>();
+    return std::make_shared<SocketConnectionPoint>(logger);
 }
 
-ILoggerPtr DefaultFactory::createLogger(std::string msg)
+ILoggerPtr DefaultFactory::createLogger(std::string logFilePath)
 {
-    return std::make_shared<DefaultLogger>();
+    return std::make_shared<DefaultLogger>(logFilePath);
 }
 
-IUserInterfacePtr DefaultFactory::createUserInterface(std::string msg)
+IUserInterfacePtr DefaultFactory::createUserInterface(std::string msg, ILoggerPtr logger)
 {
     return std::make_shared<DefaultUI>();
 }

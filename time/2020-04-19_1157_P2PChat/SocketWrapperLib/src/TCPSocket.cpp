@@ -1,6 +1,5 @@
 #include "SocketWrapperShared.h"
 
-
 int TCPSocket::Connect( const SocketAddress& inAddress )
 {
 	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
@@ -82,6 +81,7 @@ TCPSocket::~TCPSocket()
 #endif
 }
 
+
 int TCPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 {
 #if _WIN32
@@ -95,7 +95,7 @@ int TCPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 
 	if (result == SOCKET_ERROR)
 	{
-		SocketUtil::ReportError("TCPSocket::SetNonBlockingMode");
+		SocketUtil::ReportError("UDPSocket::SetNonBlockingMode");
 		return SocketUtil::GetLastError();
 	}
 	else
@@ -103,3 +103,4 @@ int TCPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 		return NO_ERROR;
 	}
 }
+

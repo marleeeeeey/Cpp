@@ -1,5 +1,4 @@
 #pragma once
-
 #include "SocketWrapperShared.h"
 
 class UDPSocket
@@ -23,6 +22,7 @@ private:
 	friend class SocketUtil;
 	UDPSocket( SOCKET inSocket ) : mSocket( inSocket ) {}
 	SOCKET mSocket;
+
 };
 
 typedef shared_ptr< UDPSocket >	UDPSocketPtr;

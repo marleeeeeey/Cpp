@@ -1,6 +1,5 @@
 #include "SocketWrapperShared.h"
 
-
 SocketAddressPtr SocketAddressFactory::CreateIPv4FromString( const string& inString )
 {
 	auto pos = inString.find_last_of( ':' );

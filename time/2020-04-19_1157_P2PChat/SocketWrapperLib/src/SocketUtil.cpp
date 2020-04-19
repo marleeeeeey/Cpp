@@ -1,7 +1,5 @@
 #include "SocketWrapperShared.h"
 
-
-
 bool SocketUtil::StaticInit()
 {
 #if _WIN32
@@ -41,7 +39,7 @@ void SocketUtil::ReportError( const char* inOperationDesc )
 				  0, NULL );
 	
 	
-	LOG( L"Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf );
+	LOG( "Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf );
 #else
 	LOG( "Error: %hs", inOperationDesc );
 #endif

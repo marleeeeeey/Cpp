@@ -7,7 +7,7 @@ class ILogger
 {
 public:
     virtual ~ILogger() = default;
-    virtual void LogMsg(std::string msg) = 0;
+    virtual void LogInfo(std::string msg) = 0;
     virtual void LogWarning(std::string msg) = 0;
     virtual void LogError(std::string msg) = 0;
 };

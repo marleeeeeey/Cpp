@@ -1,5 +1,4 @@
 #pragma once
-
 #include "SocketWrapperShared.h"
 
 class SocketAddress
@@ -41,7 +40,7 @@ public:
 
 	uint32_t				GetSize()			const	{ return sizeof( sockaddr ); }
 
-    std::wstring					ToString()			const;
+	string					ToString()			const;
 
 private:
 	friend class UDPSocket;
