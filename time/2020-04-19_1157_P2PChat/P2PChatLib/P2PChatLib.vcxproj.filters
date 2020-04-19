@@ -36,6 +36,15 @@
     <ClInclude Include="src\ChatCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\DefaultLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DefaultFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DefaultUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -44,10 +53,16 @@
     <ClCompile Include="src\SocketConnectionPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CharCore.cpp">
+    <ClCompile Include="src\ChatCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ChatCore.cpp">
+    <ClCompile Include="src\DefaultFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DefaultLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DefaultUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

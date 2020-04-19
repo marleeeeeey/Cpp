@@ -11,7 +11,7 @@ ChatCore::~ChatCore()
 {
 }
 
-void ChatCore::start()
+void ChatCore::start(std::string param)
 {
 
 }
