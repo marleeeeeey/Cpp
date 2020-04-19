@@ -1,83 +1,83 @@
 #include "SocketWrapperShared.h"
 
-int TCPSocket::Connect( const SocketAddress& inAddress )
+int TCPSocket::Connect(const SocketAddress& inAddress)
 {
-	int err = connect( mSocket, &inAddress.mSockAddr, inAddress.GetSize() );
-	if( err < 0 )
-	{
-		SocketUtil::ReportError( "TCPSocket::Connect" );
-		return -SocketUtil::GetLastError();
-	}
-	return NO_ERROR;
+    int err = connect(mSocket, &inAddress.mSockAddr, inAddress.GetSize());
+    if (err < 0)
+    {
+        SocketUtil::ReportError("TCPSocket::Connect");
+        return -SocketUtil::GetLastError();
+    }
+    return NO_ERROR;
 }
 
-int TCPSocket::Listen( int inBackLog )
+int TCPSocket::Listen(int inBackLog)
 {
-	int err = listen( mSocket, inBackLog );
-	if( err < 0 )
-	{
-		SocketUtil::ReportError( "TCPSocket::Listen" );
-		return -SocketUtil::GetLastError();
-	}
-	return NO_ERROR;
+    int err = listen(mSocket, inBackLog);
+    if (err < 0)
+    {
+        SocketUtil::ReportError("TCPSocket::Listen");
+        return -SocketUtil::GetLastError();
+    }
+    return NO_ERROR;
 }
 
-TCPSocketPtr TCPSocket::Accept( SocketAddress& inFromAddress )
+TCPSocketPtr TCPSocket::Accept(SocketAddress& inFromAddress)
 {
-	socklen_t length = inFromAddress.GetSize();
-	SOCKET newSocket = accept( mSocket, &inFromAddress.mSockAddr, &length );
+    socklen_t length = inFromAddress.GetSize();
+    SOCKET newSocket = accept(mSocket, &inFromAddress.mSockAddr, &length);
 
-	if( newSocket != INVALID_SOCKET )
-	{
-		return TCPSocketPtr( new TCPSocket( newSocket ) );
-	}
-	else
-	{
-		SocketUtil::ReportError( "TCPSocket::Accept" );
-		return nullptr;
-	}
+    if (newSocket != INVALID_SOCKET)
+    {
+        return TCPSocketPtr(new TCPSocket(newSocket));
+    }
+    else
+    {
+        SocketUtil::ReportError("TCPSocket::Accept");
+        return nullptr;
+    }
 }
 
-int32_t	TCPSocket::Send( const void* inData, size_t inLen )
+int32_t TCPSocket::Send(const void* inData, size_t inLen)
 {
-	int bytesSentCount = send( mSocket, static_cast< const char* >( inData ), inLen, 0 );
-	if( bytesSentCount < 0 )
-	{
-		SocketUtil::ReportError( "TCPSocket::Send" );
-		return -SocketUtil::GetLastError();
-	}
-	return bytesSentCount;
+    int bytesSentCount = send(mSocket, static_cast<const char*>(inData), inLen, 0);
+    if (bytesSentCount < 0)
+    {
+        SocketUtil::ReportError("TCPSocket::Send");
+        return -SocketUtil::GetLastError();
+    }
+    return bytesSentCount;
 }
 
-int32_t	TCPSocket::Receive( void* inData, size_t inLen )
+int32_t TCPSocket::Receive(void* inData, size_t inLen)
 {
-	int bytesReceivedCount = recv( mSocket, static_cast< char* >( inData ), inLen, 0 );
-	if( bytesReceivedCount < 0 )
-	{
-		SocketUtil::ReportError( "TCPSocket::Receive" );
-		return -SocketUtil::GetLastError();
-	}
-	return bytesReceivedCount;
+    int bytesReceivedCount = recv(mSocket, static_cast<char*>(inData), inLen, 0);
+    if (bytesReceivedCount < 0)
+    {
+        SocketUtil::ReportError("TCPSocket::Receive");
+        return -SocketUtil::GetLastError();
+    }
+    return bytesReceivedCount;
 }
 
-int TCPSocket::Bind( const SocketAddress& inBindAddress )
+int TCPSocket::Bind(const SocketAddress& inBindAddress)
 {
-	int error = bind( mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize() );
-	if( error != 0 )
-	{
-		SocketUtil::ReportError( "TCPSocket::Bind" );
-		return SocketUtil::GetLastError();
-	}
+    int error = bind(mSocket, &inBindAddress.mSockAddr, inBindAddress.GetSize());
+    if (error != 0)
+    {
+        SocketUtil::ReportError("TCPSocket::Bind");
+        return SocketUtil::GetLastError();
+    }
 
-	return NO_ERROR;
+    return NO_ERROR;
 }
 
 TCPSocket::~TCPSocket()
 {
 #if _WIN32
-	closesocket( mSocket );
+    closesocket(mSocket);
 #else
-	close( mSocket );
+ close( mSocket );
 #endif
 }
 
@@ -85,22 +85,25 @@ TCPSocket::~TCPSocket()
 int TCPSocket::SetNonBlockingMode(bool inShouldBeNonBlocking)
 {
 #if _WIN32
-	u_long arg = inShouldBeNonBlocking ? 1 : 0;
-	int result = ioctlsocket(mSocket, FIONBIO, &arg);
+    u_long arg = inShouldBeNonBlocking ? 1 : 0;
+    int result = ioctlsocket(mSocket, FIONBIO, &arg);
 #else
-	int flags = fcntl(mSocket, F_GETFL, 0);
-	flags = inShouldBeNonBlocking ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
-	int result = fcntl(mSocket, F_SETFL, flags);
+ int flags = fcntl(mSocket, F_GETFL, 0);
+ flags = inShouldBeNonBlocking ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
+ int result = fcntl(mSocket, F_SETFL, flags);
 #endif
 
-	if (result == SOCKET_ERROR)
-	{
-		SocketUtil::ReportError("UDPSocket::SetNonBlockingMode");
-		return SocketUtil::GetLastError();
-	}
-	else
-	{
-		return NO_ERROR;
-	}
+    if (result == SOCKET_ERROR)
+    {
+        SocketUtil::ReportError("UDPSocket::SetNonBlockingMode");
+        return SocketUtil::GetLastError();
+    }
+    else
+    {
+        return NO_ERROR;
+    }
 }
 
+TCPSocket::TCPSocket(SOCKET inSocket): mSocket(inSocket)
+{
+}

@@ -1,6 +1,8 @@
 #include <thread>
 #include "ChatCore.h"
 #include "ChatException.hpp"
+#include <chrono>
+#include <thread>
 
 void ChatCore::recieveLoop()
 {
@@ -8,6 +10,8 @@ void ChatCore::recieveLoop()
     {
         auto msg = m_connectionPoint->receive();
         m_userInterface->setInboxMsg(msg);
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(2s);
     }
 }
 
@@ -45,6 +49,8 @@ void ChatCore::start(std::string type, std::string connectInfo)
     {
         auto msg = m_userInterface->getUserInput();
         m_connectionPoint->send(msg);
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(2s);
     }
 
     recieveThread.join();

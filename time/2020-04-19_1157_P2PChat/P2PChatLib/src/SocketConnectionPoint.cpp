@@ -1,9 +1,11 @@
 #include "SocketConnectionPoint.h"
 #include "SocketWrapperLib/SocketWrapperShared.h"
 #include "ChatException.hpp"
+#include <mutex>
 
 struct SocketConnectionPoint::impl {
     TCPSocketPtr clientSocket;
+    std::mutex socketMutex;
 };
 
 const int GOOD_SEGMENT_SIZE = 1300;
@@ -43,7 +45,7 @@ void SocketConnectionPoint::accept(std::string connectInfo)
     SocketAddress newClientAddress;
     m_pimpl->clientSocket = listenSocket->Accept(newClientAddress);
     m_logger->LogInfo(std::string("Connected client") + newClientAddress.ToString());
-    //m_pimpl->clientSocket->SetNonBlockingMode(true);
+    m_pimpl->clientSocket->SetNonBlockingMode(true); // TODO
     m_status = CpStatus::Connected;
 }
 
@@ -58,7 +60,7 @@ void SocketConnectionPoint::connect(std::string connectInfo)
     m_pimpl->clientSocket = SocketUtil::CreateTCPSocket(INET);
     m_logger->LogInfo("start connection");
     m_pimpl->clientSocket->Connect(*newClientAddress);
-    //m_pimpl->clientSocket->SetNonBlockingMode(true);
+    m_pimpl->clientSocket->SetNonBlockingMode(true); // TODO
     m_status = CpStatus::Connected;
     m_logger->LogInfo("connection successful");
 }
@@ -66,25 +68,27 @@ void SocketConnectionPoint::connect(std::string connectInfo)
 
 void SocketConnectionPoint::send(std::string msg)
 {
+    std::lock_guard<std::mutex> lg(m_pimpl->socketMutex);
     msg.resize(GOOD_SEGMENT_SIZE-1);
     msg += '\0';
     const char * segment = msg.c_str();
     int bytesSent = m_pimpl->clientSocket->Send(segment, GOOD_SEGMENT_SIZE);
-    if(bytesSent < 0)
-    {
-        m_status = CpStatus::ConnectionError;
-        m_logger->LogError("Connection error during SocketConnectionPoint::send");
-    }
+    //if(bytesSent < 0)
+    //{
+    //    //m_status = CpStatus::ConnectionError;
+    //    m_logger->LogError("Connection error during SocketConnectionPoint::send. Error=" + std::to_string(-bytesSent));
+    //}
 }
 
 std::string SocketConnectionPoint::receive()
 {
+    std::lock_guard<std::mutex> lg(m_pimpl->socketMutex);
     char segment[GOOD_SEGMENT_SIZE] = {};
     int bytesReceived = m_pimpl->clientSocket->Receive(segment, GOOD_SEGMENT_SIZE);
     if (bytesReceived < 0)
     {
-        m_status = CpStatus::ConnectionError;
-        m_logger->LogError("Connection error during SocketConnectionPoint::receive");
+        //m_status = CpStatus::ConnectionError;
+        m_logger->LogError("Connection error during SocketConnectionPoint::receive. Error=" + std::to_string(-bytesReceived));
     }
     return segment;
 }
