@@ -90,7 +90,6 @@ std::string SocketConnectionPoint::receive()
     std::lock_guard<std::mutex> lg(m_pimpl->socketMutex);
     char segment[GOOD_SEGMENT_SIZE] = {};
 
-
     int bytesReceived = m_pimpl->clientSocket->Receive(segment, 0);
     if (bytesReceived < 0 && -bytesReceived != WSAEWOULDBLOCK)
     {

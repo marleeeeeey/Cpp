@@ -33,7 +33,7 @@ ChatCore::ChatCore(IConnectionPointPtr cp, IUserInterfacePtr ui, ILoggerPtr logg
     m_userInterface = ui;
     m_logger = logger;
 
-    m_logger->LogInfo("Chat started");
+    m_logger->LogInfo("P2PChat v1.0 started");
 }
 
 ChatCore::~ChatCore()
