@@ -41,20 +41,20 @@ ChatCore::~ChatCore()
 
 }
 
-void ChatCore::start(std::string type, std::string connectInfo)
+void ChatCore::start()
 {
-    if(type == "Server")
+    auto ci = m_userInterface->getConnectionInfo();
+    if(ci.side == ConnectionInfo::Side::Server)
     {
-        m_connectionPoint->accept(connectInfo);
+        m_connectionPoint->accept(ci);
     }
-    else if (type == "Client")
+    else if (ci.side == ConnectionInfo::Side::Client)
     {
-        m_connectionPoint->connect(connectInfo);
+        m_connectionPoint->connect(ci);
     }
     else
     {
-        throw ChatException("Error: wrong type in ChatCore::start. Param = " + type
-            + ". Expect Server or Client");
+        throw ChatException("Error: ChatCore::start connectioInfo");
     }
 
     std::thread recieveThread(&ChatCore::recieveLoop, this);    

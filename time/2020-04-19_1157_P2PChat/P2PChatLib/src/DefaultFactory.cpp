@@ -13,7 +13,7 @@ ILoggerPtr DefaultFactory::createLogger(std::string logFilePath)
     return std::make_shared<DefaultLogger>(logFilePath);
 }
 
-IUserInterfacePtr DefaultFactory::createUserInterface(std::string msg, ILoggerPtr logger)
+IUserInterfacePtr DefaultFactory::createUserInterface(std::vector<std::string> cmdLines, ILoggerPtr logger)
 {
-    return std::make_shared<DefaultUI>(logger);
+    return std::make_shared<DefaultUI>(cmdLines, logger);
 }

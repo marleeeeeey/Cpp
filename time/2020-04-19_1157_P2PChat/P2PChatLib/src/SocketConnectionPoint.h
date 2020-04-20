@@ -14,8 +14,8 @@ class SocketConnectionPoint : public IConnectionPoint
 public:
     SocketConnectionPoint(ILoggerPtr logger);
     ~SocketConnectionPoint();
-    void accept(std::string connectInfo) override;
-    void connect(std::string connectInfo) override;
+    void accept(ConnectionInfo connectInfo) override;
+    void connect(ConnectionInfo connectInfo) override;
     void send(std::string msg) override;
     std::string receive() override;
     void disconnect() override;

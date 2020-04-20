@@ -23,10 +23,10 @@ SocketConnectionPoint::~SocketConnectionPoint()
     SocketUtil::CleanUp();
 }
 
-void SocketConnectionPoint::accept(std::string connectInfo)
+void SocketConnectionPoint::accept(ConnectionInfo connectInfo)
 {
     TCPSocketPtr listenSocket = SocketUtil::CreateTCPSocket(INET);
-    auto receivingAddress = SocketAddressFactory::CreateIPv4FromString(connectInfo);
+    auto receivingAddress = SocketAddressFactory::CreateIPv4FromString(connectInfo.ipV4_ip_port);
     m_logger->LogInfo("Binding " + receivingAddress->ToString());
     if (listenSocket->Bind(*receivingAddress) != NO_ERROR)
     {
@@ -54,10 +54,10 @@ void SocketConnectionPoint::accept(std::string connectInfo)
     m_status = CpStatus::Connected;
 }
 
-void SocketConnectionPoint::connect(std::string connectInfo)
+void SocketConnectionPoint::connect(ConnectionInfo connectInfo)
 {
     m_logger->LogTrace("SocketConnectionPoint::connect");
-    SocketAddressPtr clientAddress = SocketAddressFactory::CreateIPv4FromString(connectInfo);
+    SocketAddressPtr clientAddress = SocketAddressFactory::CreateIPv4FromString(connectInfo.ipV4_ip_port);
     if(!clientAddress)
     {
         throw ChatException("Error CreateIPv4FromString in SocketConnectionPoint::connect");

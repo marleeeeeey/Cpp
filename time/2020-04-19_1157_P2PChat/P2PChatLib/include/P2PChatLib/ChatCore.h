@@ -15,5 +15,5 @@ class ChatCore
 public:
     ChatCore(IConnectionPointPtr cp, IUserInterfacePtr ui, ILoggerPtr logger);
     ~ChatCore();
-    void start(std::string type, std::string connectInfo);
+    void start();
 };

@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\P2PChatLib\ChatException.hpp" />
+    <ClInclude Include="include\P2PChatLib\ConnectionInfo.h" />
     <ClInclude Include="include\P2PChatLib\DefaultFactory.h" />
     <ClInclude Include="include\P2PChatLib\IConnectionPoint.h" />
     <ClInclude Include="include\P2PChatLib\IFactory.h" />

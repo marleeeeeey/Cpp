@@ -7,33 +7,21 @@
 
 int main(int argc, char ** argv)
 {
+    std::vector<std::string> cmdLines;
+    for (int i = 0; i < argc; ++i)
+    {
+        cmdLines.push_back(argv[i]);
+    }
+
     DefaultFactory factory;
-    std::string type;
-    std::string connectionInfo;
-
-    if(argc == 3)
-    {
-        type = argv[1];
-        connectionInfo = argv[2];
-    }
-    else
-    {
-        std::stringstream ss;
-        ss << "Command line arguments error. Cout = " << argc
-            << ". But expect 3. Example: P2PChat.exe Server 127.0.0.1:56710" << std::endl;
-        auto lg = factory.createLogger("default.log");
-        lg->LogError(ss.str());
-        return 1;
-    }
-
-    auto lg = factory.createLogger(type + ".log");
+    auto lg = factory.createLogger("logs/" + cmdLines[1] + ".log");
     auto cp = factory.createConnectionPoint("", lg);
-    auto ui = factory.createUserInterface("", lg);
+    auto ui = factory.createUserInterface(cmdLines, lg);
 
     try
     {
         ChatCore chat(cp, ui, lg);
-        chat.start(type, connectionInfo);
+        chat.start();
     }
     catch (const ChatException& e)
     {
