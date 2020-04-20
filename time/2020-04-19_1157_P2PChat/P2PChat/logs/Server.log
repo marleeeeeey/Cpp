@@ -1,0 +1,4 @@
+[2020-04-20 22:48:56.595] [Log] [info] P2PChat v1.0 started
+[2020-04-20 22:48:56.600] [Log] [info] Pipe Server: Main thread awaiting client connection on \\.\pipe\mynamedpipe
+[2020-04-20 22:52:24.704] [Log] [info] P2PChat v1.0 started
+[2020-04-20 22:52:24.706] [Log] [info] Pipe Server: Main thread awaiting client connection on \\.\pipe\mynamedpipe

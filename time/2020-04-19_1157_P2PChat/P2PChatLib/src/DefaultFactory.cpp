@@ -2,10 +2,11 @@
 #include "SocketConnectionPoint.h"
 #include "DefaultUI.h"
 #include "DefaultLogger.h"
+#include "PipeConnectionPoint.h"
 
 IConnectionPointPtr DefaultFactory::createConnectionPoint(std::string msg, ILoggerPtr logger)
 {
-    return std::make_shared<SocketConnectionPoint>(logger);
+    return std::make_shared<PipeConnectionPoint>(logger);
 }
 
 ILoggerPtr DefaultFactory::createLogger(std::string logFilePath)

@@ -151,12 +151,14 @@
     <ClInclude Include="include\P2PChatLib\IUserInterface.h" />
     <ClInclude Include="src\DefaultLogger.h" />
     <ClInclude Include="src\DefaultUI.h" />
+    <ClInclude Include="src\PipeConnectionPoint.h" />
     <ClInclude Include="src\SocketConnectionPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ChatCore.cpp" />
     <ClCompile Include="src\DefaultLogger.cpp" />
     <ClCompile Include="src\DefaultUI.cpp" />
+    <ClCompile Include="src\PipeConnectionPoint.cpp" />
     <ClCompile Include="src\SocketConnectionPoint.cpp" />
     <ClCompile Include="src\DefaultFactory.cpp" />
   </ItemGroup>

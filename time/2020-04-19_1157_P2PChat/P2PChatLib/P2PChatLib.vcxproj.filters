@@ -48,6 +48,9 @@
     <ClInclude Include="include\P2PChatLib\ConnectionInfo.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="src\PipeConnectionPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\SocketConnectionPoint.cpp">
@@ -63,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\DefaultUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PipeConnectionPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

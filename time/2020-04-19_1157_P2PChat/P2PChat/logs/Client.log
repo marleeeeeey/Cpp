@@ -1,0 +1,10 @@
+[2020-04-20 22:52:51.971] [Log] [info] P2PChat v1.0 started
+[2020-04-20 22:52:51.974] [Log] [info] Connection to server: \\.\pipe\mynamedpipe
+[2020-04-20 22:52:51.975] [Log] [info] Pipe connected successful
+[2020-04-20 22:53:00.388] [Log] [trace] [YOU]: 1234
+[2020-04-20 22:53:00.388] [Log] [info] Sending 2 byte message: 1234
+[2020-04-20 22:53:57.236] [Log] [info] P2PChat v1.0 started
+[2020-04-20 22:53:57.239] [Log] [info] Connection to server: \\.\pipe\mynamedpipe
+[2020-04-20 22:54:56.723] [Log] [info] P2PChat v1.0 started
+[2020-04-20 22:54:56.725] [Log] [info] Connection to server: \\.\pipe\mynamedpipe
+[2020-04-20 22:55:06.297] [Log] [info] Pipe connected successful
