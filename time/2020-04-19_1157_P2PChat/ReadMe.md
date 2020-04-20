@@ -10,6 +10,7 @@ The idea is create extensible chat with supporting
 4. Make platform independent parts buildable on different system: Windows, Linux. Probably by using CMAKE build system.
 5. It should be easy to extend functionality with custom plugins.
 6. Add unit and integration tests.
+7. Add plugin to crypt info before sending.
 
 To do that I practice my knowledge of SOLID, OOP Patterns, Architecture design, Testing, STL and OS API.
 
