@@ -3,6 +3,8 @@
 
 void main()
 {
-    get_network_name();
+    find_window();
+    close_window();
+    std::cout << "press any key to close app";
     std::cin.get();
 }
