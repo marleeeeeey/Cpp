@@ -25,6 +25,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DefaultFactoryLib", "Defaul
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatITF", "ChatITF\ChatITF.vcxproj", "{FF693DA1-3B33-4566-A87B-0B69F608CD6E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClientServerChat", "ClientServerChat\ClientServerChat.vcxproj", "{B2EFCD34-8D94-403F-B5E4-F17660D5803F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D089F569-C88D-4E8D-835B-194E6CD65E0C} = {D089F569-C88D-4E8D-835B-194E6CD65E0C}
+		{FF693DA1-3B33-4566-A87B-0B69F608CD6E} = {FF693DA1-3B33-4566-A87B-0B69F608CD6E}
+		{D2A931C9-4C4D-4235-88B2-6CA46E9F3A53} = {D2A931C9-4C4D-4235-88B2-6CA46E9F3A53}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +88,14 @@ Global
 		{FF693DA1-3B33-4566-A87B-0B69F608CD6E}.Release|x64.Build.0 = Release|x64
 		{FF693DA1-3B33-4566-A87B-0B69F608CD6E}.Release|x86.ActiveCfg = Release|Win32
 		{FF693DA1-3B33-4566-A87B-0B69F608CD6E}.Release|x86.Build.0 = Release|Win32
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Debug|x64.ActiveCfg = Debug|x64
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Debug|x64.Build.0 = Debug|x64
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Debug|x86.ActiveCfg = Debug|Win32
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Debug|x86.Build.0 = Debug|Win32
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Release|x64.ActiveCfg = Release|x64
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Release|x64.Build.0 = Release|x64
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Release|x86.ActiveCfg = Release|Win32
+		{B2EFCD34-8D94-403F-B5E4-F17660D5803F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
