@@ -1,5 +1,4 @@
 #include "PipeConnectionPoint.h"
-
 #include <windows.h> 
 #include <stdio.h> 
 #include <tchar.h>
@@ -7,21 +6,36 @@
 #include <sstream>
 #include <locale>
 #include <codecvt>
+#include <iostream>
+#include <mutex>
 #include <string>
 #define BUFSIZE 512
 
-std::wstring convertToWString(const std::string & msg)
+std::string convertToString(std::wstring s)
 {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring wide = converter.from_bytes(msg);
-    return wide;
+    int len;
+    int slength = (int)s.length() + 1;
+    len = WideCharToMultiByte(CP_ACP, 0, s.c_str(), slength, 0, 0, 0, 0);
+    std::string r(len, '\0');
+    WideCharToMultiByte(CP_ACP, 0, s.c_str(), slength, &r[0], len, 0, 0);
+    return r;
+}
+
+std::wstring convertToWString(const std::string & s)
+{
+    int len;
+    int slength = (int)s.length() + 1;
+    len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+    std::wstring r(len, L'\0');
+    MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, &r[0], len);
+    return r;
 }
 
 struct PipeConnectionPoint::impl {
     BOOL   fConnected = FALSE;
     DWORD  dwThreadId = 0;
     HANDLE hPipe = INVALID_HANDLE_VALUE;
-    HANDLE hThread = NULL;
+    std::mutex pipeMutex;
 };
 
 PipeConnectionPoint::PipeConnectionPoint(ILoggerPtr logger)
@@ -66,8 +80,26 @@ void PipeConnectionPoint::accept(ConnectionInfo connectInfo)
     
     if(m_pimpl->fConnected)
     {
+        m_logger->LogInfo("Client connected. OK");
         m_status = CpStatus::Connected;
     }
+}
+
+bool setPipeMode(HANDLE pipe, DWORD mode)
+{
+    // The pipe connected; change mode. 
+    BOOL   fSuccess = FALSE;
+    fSuccess = SetNamedPipeHandleState(
+        pipe,             // pipe handle 
+        &mode,                    // new pipe mode 
+        NULL,     // don't set maximum bytes 
+        NULL);    // don't set maximum time 
+    if (!fSuccess)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void PipeConnectionPoint::connect(ConnectionInfo connectInfo)
@@ -105,25 +137,15 @@ void PipeConnectionPoint::connect(ConnectionInfo connectInfo)
 
     m_status = CpStatus::Connected;
     m_logger->LogInfo("Pipe connected successful");
-
-    // The pipe connected; change to message-read mode. 
-    BOOL   fSuccess = FALSE;
-    DWORD dwMode = PIPE_READMODE_MESSAGE;
-    fSuccess = SetNamedPipeHandleState(
-        m_pimpl->hPipe,             // pipe handle 
-        &dwMode,                    // new pipe mode 
-        NULL,     // don't set maximum bytes 
-        NULL);    // don't set maximum time 
-    if (!fSuccess)
-    {
-        m_logger->LogError("PipeConnectionPoint::connect: SetNamedPipeHandleState failed. GLE=" + std::to_string(GetLastError()));
-        m_status = CpStatus::ConnectionError;
-    }
 }
 
 
 void PipeConnectionPoint::send(std::string msg)
-{ 
+{
+    std::lock_guard<std::mutex> lg(m_pimpl->pipeMutex);
+
+    setPipeMode(m_pimpl->hPipe, PIPE_WAIT | PIPE_READMODE_BYTE);
+
     LPCTSTR lpvMessage = convertToWString(msg).c_str();
     DWORD cbToWrite = (lstrlen(lpvMessage) + 1) * sizeof(TCHAR);
     m_logger->LogInfo("Sending " + std::to_string(cbToWrite) + " byte message: " + msg);
@@ -135,47 +157,125 @@ void PipeConnectionPoint::send(std::string msg)
         &cbWritten,             // bytes written 
         NULL);                  // not overlapped 
 
-    if (!fSuccess)
+    if (!fSuccess && GetLastError() != ERROR_NO_DATA)
     {
         m_logger->LogError("PipeConnectionPoint::send: WriteFile to pipe failed. GLE=" + std::to_string(GetLastError()));
         m_status = CpStatus::ConnectionError;
     }
+
+    m_logger->LogTrace("PipeConnectionPoint::send: msg sent. OK");
 }
 
 std::string PipeConnectionPoint::receive()
 {
-    TCHAR  chBuf[BUFSIZE];
+    std::lock_guard<std::mutex> lg(m_pimpl->pipeMutex);
+
+    setPipeMode(m_pimpl->hPipe, PIPE_NOWAIT | PIPE_READMODE_BYTE);
+
+    // HANDLE hHeap = GetProcessHeap();
+    // TCHAR* pchRequest = (TCHAR*)HeapAlloc(hHeap, 0, BUFSIZE * sizeof(TCHAR));
+    // 
+    // DWORD cbBytesRead = 0;
+    // HANDLE hPipe = m_pimpl->hPipe;
+    // 
+    // // Do some extra error checking since the app will keep running even if this
+    // // thread fails.
+    // LPVOID lpvParam = m_pimpl->hPipe;
+    // 
+    // if (lpvParam == NULL)
+    // {
+    //     m_logger->LogError("ERROR - Pipe Server Failure:");
+    //     m_logger->LogError("   InstanceThread got an unexpected NULL value in lpvParam.");
+    //     if (pchRequest != NULL) HeapFree(hHeap, 0, pchRequest);
+    //     m_status = CpStatus::ConnectionError;
+    //     return "";
+    // }
+    // 
+    // if (pchRequest == NULL)
+    // {
+    //     m_logger->LogError("ERROR - Pipe Server Failure:");
+    //     m_logger->LogError("   InstanceThread got an unexpected NULL heap allocation.");
+    //     m_status = CpStatus::ConnectionError;
+    //     return "";
+    // }
+    // 
+    // // Print verbose messages. In production code, this should be for debugging only.
+    // //m_logger->LogTrace("InstanceThread created, receiving and processing messages.");
+    // 
+    // 
+    // // Read client requests from the pipe. This simplistic code only allows messages
+    // // up to BUFSIZE characters in length.
+    // BOOL fSuccess = ReadFile(
+    //     hPipe,        // handle to pipe 
+    //     pchRequest,    // buffer to receive data 
+    //     BUFSIZE * sizeof(TCHAR), // size of buffer 
+    //     &cbBytesRead, // number of bytes read 
+    //     NULL);        // not overlapped I/O 
+    // 
+    // if (!fSuccess || cbBytesRead == 0)
+    // {
+    //     if (GetLastError() == ERROR_BROKEN_PIPE)
+    //     {
+    //         m_logger->LogError("InstanceThread: client disconnected.");
+    //         m_status = CpStatus::ConnectionError;
+    //     }
+    //     else if(GetLastError() == ERROR_NO_DATA)
+    //     {
+    //         //m_logger->LogError("InstanceThread ReadFile failed, GLE=" + std::to_string(GetLastError()));
+    //     }
+    //     else
+    //     {
+    //         m_logger->LogError("InstanceThread ReadFile failed, GLE=" + std::to_string(GetLastError()));
+    //         m_status = CpStatus::ConnectionError;
+    //     }
+    //     return "";
+    // }
+    // 
+    // std::string retString = convertToString(std::wstring(pchRequest));
+    // return retString;
+
+
+
+
+
+
+
+    TCHAR  chBuf[BUFSIZE] = { 0 };
     DWORD  cbRead;
     BOOL fSuccess;
     do
     {
+        //m_logger->LogTrace("PipeConnectionPoint::receive: Recieving msg");
         fSuccess = ReadFile(
             m_pimpl->hPipe,    // pipe handle 
             chBuf,    // buffer to receive reply 
             BUFSIZE * sizeof(TCHAR),  // size of buffer 
             &cbRead,  // number of bytes read 
             NULL);    // not overlapped 
-
-        if (!fSuccess && GetLastError() != ERROR_MORE_DATA)
+    
+        if (!fSuccess && (GetLastError() != ERROR_MORE_DATA))
             break;
-
-        std::stringstream ss;
-        ss << chBuf;
-        return ss.str();
-
+    
+        std::wstring ws(chBuf);
+        //m_logger->LogTrace("PipeConnectionPoint::receive: msg received. OK");
+        return convertToString(ws);
+    
     } while (!fSuccess); // repeat loop if ERROR_MORE_DATA 
-
-    if (!fSuccess)
+    
+    if (!fSuccess && GetLastError() != ERROR_NO_DATA)
     {
         m_logger->LogError("PipeConnectionPoint::send: ReadFile from pipe failed. GLE=" + std::to_string(GetLastError()));
         m_status = CpStatus::ConnectionError;
     }
-
+    
+    //m_logger->LogTrace("PipeConnectionPoint::receive: msg empty. OK");
+    
     return "";
 }
 
 void PipeConnectionPoint::disconnect()
 {
+    m_logger->LogTrace("PipeConnectionPoint::disconnect. OK");
     m_status = CpStatus::Disconnected;
     CloseHandle(m_pimpl->hPipe);
 }

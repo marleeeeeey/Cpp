@@ -12,7 +12,7 @@ struct DefaultLogger::impl
 DefaultLogger::DefaultLogger(std::string logFileName)
 {
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-    console_sink->set_level(spdlog::level::info);
+    console_sink->set_level(spdlog::level::trace);
 
     bool isTruncateFile = false;
     auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(logFileName, isTruncateFile);

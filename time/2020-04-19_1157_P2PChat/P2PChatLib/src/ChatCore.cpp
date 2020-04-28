@@ -67,6 +67,6 @@ void ChatCore::start()
     }
     else if(m_connectionPoint->getStatus() == CpStatus::ConnectionError)
     {
-        throw ChatException("Error: Found connection error in ChatCore::Start()");
+        throw ChatException("Error: in ChatCore CpStatus::ConnectionError");
     }    
 }
