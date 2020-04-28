@@ -1,7 +1,7 @@
-#include "P2PChatLib\DefaultFactory.h"
-#include "P2PChatLib\ChatCore.h"
 #include <sstream>
 
+#include "DefaultFactoryLib\DefaultFactory.h"
+#include "ChatCore.h"
 #include "ChatITF\ChatException.hpp"
 
 
