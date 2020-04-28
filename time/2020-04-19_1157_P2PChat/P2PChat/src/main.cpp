@@ -2,7 +2,7 @@
 #include "P2PChatLib\ChatCore.h"
 #include <sstream>
 
-#include "P2PChatLib/ChatException.hpp"
+#include "ChatITF\ChatException.hpp"
 
 
 int main(int argc, char ** argv)

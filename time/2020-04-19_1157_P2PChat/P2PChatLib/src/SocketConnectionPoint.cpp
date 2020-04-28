@@ -1,6 +1,6 @@
 #include "SocketConnectionPoint.h"
 #include "SocketWrapperLib/SocketWrapperShared.h"
-#include "ChatException.hpp"
+#include "ChatITF\ChatException.hpp"
 #include <mutex>
 
 const int GOOD_SEGMENT_SIZE = 300;

@@ -21,31 +21,13 @@
     <ClInclude Include="src\SocketConnectionPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\P2PChatLib\IConnectionPoint.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\P2PChatLib\IFactory.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\P2PChatLib\ILogger.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\P2PChatLib\IUserInterface.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="src\DefaultLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DefaultUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\P2PChatLib\ChatException.hpp">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="include\P2PChatLib\DefaultFactory.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\P2PChatLib\ConnectionInfo.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>

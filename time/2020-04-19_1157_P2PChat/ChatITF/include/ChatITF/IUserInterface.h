@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "ConnectionInfo.h"
+#include "ConnectionInfo.hpp"
 
 class IUserInterface
 {

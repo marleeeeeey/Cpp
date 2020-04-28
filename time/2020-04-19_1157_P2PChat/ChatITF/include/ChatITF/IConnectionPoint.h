@@ -2,7 +2,7 @@
 
 #include <string>
 #include <memory>
-#include "ConnectionInfo.h"
+#include "ConnectionInfo.hpp"
 
 enum class CpStatus
 {

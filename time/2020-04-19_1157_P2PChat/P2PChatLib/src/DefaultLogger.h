@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "ILogger.h"
+#include "ChatITF\ILogger.h"
 
 class DefaultLogger : public ILogger
 {

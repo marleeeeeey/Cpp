@@ -1,8 +1,7 @@
 #pragma once
 
-#include "IConnectionPoint.h"
-#include "ILogger.h"
-
+#include "ChatITF\IConnectionPoint.h"
+#include "ChatITF\ILogger.h"
 
 class SocketConnectionPoint : public IConnectionPoint
 {

@@ -1,7 +1,7 @@
 #pragma once
-#include "IConnectionPoint.h"
-#include "ILogger.h"
-#include "IUserInterface.h"
+#include "ChatITF\IConnectionPoint.h"
+#include "ChatITF\ILogger.h"
+#include "ChatITF\IUserInterface.h"
 
 class ChatCore
 {

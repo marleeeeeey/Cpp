@@ -1,6 +1,7 @@
 #include <iostream>
-#include "DefaultUI.h"
+#include <map>
 
+#include "DefaultUI.h"
 
 ConnectionInfo createConectioInfoFromCmdLines(std::vector<std::string> cmdLines)
 {

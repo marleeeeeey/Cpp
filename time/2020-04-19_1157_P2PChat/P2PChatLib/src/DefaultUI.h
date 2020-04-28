@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IUserInterface.h"
+#include "ChatITF\IUserInterface.h"
 #include <queue>
 #include <array>
 #include <string>
-#include "ILogger.h"
+#include "ChatITF\ILogger.h"
 
 class DefaultUI : public IUserInterface
 {

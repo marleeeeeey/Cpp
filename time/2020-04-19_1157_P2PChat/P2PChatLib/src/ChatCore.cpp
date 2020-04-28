@@ -1,6 +1,6 @@
 #include <thread>
 #include "ChatCore.h"
-#include "ChatException.hpp"
+#include "ChatITF\ChatException.hpp"
 #include <chrono>
 #include <thread>
 
@@ -54,7 +54,7 @@ void ChatCore::start()
     }
     else
     {
-        throw ChatException("Error: ChatCore::start connectioInfo");
+        throw ChatException("Error: ChatCore::start ConnectionInfo");
     }
 
     std::thread recieveThread(&ChatCore::recieveLoop, this);    

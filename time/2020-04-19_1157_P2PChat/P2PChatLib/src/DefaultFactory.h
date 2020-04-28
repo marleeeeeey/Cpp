@@ -1,5 +1,5 @@
 #pragma once
-#include "IFactory.h"
+#include "ChatITF\IFactory.h"
 
 class DefaultFactory : public IFactory
 {
