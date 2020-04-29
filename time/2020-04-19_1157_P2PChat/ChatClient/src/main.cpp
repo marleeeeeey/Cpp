@@ -1,43 +1,49 @@
+#include <iostream>
 #include <sstream>
 
 #include "DefaultFactoryLib\DefaultFactory.h"
-#include "CSChatCore.h"
+#include "ClientCore.h"
 #include "ChatITF\ChatException.hpp"
 
 
 int main(int argc, char** argv)
 {
-    std::vector<std::string> cmdLines;
-    for (int i = 0; i < argc; ++i)
+    std::vector<std::string> cmdLines
     {
-        cmdLines.push_back(argv[i]);
-    }
+        argv[0],
+        "Client",
+        argv[1],
+    };
 
     DefaultFactory factory;
-    auto lg = factory.createLogger("logs/" + cmdLines[1] + ".log");
+    auto lg = factory.createLogger("logs/ChatClient.log");
     auto cp = factory.createConnectionPoint("", lg);
     auto ui = factory.createUserInterface(cmdLines, lg);
 
+    int ret = 0;
+
     try
     {
-        CSChatCore chat(cp, ui, lg);
+        ClientCore chat(cp, ui, lg);
         chat.start();
     }
     catch (const ChatException& e)
     {
         lg->LogError(std::string("ChatException: ") + e.what());
-        return 1;
+        ret = 1;
     }
     catch (const std::exception& e)
     {
         lg->LogError(std::string("std::exception: ") + e.what());
-        return 1;
+        ret = 1;
     }
     catch (...)
     {
         lg->LogError("Unknown Exception");
-        return 1;
+        ret = 1;
     }
 
-    return 0;
+    std::cout << "Press <ENTER> to close window";
+    std::cin.get();
+    return ret;
 }

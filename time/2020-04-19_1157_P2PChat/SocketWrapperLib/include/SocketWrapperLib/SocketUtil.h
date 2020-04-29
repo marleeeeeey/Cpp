@@ -1,4 +1,6 @@
 #pragma once
+#include <functional>
+
 #include "SocketWrapperShared.h"
 
 enum SocketAddressFamily
@@ -14,6 +16,7 @@ public:
     static bool StaticInit();
     static void CleanUp();
 
+    static void SetErrorCallBack(std::function<void(std::string)> errorCallback);
     static void ReportError(const char* inOperationDesc);
     static int GetLastError();
 
@@ -32,4 +35,5 @@ private:
     inline static fd_set* FillSetFromVector(fd_set& outSet, const vector<TCPSocketPtr>* inSockets, int& ioNaxNfds);
     inline static void FillVectorFromSet(vector<TCPSocketPtr>* outSockets, const vector<TCPSocketPtr>* inSockets,
                                          const fd_set& inSet);
+    static std::function<void(std::string)> m_errorCallBack;
 };

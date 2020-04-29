@@ -22,7 +22,12 @@ SocketAddressPtr SocketAddressFactory::CreateIPv4FromString(const string& inStri
 
     addrinfo* result = nullptr;
     int error = getaddrinfo(host.c_str(), service.c_str(), &hint, &result);
-    if (error != 0 && result != nullptr)
+    if(error == WSANOTINITIALISED)
+    {
+        SocketUtil::ReportError("SocketAddressFactory::CreateIPv4FromString WSANOTINITIALISED");
+        return nullptr;        
+    }
+    else if (error != 0 && result != nullptr)
     {
         SocketUtil::ReportError("SocketAddressFactory::CreateIPv4FromString");
         return nullptr;
