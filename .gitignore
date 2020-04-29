@@ -6,3 +6,4 @@
 **.vcxproj.user
 **/GeneratedFiles
 **/build
+**/logs

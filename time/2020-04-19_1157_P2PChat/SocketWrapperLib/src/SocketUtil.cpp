@@ -1,4 +1,8 @@
+#include <sstream>
+
 #include "SocketWrapperShared.h"
+
+std::function<void(std::string)> SocketUtil::m_errorCallBack;
 
 bool SocketUtil::StaticInit()
 {
@@ -21,6 +25,11 @@ void SocketUtil::CleanUp()
 #endif
 }
 
+void SocketUtil::SetErrorCallBack(std::function<void(std::string)> errorCallback)
+{
+    m_errorCallBack = errorCallback;
+}
+
 
 void SocketUtil::ReportError(const char* inOperationDesc)
 {
@@ -38,6 +47,12 @@ void SocketUtil::ReportError(const char* inOperationDesc)
         (LPTSTR)&lpMsgBuf,
         0, NULL);
 
+    if(m_errorCallBack)
+    {
+        std::stringstream ss;
+        ss << inOperationDesc << ". GLE=" << errorNum;
+        m_errorCallBack(ss.str());
+    }
 
     LOG("Error %s: %d- %s", inOperationDesc, errorNum, lpMsgBuf);
 #else

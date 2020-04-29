@@ -7,8 +7,6 @@ class SocketConnectionPoint : public IConnectionPoint
 {
     struct impl;
     std::unique_ptr<impl> m_pimpl;
-    CpStatus m_status;
-    ILoggerPtr m_logger;
 
 public:
     SocketConnectionPoint(ILoggerPtr logger);
