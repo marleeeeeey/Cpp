@@ -45,25 +45,27 @@ In case of errors in level editor you will see special level in runtime:
 
 1. cmake
 
-2. gtest
+2. gtest / gmock
 
    ```
+   # To install gmock
+   # Copy next file to CMake related folder
+   # https://github.com/cucumber/cucumber-cpp/blob/master/cmake/modules/FindGMock.cmake
+   
    # To prevent MSVC issue:
    # error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MTd_StaticDebug' doesn't match value 'MDd_DynamicDebug'
    gtest_force_shared_crt:BOOL=ON
    
-   
+   Build release and debug. Then remove 'd' postfix in next files:
    gmock_main.lib <- gmock_maind.lib 
    gmock_main.pdb <- gmock_maind.pdb
    gmock.lib <- gmockd.lib
    gmock.pdb <- gmockd.pdb
    ```
 
-3. gmock
+3. sfml
 
-4. sfml
-
-5. nsis (windows)
+4. nsis (windows)
 
 ## UML
 
